@@ -1,5 +1,3 @@
-# rdoc --exclude test --exclude benchmark --main README lib README
-
 =Chronic
 
 Chronic is a natural language date/time parser written in pure Ruby. See below for the wide variety of formats Chronic will parse.
@@ -16,8 +14,9 @@ You can parse strings containing a natural language date using the Chronic::pars
 
   require 'chronic'
 
-  Time.now
-    #=> Sun Aug 27 23:18:25 PDT 2006
+  Time.now   #=> Sun Aug 27 23:18:25 PDT 2006
+
+  ###
 
   Chronic.parse('tomorrow')       
     #=> Mon Aug 28 12:00:00 PDT 2006

@@ -111,7 +111,7 @@ module Chronic
       normalized_text.gsub!(/\bmidnight\b/, '24:00')
       normalized_text.gsub!(/\bfrom now\b/, 'future')
       normalized_text.gsub!(/\bbefore now\b/, 'past')
-      normalized_text.gsub!(/\bnow\b/, 'this hour')
+      normalized_text.gsub!(/\bnow\b/, 'this second')
       normalized_text.gsub!(/\b(ago|before)\b/, 'past')
       normalized_text.gsub!(/\bthis past\b/, 'last')
       normalized_text.gsub!(/\bthis last\b/, 'last')
