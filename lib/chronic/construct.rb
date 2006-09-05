@@ -34,7 +34,6 @@ module Chronic
       
       self.definitions[:date].each do |handler|
         if handler.match(tokens, self.definitions)
-          puts handler.handler_method
           good_tokens = tokens.select { |o| !o.get_tag Separator }
           return self.send(handler.handler_method, good_tokens, options)
         end
@@ -232,7 +231,6 @@ module Chronic
     
     def handle_p_s_r(tokens, options) #:nodoc:
       new_tokens = [tokens[1], tokens[2], tokens[0]]
-      puts '---------------' + new_tokens.to_s
       self.handle_s_r_p(new_tokens, options)
     end
     
@@ -377,7 +375,6 @@ module Chronic
     end
     
     def match(tokens, definitions)
-      puts '>>' + pattern.to_s
       token_index = 0
       @pattern.each do |element|
         name = element.to_s
@@ -386,26 +383,21 @@ module Chronic
         if element.instance_of? Symbol
           klass = constantize(name)
           match = tokens[token_index] && !tokens[token_index].tags.select { |o| o.kind_of?(klass) }.empty?
-          #puts tokens[token_index].tags.select { |o| o.kind_of?(klass) }.inspect
-          puts "match #{klass}: #{match}"
-          puts "optional: #{optional}"
           return false if !match && !optional
-          (token_index += 1; puts "match #{name}"; next) if (match)
-          next if (!match && optional)
+          (token_index += 1; next) if match
+          next if !match && optional
         elsif element.instance_of? String
-          puts optional
-          (puts 'sdone'; return true) if optional && token_index == tokens.size
+          return true if optional && token_index == tokens.size
           sub_handlers = definitions[name.intern] || raise(ChronicPain, "Invalid subset #{name} specified")
           sub_handlers.each do |sub_handler|
-            puts 'sub ' + tokens[token_index..tokens.size].to_s
-            (puts 'sfind'; return true) if sub_handler.match(tokens[token_index..tokens.size], definitions)
+            return true if sub_handler.match(tokens[token_index..tokens.size], definitions)
           end
-          puts 'sfalse'; return false
+          return false
         else
           raise(ChronicPain, "Invalid match type: #{element.class}")
         end
       end
-      (puts "retfalse"; return false) if token_index != tokens.size
+      return false if token_index != tokens.size
       return true
     end
   end

@@ -5,10 +5,10 @@ module Chronic
   
   class << self
     
-    # Parses a string containing a natural language date/time. If Chronic
-    # can find a date/time, either a Time or Span will be returned 
-    # (depending on the value of :guess). If no date/time can be found,
-    # nil will be returned.
+    # Parses a string containing a natural language date or time. If the parser
+    # can find a date or time, either a Time or Chronic::Span will be returned 
+    # (depending on the value of <tt>:guess</tt>). If no date or time can be found,
+    # +nil+ will be returned.
     #
     # Options are:
     #
@@ -17,27 +17,27 @@ module Chronic
     #
     #     If your string represents a birthday, you can set <tt>:context</tt> to <tt>:past</tt> 
     #     and if an ambiguous string is given, it will assume it is in the 
-    #     past.
+    #     past. Specify <tt>:future</tt> or omit to set a future context.
     #
     # [<tt>:now</tt>]
     #     Time (defaults to Time.now)
     #
-    #     By setting :now to a Time, all computations will be based off
+    #     By setting <tt>:now</tt> to a Time, all computations will be based off
     #     of that time instead of Time.now
     #
     # [<tt>:guess</tt>]
-    #     true or false (defaults to true)
+    #     +true+ or +false+ (defaults to +true+)
     #
-    #     By default, <tt>Chronic::parse</tt> will guess a single point in time for the
-    #     given date/time. If you'd rather have the entire Span returned,
-    #     set <tt>:guess</tt> to false.
+    #     By default, the parser will guess a single point in time for the
+    #     given date or time. If you'd rather have the entire time span returned,
+    #     set <tt>:guess</tt> to +false+ and a Chronic::Span will be returned.
     #     
     # [<tt>:ambiguous_time_range</tt>]
-    #     Integer or <tt>:none</tt> (defaults to 6 (6am-6pm))
+    #     Integer or <tt>:none</tt> (defaults to <tt>6</tt> (6am-6pm))
     #
     #     If an Integer is given, ambiguous times (like 5:00) will be 
     #     assumed to be within the range of that time in the AM to that time
-    #     in the PM. For example, if you set it to 7, then the parser will
+    #     in the PM. For example, if you set it to <tt>7</tt>, then the parser will
     #     look for the time between 7am and 7pm. In the case of 5:00, it would
     #     assume that means 5:00pm. If <tt>:none</tt> is given, no assumption
     #     will be made, and the first matching instance of that time will 
@@ -61,9 +61,7 @@ module Chronic
       
       # put the text into a normal format to ease scanning
       text = self.pre_normalize(text)
-      
-      puts text
-    
+          
       # get base tokens for each word
       @tokens = self.base_tokenize(text)
     
@@ -79,7 +77,7 @@ module Chronic
       # strip any non-tagged tokens
       @tokens = @tokens.select { |token| token.tagged? }
       
-      if @@debug
+      if @debug
         puts "+---------------------------------------------------"
         puts "| " + @tokens.to_s
         puts "+---------------------------------------------------"

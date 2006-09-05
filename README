@@ -10,13 +10,13 @@ Chronic can be installed via RubyGems:
 
 ==Usage
 
-You can parse strings containing a natural language date using the Chronic::parse method.
+You can parse strings containing a natural language date using the Chronic.parse method.
 
   require 'chronic'
 
   Time.now   #=> Sun Aug 27 23:18:25 PDT 2006
 
-  ###
+  #---
 
   Chronic.parse('tomorrow')       
     #=> Mon Aug 28 12:00:00 PDT 2006
@@ -36,7 +36,11 @@ You can parse strings containing a natural language date using the Chronic::pars
   Chronic.parse('may 27th', :guess => false)
     #=> Sun May 27 00:00:00 PDT 2007..Mon May 28 00:00:00 PDT 2007
 
-Chronic can parse an extremely wide variety of date/time formats. Following is a small sample of strings that will be properly parsed.
+See Chronic.parse for detailed usage instructions.
+
+==Examples
+
+Chronic can parse a huge variety of date and time formats. Following is a small sample of strings that will be properly parsed. Parsing is case insensitive and will handle common abbreviations and misspellings.
 
 Simple
 
@@ -107,8 +111,6 @@ Specific Times (many of the above with an added time)
   January 5 at 7pm
   1979-05-27 05:00
   etc
-
-==Options
 
 ==Limitations
   
