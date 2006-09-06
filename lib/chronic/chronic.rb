@@ -1,8 +1,4 @@
-require 'date'
-
-# Chronic is a natural language date/time parser in pure Ruby.
 module Chronic
-  
   class << self
     
     # Parses a string containing a natural language date or time. If the parser
@@ -84,7 +80,12 @@ module Chronic
       end
       
       # do the heavy lifting
-      span = self.tokens_to_span(@tokens, options)
+      begin
+        span = self.tokens_to_span(@tokens, options)
+      rescue
+        raise
+        return nil
+      end
       
       # guess a time within a span if required
       if options[:guess]
@@ -238,5 +239,4 @@ module Chronic
   class InvalidArgumentException < Exception
     
   end
-  
 end

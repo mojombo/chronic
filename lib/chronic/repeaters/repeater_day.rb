@@ -1,5 +1,5 @@
 class Chronic::RepeaterDay < Chronic::Repeater #:nodoc:
-  DAY_SECONDS = 86400 # (24 * 60 * 60)
+  DAY_SECONDS = 86_400 # (24 * 60 * 60)
   
   def next(pointer)
     super
@@ -13,9 +13,16 @@ class Chronic::RepeaterDay < Chronic::Repeater #:nodoc:
   def this(pointer = :future)
     super
     
-    @current_day ||= Date.parse(@now.to_s)
-    span_begin = Time.parse(@current_day.to_s)
-    Chronic::Span.new(span_begin, span_begin + width)
+    case pointer
+    when :future
+      day_begin = Time.local(@now.year, @now.month, @now.day, @now.hour + 1)
+      day_end = Time.local(@now.year, @now.month, @now.day) + DAY_SECONDS
+    when :past
+      day_begin = Time.local(@now.year, @now.month, @now.day)
+      day_end = Time.local(@now.year, @now.month, @now.day, @now.hour)
+    end
+    
+    Chronic::Span.new(day_begin, day_end)
   end
   
   def offset(span, amount, pointer)

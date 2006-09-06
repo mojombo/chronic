@@ -1,4 +1,5 @@
 class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
+  MONTH_SECONDS = 2_592_000 # 30 * 24 * 60 * 60
   
   def next(pointer)
     super
@@ -50,7 +51,7 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
   end
   
   def width
-    (30 * 24 * 60 * 60)
+    MONTH_SECONDS
   end
   
   def index

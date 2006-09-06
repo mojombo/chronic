@@ -25,12 +25,12 @@ class Chronic::RepeaterYear < Chronic::Repeater #:nodoc:
     when :future
       this_year_start = Time.local(@now.year, @now.month, @now.day) + Chronic::RepeaterDay::DAY_SECONDS
       this_year_end = Time.local(@now.year + 1, 1, 1)
-      Chronic::Span.new(this_year_start, this_year_end)
     when :past
-      this_year_start = Time.local(@now.year, @now.month, @now.day)
-      this_year_end = Time.local(@now.year, 1, 1)
-      Chronic::Span.new(this_year_start, this_year_end)
+      this_year_start = Time.local(@now.year, 1, 1)
+      this_year_end = Time.local(@now.year, @now.month, @now.day)
     end
+    
+    Chronic::Span.new(this_year_start, this_year_end)
   end
   
   def offset(span, amount, pointer)

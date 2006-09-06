@@ -42,8 +42,8 @@ class TestRepeaterYear < Test::Unit::TestCase
     assert_equal Time.local(2007, 1, 1), this_year.end
     
     this_year = years.this(:past)
-    assert_equal Time.local(2006, 1, 1), this_year.end
-    assert_equal Time.local(2006, 8, 16), this_year.begin
+    assert_equal Time.local(2006, 1, 1), this_year.begin
+    assert_equal Time.local(2006, 8, 16), this_year.end
   end
   
   def test_offset

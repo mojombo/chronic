@@ -1,4 +1,5 @@
 class Chronic::RepeaterDayName < Chronic::Repeater #:nodoc:
+  DAY_SECONDS = 86400 # (24 * 60 * 60)
   
   def next(pointer)
     super
@@ -24,7 +25,7 @@ class Chronic::RepeaterDayName < Chronic::Repeater #:nodoc:
   end
   
   def width
-    (60 * 60 * 24)
+    DAY_SECONDS
   end
   
   def to_s

@@ -7,14 +7,24 @@
 #
 #=============================================================================
 
-Dir["#{File.dirname(__FILE__)}/chronic/*.rb"].each do |file|
-  require 'chronic/' + File.basename(file)[0..-4]
-end
+require 'date'
 
-require 'ruby-debug'
+require 'chronic/chronic'
+require 'chronic/handlers'
+require 'chronic/grabber'
+require 'chronic/ordinal'
+require 'chronic/pointer'
+require 'chronic/scalar'
+require 'chronic/separator'
+
+require 'chronic/repeater'
+Dir["#{File.dirname(__FILE__)}/chronic/repeaters/*.rb"].each do |file|
+  require 'chronic/repeaters/' + File.basename(file)[0..-4]
+end
 
 module Chronic
   def self.debug=(val); @debug = val; end
 end
 
 Chronic.debug = false
+
