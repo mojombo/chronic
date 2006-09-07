@@ -19,7 +19,7 @@ require 'chronic/separator'
 
 require 'chronic/repeater'
 Dir["#{File.dirname(__FILE__)}/chronic/repeaters/*.rb"].each do |file|
-  require 'chronic/repeaters/' + File.basename(file)[0..-4]
+  require file
 end
 
 module Chronic
