@@ -2,8 +2,8 @@ require 'rubygems'
 
 SPEC = Gem::Specification.new do |s|
   s.name = 'chronic'
-  s.version = '0.1.0'
-  s.author = 'Tom Werner'
+  s.version = '0.1.2'
+  s.author = 'Tom Preston-Werner'
   s.email = 'tom@rubyisawesome.com'
   s.homepage = 'http://chronic.rubyforge.org'
   s.platform = Gem::Platform::RUBY

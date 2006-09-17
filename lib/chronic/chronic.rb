@@ -100,7 +100,7 @@ module Chronic
     # to numbers (three => 3), and converting ordinal words to numeric
     # ordinals (third => 3rd)
     def pre_normalize(text) #:nodoc:
-      normalized_text = text.downcase
+      normalized_text = text.to_s.downcase
       normalized_text.gsub!(/['"\.]/, '')
       normalized_text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
       normalized_text.gsub!(/\btoday\b/, 'this day')

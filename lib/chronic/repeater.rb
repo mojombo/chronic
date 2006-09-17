@@ -20,7 +20,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
                /^jun\.?e?$/ => :june,
                /^jul\.?y?$/ => :july,
                /^aug\.?(ust)?$/ => :august,
-               /^sep\.?(tember)?$/ => :september,
+               /^sep\.?(t\.?|tember)?$/ => :september,
                /^oct\.?(ober)?$/ => :october,
                /^nov\.?(ember)?$/ => :november,
                /^dec\.?(ember)?$/ => :december}
@@ -52,7 +52,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
                /^mornings?$/ => :morning,
                /^afternoons?$/ => :afternoon,
                /^evenings?$/ => :evening,
-               /^nights?$/ => :night}
+               /^(night|nite)s?$/ => :night}
     scanner.keys.each do |scanner_item|
       return Chronic::RepeaterDayPortion.new(scanner[scanner_item]) if scanner_item =~ token.word
     end

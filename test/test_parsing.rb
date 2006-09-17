@@ -321,6 +321,12 @@ class TestParsing < Test::Unit::TestCase
   end
   
   def test_parse_guess_grrr
+    time = Chronic.parse("today at 6:00pm", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 16, 18), time
+    
+    time = Chronic.parse("this day 1800", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 16, 18), time
+    
     time = Chronic.parse("yesterday at 4:00pm", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 8, 15, 16), time
   end

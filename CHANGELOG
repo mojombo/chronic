@@ -1,0 +1,13 @@
+HEAD
+  * improved regexes for word variations (Josh Goebel)
+
+0.1.2
+  * removed Date dependency (now works on windows properly without fiddling)
+
+0.1.1
+  * run to_s on incoming object
+  * fixed loop loading of repeaters files (out of order on some machines)
+  * fixed find_within to use this instead of next (was breaking "today at 6pm")
+  
+0.1.0
+  * initial release

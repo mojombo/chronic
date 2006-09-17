@@ -4,24 +4,28 @@ class Chronic::RepeaterDayName < Chronic::Repeater #:nodoc:
   def next(pointer)
     super
     
-    if !@current_day
-      @current_day = Date.parse(@now.to_s)
-      @current_day += pointer == :future ? 1 : -1
+    direction = pointer == :future ? 1 : -1
+    
+    if !@current_day_start
+      @current_day_start = Time.local(@now.year, @now.month, @now.day)
+      @current_day_start += direction * DAY_SECONDS
+
       day_num = symbol_to_number(@type)
-      while @current_day.wday != day_num
-        @current_day += pointer == :future ? 1 : -1
+      
+      while @current_day_start.wday != day_num
+        @current_day_start += direction * DAY_SECONDS
       end
     else
-      @current_day += pointer == :future ? 7 : -7
+      @current_day_start += direction * 7 * DAY_SECONDS
     end
-    span_begin = Time.parse(@current_day.to_s)
-    Chronic::Span.new(span_begin, span_begin + width)
+    
+    Chronic::Span.new(@current_day_start, @current_day_start + DAY_SECONDS)
   end
   
   def this(pointer = :future)
     super
     
-    self.next(:future)
+    self.next(pointer)
   end
   
   def width

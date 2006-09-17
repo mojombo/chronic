@@ -7,20 +7,31 @@
 #
 #=============================================================================
 
-require 'date'
-
 require 'chronic/chronic'
 require 'chronic/handlers'
-require 'chronic/grabber'
-require 'chronic/ordinal'
-require 'chronic/pointer'
-require 'chronic/scalar'
-require 'chronic/separator'
 
 require 'chronic/repeater'
-Dir["#{File.dirname(__FILE__)}/chronic/repeaters/*.rb"].each do |file|
-  require file
-end
+require 'chronic/repeaters/repeater_year'
+require 'chronic/repeaters/repeater_season'
+require 'chronic/repeaters/repeater_season_name'
+require 'chronic/repeaters/repeater_month'
+require 'chronic/repeaters/repeater_month_name'
+require 'chronic/repeaters/repeater_fortnight'
+require 'chronic/repeaters/repeater_week'
+require 'chronic/repeaters/repeater_weekend'
+require 'chronic/repeaters/repeater_day'
+require 'chronic/repeaters/repeater_day_name'
+require 'chronic/repeaters/repeater_day_portion'
+require 'chronic/repeaters/repeater_hour'
+require 'chronic/repeaters/repeater_minute'
+require 'chronic/repeaters/repeater_second'
+require 'chronic/repeaters/repeater_time'
+
+require 'chronic/grabber'
+require 'chronic/pointer'
+require 'chronic/scalar'
+require 'chronic/ordinal'
+require 'chronic/separator'
 
 module Chronic
   def self.debug=(val); @debug = val; end

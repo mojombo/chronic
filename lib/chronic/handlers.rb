@@ -274,15 +274,15 @@ module Chronic
       
       repeaters = self.get_repeaters(tokens)
       repeaters.size.times { tokens.pop }
-        
-      if tokens.last && tokens.last.get_tag(Grabber)
-        grabber = tokens.last.get_tag(Grabber)
+                    
+      if tokens.first && tokens.first.get_tag(Grabber)
+        grabber = tokens.first.get_tag(Grabber)
         tokens.pop
       end
       
       head = repeaters.shift
       head.start = @now
-      
+            
       case grabber.type
         when :last: outer_span = head.next(:past)
         when :this: outer_span = head.this(options[:context])
@@ -295,11 +295,9 @@ module Chronic
     
     def get_repeaters(tokens) #:nodoc:
       repeaters = []
-		  tokens.reverse.each do |token|
+		  tokens.each do |token|
 		    if t = token.get_tag(Repeater)
           repeaters << t
-        else
-          break
         end
       end
       repeaters.sort.reverse
@@ -313,8 +311,8 @@ module Chronic
       
       head, *rest = tags
       head.start = pointer == :future ? span.begin : span.end
-      h = head.next(pointer)
-      
+      h = head.this(pointer)
+            
       if span.include?(h.begin) || span.include?(h.end)
         return find_within(rest, h, pointer)
       else
