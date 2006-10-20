@@ -6,7 +6,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
       if t = self.scan_for_day_names(tokens[i]) then tokens[i].tag(t); next end
       if t = self.scan_for_day_portions(tokens[i]) then tokens[i].tag(t); next end
       if t = self.scan_for_times(tokens[i], options) then tokens[i].tag(t); next end
-      if t = self.scan_for_units(tokens[i]) then tokens[i].tag(t); next end 
+      if t = self.scan_for_units(tokens[i]) then tokens[i].tag(t); next end
     end
     tokens
   end
@@ -105,7 +105,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
   
   def this(pointer)
     !@now.nil? || raise("Start point must be set before calling #next")
-    [:future, :past].include?(pointer) || raise("First argument 'pointer' must be one of :past or :future")
+    [:future, :past, :none].include?(pointer) || raise("First argument 'pointer' must be one of :past, :future, :none")
   end
   
   def to_s

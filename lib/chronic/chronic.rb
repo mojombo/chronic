@@ -50,7 +50,7 @@ module Chronic
       specified_options.keys.each do |key|
         default_options.keys.include?(key) || raise(InvalidArgumentException, "#{key} is not a valid option key.")
       end
-      [:past, :future].include?(options[:context]) || raise(InvalidArgumentException, "Invalid value '#{options[:context]}' for :context specified. Valid values are :past and :future.")
+      [:past, :future, :none].include?(options[:context]) || raise(InvalidArgumentException, "Invalid value ':#{options[:context]}' for :context specified. Valid values are :past and :future.")
       
       # store now for later =)
       @now = options[:now]
@@ -73,7 +73,7 @@ module Chronic
       # strip any non-tagged tokens
       @tokens = @tokens.select { |token| token.tagged? }
       
-      if @debug
+      if true
         puts "+---------------------------------------------------"
         puts "| " + @tokens.to_s
         puts "+---------------------------------------------------"

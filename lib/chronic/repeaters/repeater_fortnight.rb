@@ -29,6 +29,8 @@ class Chronic::RepeaterFortnight < Chronic::Repeater #:nodoc:
   def this(pointer = :future)
     super
     
+    pointer = :future if pointer == :none
+    
     case pointer
     when :future
       this_fortnight_start = Time.local(@now.year, @now.month, @now.day, @now.hour) + Chronic::RepeaterHour::HOUR_SECONDS
@@ -42,7 +44,6 @@ class Chronic::RepeaterFortnight < Chronic::Repeater #:nodoc:
       this_fortnight_end = Time.local(@now.year, @now.month, @now.day, @now.hour)
       sunday_repeater = Chronic::RepeaterDayName.new(:sunday)
       sunday_repeater.start = @now
-      #sunday_repeater.next(:past)
       last_sunday_span = sunday_repeater.next(:past)
       this_fortnight_start = last_sunday_span.begin
       Chronic::Span.new(this_fortnight_start, this_fortnight_end)

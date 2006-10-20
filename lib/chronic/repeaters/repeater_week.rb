@@ -44,6 +44,12 @@ class Chronic::RepeaterWeek < Chronic::Repeater #:nodoc:
       last_sunday_span = sunday_repeater.next(:past)
       this_week_start = last_sunday_span.begin
       Chronic::Span.new(this_week_start, this_week_end)
+    when :none
+      sunday_repeater = Chronic::RepeaterDayName.new(:sunday)
+      sunday_repeater.start = @now
+      last_sunday_span = sunday_repeater.next(:past)
+      this_week_start = last_sunday_span.begin
+      Chronic::Span.new(this_week_start, this_week_start + WEEK_SECONDS)
     end
   end
   

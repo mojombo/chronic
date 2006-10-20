@@ -12,6 +12,7 @@ Chronic can be installed via RubyGems:
 
 You can parse strings containing a natural language date using the Chronic.parse method.
 
+  require 'rubygems'
   require 'chronic'
 
   Time.now   #=> Sun Aug 27 23:18:25 PDT 2006

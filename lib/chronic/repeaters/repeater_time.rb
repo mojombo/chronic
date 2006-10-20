@@ -92,7 +92,10 @@ class Chronic::RepeaterTime < Chronic::Repeater #:nodoc:
   end
   
   def this(context = :future)
-    [:future, :past].include?(context) || raise("First argument 'context' must be one of :past or :future")
+    super
+    
+    context = :future if context == :none
+    
     self.next(context)
   end
   

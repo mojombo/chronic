@@ -28,6 +28,9 @@ class Chronic::RepeaterYear < Chronic::Repeater #:nodoc:
     when :past
       this_year_start = Time.local(@now.year, 1, 1)
       this_year_end = Time.local(@now.year, @now.month, @now.day)
+    when :none
+      this_year_start = Time.local(@now.year, 1, 1)
+      this_year_end = Time.local(@now.year + 1, 1, 1)
     end
     
     Chronic::Span.new(this_year_start, this_year_end)

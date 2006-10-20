@@ -24,6 +24,9 @@ class Chronic::RepeaterMonth < Chronic::Repeater #:nodoc:
     when :past
       month_start = Time.local(@now.year, @now.month)
       month_end = Time.local(@now.year, @now.month, @now.day)
+    when :none
+      month_start = Time.local(@now.year, @now.month)
+      month_end = self.offset_by(Time.local(@now.year, @now.month), 1, :future)
     end
     
     Chronic::Span.new(month_start, month_end)

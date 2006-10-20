@@ -300,9 +300,21 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 8, 16, 13, 59, 59), time
   end
   
-  def test_parse_guess_grr
+  def test_parse_guess_grr    
     time = Chronic.parse("yesterday at 4:00", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 8, 15, 16), time
+    
+    time = Chronic.parse("today at 9:00", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 16, 9), time
+    
+    time = Chronic.parse("today at 2100", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 16, 21), time
+    
+    time = Chronic.parse("this day at 0900", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 16, 9), time
+    
+    time = Chronic.parse("tomorrow at 0900", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 17, 9), time
     
     time = Chronic.parse("yesterday at 4:00", :now => @time_2006_08_16_14_00_00, :ambiguous_time_range => :none)
     assert_equal Time.local(2006, 8, 15, 4), time
@@ -323,6 +335,9 @@ class TestParsing < Test::Unit::TestCase
   def test_parse_guess_grrr
     time = Chronic.parse("today at 6:00pm", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 8, 16, 18), time
+    
+    time = Chronic.parse("today at 6:00am", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 16, 6), time
     
     time = Chronic.parse("this day 1800", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 8, 16, 18), time
@@ -358,7 +373,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 7, 26, 14, 30, 30), time
     
     time = Chronic.parse("3 days ago", :now => @time_2006_08_16_14_00_00)
-    assert_equal Time.local(2006, 8, 13, 14, 0, 30), time
+    assert_equal Time.local(2006, 8, 13, 14), time
     
     #time = Chronic.parse("1 monday ago", :now => @time_2006_08_16_14_00_00)
     #assert_equal Time.local(2006, 8, 14, 12), time
@@ -367,7 +382,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 8, 12, 9), time
     
     time = Chronic.parse("7 hours ago", :now => @time_2006_08_16_14_00_00)
-    assert_equal Time.local(2006, 8, 16, 7, 0, 30), time
+    assert_equal Time.local(2006, 8, 16, 7), time
     
     time = Chronic.parse("3 minutes ago", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 8, 16, 13, 57), time
@@ -390,13 +405,13 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 8, 23, 14, 30, 30), time
     
     time = Chronic.parse("1 day hence", :now => @time_2006_08_16_14_00_00)
-    assert_equal Time.local(2006, 8, 17, 14, 0, 30), time
+    assert_equal Time.local(2006, 8, 17, 14), time
     
     time = Chronic.parse("5 mornings hence", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 8, 21, 9), time
     
     time = Chronic.parse("1 hour from now", :now => @time_2006_08_16_14_00_00)
-    assert_equal Time.local(2006, 8, 16, 15, 0, 30), time
+    assert_equal Time.local(2006, 8, 16, 15), time
     
     time = Chronic.parse("20 minutes hence", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 8, 16, 14, 20), time
@@ -407,7 +422,7 @@ class TestParsing < Test::Unit::TestCase
   
   def test_parse_guess_p_s_r
     time = Chronic.parse("in 3 hours", :now => @time_2006_08_16_14_00_00)
-    assert_equal Time.local(2006, 8, 16, 17, 0, 30), time
+    assert_equal Time.local(2006, 8, 16, 17), time
   end
   
   def test_parse_guess_s_r_p_a

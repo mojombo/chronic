@@ -25,6 +25,7 @@ class Chronic::RepeaterDayName < Chronic::Repeater #:nodoc:
   def this(pointer = :future)
     super
     
+    pointer = :future if pointer == :none
     self.next(pointer)
   end
   

@@ -40,7 +40,7 @@ module Chronic
     end
     
     def self.scan_for_years(token, post_token)
-      if token.word =~ /^\d\d(\d\d)?$/
+      if token.word =~ /^([1-9]\d)?\d\d?$/
         unless post_token && %w{am pm morning afternoon evening night}.include?(post_token)
           return ScalarYear.new(token.word.to_i)
         end

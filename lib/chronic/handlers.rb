@@ -35,6 +35,7 @@ module Chronic
       self.definitions[:date].each do |handler|
         if handler.match(tokens, self.definitions)
           good_tokens = tokens.select { |o| !o.get_tag Separator }
+          puts "--#{handler}"
           return self.send(handler.handler_method, good_tokens, options)
         end
       end
@@ -67,6 +68,7 @@ module Chronic
       end
       
       # I guess you're out of luck!
+      puts "--SUCKY"
       return nil
     end
     
@@ -282,14 +284,25 @@ module Chronic
       
       head = repeaters.shift
       head.start = @now
-            
+                  
       case grabber.type
-        when :last: outer_span = head.next(:past)
-        when :this: outer_span = head.this(options[:context])
-        when :next: outer_span = head.next(:future)
+        when :last
+          outer_span = head.next(:past)
+        when :this
+          puts "--THIS"
+          puts "--#{repeaters}"
+          if repeaters.size > 0
+            puts "--NONE"
+            outer_span = head.this(:none)
+          else
+            outer_span = head.this(options[:context])
+          end
+        when :next
+          outer_span = head.next(:future)
         else raise(ChronicPain, "Invalid grabber")
       end
       
+      puts "--#{outer_span}"
       anchor = find_within(repeaters, outer_span, pointer)
     end
     
@@ -307,11 +320,12 @@ module Chronic
     # Returns a Span representing the innermost time span
     # or nil if no repeater union could be found
     def find_within(tags, span, pointer) #:nodoc:
+      puts "--#{span}"
       return span if tags.empty?
       
       head, *rest = tags
       head.start = pointer == :future ? span.begin : span.end
-      h = head.this(pointer)
+      h = head.this(:none)
             
       if span.include?(h.begin) || span.include?(h.end)
         return find_within(rest, h, pointer)

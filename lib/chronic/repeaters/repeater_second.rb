@@ -16,6 +16,8 @@ class Chronic::RepeaterSecond < Chronic::Repeater #:nodoc:
   end
   
   def this(pointer = :future)
+    super
+    
     Chronic::Span.new(@now, @now + 1)
   end
   

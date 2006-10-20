@@ -24,6 +24,9 @@ class Chronic::RepeaterDay < Chronic::Repeater #:nodoc:
     when :past
       day_begin = Time.local(@now.year, @now.month, @now.day)
       day_end = Time.local(@now.year, @now.month, @now.day, @now.hour)
+    when :none
+      day_begin = Time.local(@now.year, @now.month, @now.day)
+      day_end = Time.local(@now.year, @now.month, @now.day) + DAY_SECONDS
     end
     
     Chronic::Span.new(day_begin, day_end)
