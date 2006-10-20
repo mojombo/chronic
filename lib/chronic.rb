@@ -34,9 +34,6 @@ require 'chronic/ordinal'
 require 'chronic/separator'
 
 module Chronic
-  @version = "0.1.3"
-  def self.debug=(val); @debug = val; end
+  def self.debug; false; end
 end
-
-Chronic.debug = true
 

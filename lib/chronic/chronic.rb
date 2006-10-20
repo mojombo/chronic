@@ -73,7 +73,7 @@ module Chronic
       # strip any non-tagged tokens
       @tokens = @tokens.select { |token| token.tagged? }
       
-      if true
+      if Chronic.debug
         puts "+---------------------------------------------------"
         puts "| " + @tokens.to_s
         puts "+---------------------------------------------------"

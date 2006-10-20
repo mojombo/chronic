@@ -7,7 +7,6 @@ class TestParsing < Test::Unit::TestCase
     # Wed Aug 16 14:00:00 UTC 2006
     @time_2006_08_16_14_00_00 = Time.local(2006, 8, 16, 14, 0, 0, 0)
     @time_2006_08_16_03_00_00 = Time.local(2006, 8, 16, 3, 0, 0, 0)
-    Chronic.debug = false
   end
   
   def test__parse_guess_dates
