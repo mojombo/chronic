@@ -254,6 +254,17 @@ class TestParsing < Test::Unit::TestCase
     time = Chronic.parse("this week", :now => @time_2006_08_16_14_00_00, :context => :past)
     assert_equal Time.local(2006, 8, 14, 19), time
     
+    # weekend
+    
+    time = Chronic.parse("this weekend", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 20), time
+    
+    time = Chronic.parse("this weekend", :now => @time_2006_08_16_14_00_00, :context => :past)
+    assert_equal Time.local(2006, 8, 13), time
+    
+    time = Chronic.parse("last weekend", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 13), time
+    
     # day
     
     time = Chronic.parse("this day", :now => @time_2006_08_16_14_00_00)
@@ -386,6 +397,9 @@ class TestParsing < Test::Unit::TestCase
     time = Chronic.parse("3 weeks ago", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 7, 26, 14, 30, 30), time
     
+    time = Chronic.parse("2 weekends ago", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 5), time
+    
     time = Chronic.parse("3 days ago", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 8, 13, 14), time
     
@@ -417,6 +431,12 @@ class TestParsing < Test::Unit::TestCase
     
     time = Chronic.parse("1 week from now", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 8, 23, 14, 0, 0), time
+    
+    time = Chronic.parse("1 weekend from now", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 19), time
+    
+    time = Chronic.parse("2 weekends from now", :now => @time_2006_08_16_14_00_00)
+    assert_equal Time.local(2006, 8, 26), time
     
     time = Chronic.parse("1 day hence", :now => @time_2006_08_16_14_00_00)
     assert_equal Time.local(2006, 8, 17, 14), time
@@ -492,6 +512,10 @@ class TestParsing < Test::Unit::TestCase
     span = Chronic.parse("november", :now => @time_2006_08_16_14_00_00, :guess => false)
     assert_equal Time.local(2006, 11), span.begin
     assert_equal Time.local(2006, 12), span.end
+    
+    span = Chronic.parse("weekend" , :now => @time_2006_08_16_14_00_00, :guess => false)
+    assert_equal Time.local(2006, 8, 19), span.begin
+    assert_equal Time.local(2006, 8, 21), span.end
   end
   
   def test_argument_validation

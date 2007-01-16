@@ -72,7 +72,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
                /^months?$/ => :month,
                /^fortnights?$/ => :fortnight,
                /^weeks?$/ => :week,
-               /^weekends?$/ => :weekends,
+               /^weekends?$/ => :weekend,
                /^days?$/ => :day,
                /^hours?$/ => :hour,
                /^minutes?$/ => :minute,
@@ -104,7 +104,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
   end
   
   def this(pointer)
-    !@now.nil? || raise("Start point must be set before calling #next")
+    !@now.nil? || raise("Start point must be set before calling #this")
     [:future, :past, :none].include?(pointer) || raise("First argument 'pointer' must be one of :past, :future, :none")
   end
   
