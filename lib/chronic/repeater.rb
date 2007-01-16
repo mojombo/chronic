@@ -60,7 +60,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
   end
   
   def self.scan_for_times(token, options)
-    if token.word =~ /^\d{1,2}(:?\d{2})?$/
+    if token.word =~ /^\d{1,2}(:?\d{2})?([\.:]?\d{2})?$/
       return Chronic::RepeaterTime.new(token.word, options)
     end
     return nil
@@ -99,7 +99,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
   # returns the next occurance of this repeatable.
   def next(pointer)
     !@now.nil? || raise("Start point must be set before calling #next")
-    [:future, :past].include?(pointer) || raise("First argument 'pointer' must be one of :past or :future")
+    [:future, :none, :past].include?(pointer) || raise("First argument 'pointer' must be one of :past or :future")
     #raise("Repeatable#next must be overridden in subclasses")
   end
   

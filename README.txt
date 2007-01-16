@@ -1,14 +1,18 @@
-=Chronic
+Chronic
+	http://chronic.rubyforge.org/
+	by Tom Preston-Werner
+
+== DESCRIPTION:
 
 Chronic is a natural language date/time parser written in pure Ruby. See below for the wide variety of formats Chronic will parse.
 
-==Installation
+== INSTALLATION:
 
 Chronic can be installed via RubyGems:
 
   $ sudo gem install chronic
 
-==Usage
+== USAGE:
 
 You can parse strings containing a natural language date using the Chronic.parse method.
 
@@ -39,7 +43,7 @@ You can parse strings containing a natural language date using the Chronic.parse
 
 See Chronic.parse for detailed usage instructions.
 
-==Examples
+== EXAMPLES:
 
 Chronic can parse a huge variety of date and time formats. Following is a small sample of strings that will be properly parsed. Parsing is case insensitive and will handle common abbreviations and misspellings.
 
@@ -110,11 +114,36 @@ Specific Dates
 Specific Times (many of the above with an added time)
 
   January 5 at 7pm
-  1979-05-27 05:00
+  1979-05-27 05:00:00
   etc
 
-==Limitations
+== LIMITATIONS:
   
 Chronic uses Ruby's built in Time class for all time storage and computation. Because of this, only times that the Time class can handle will be properly parsed. Parsing for times outside of this range will simply return nil. Support for a wider range of times is planned for a future release.
 
 Time zones other than the local one are not currently supported. Support for other time zones is planned for a future release.
+
+== LICENSE:
+
+(The MIT License)
+
+Copyright (c) 2006 Ryan Davis, Zen Spider Software
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

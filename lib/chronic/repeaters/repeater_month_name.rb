@@ -13,6 +13,12 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
         else @now.month > target_month
           @current_month_begin = Time.local(@now.year + 1, target_month)
         end
+      when :none
+        if @now.month <= target_month
+          @current_month_begin = Time.local(@now.year, target_month)
+        else @now.month > target_month
+          @current_month_begin = Time.local(@now.year + 1, target_month)
+        end
       when :past
         if @now.month > target_month
           @current_month_begin = Time.local(@now.year, target_month)
@@ -47,9 +53,12 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
   def this(pointer = :future)
     super
     
-    pointer = :future if pointer == :none
-    
-    self.next(pointer)
+    case pointer
+    when :past
+      self.next(pointer)
+    when :future, :none
+      self.next(:none)
+    end
   end
   
   def width

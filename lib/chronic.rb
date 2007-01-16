@@ -34,6 +34,14 @@ require 'chronic/ordinal'
 require 'chronic/separator'
 
 module Chronic
+  VERSION = "0.1.5"
+  
   def self.debug; false; end
 end
 
+alias p_orig p
+
+def p(val)
+  p_orig val
+  puts
+end

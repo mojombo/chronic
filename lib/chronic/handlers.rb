@@ -88,7 +88,7 @@ module Chronic
     
     def handle_m_d(month, day, time_tokens, options) #:nodoc:
       month.start = @now
-      span = month.next(options[:context])
+      span = month.this(options[:context])
       
       day_start = Time.local(span.begin.year, span.begin.month, day)
       
@@ -213,7 +213,7 @@ module Chronic
     
     def handle_s_r_p(tokens, options) #:nodoc:
       repeater = tokens[1].get_tag(Repeater)
-      
+            
       span = 
       case true
       when [RepeaterYear, RepeaterSeason, RepeaterSeasonName, RepeaterMonth, RepeaterMonthName, RepeaterFortnight, RepeaterWeek].include?(repeater.class)

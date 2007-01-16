@@ -25,7 +25,7 @@ class Chronic::RepeaterTime < Chronic::Repeater #:nodoc:
   end
   
   def initialize(time, options = {})
-    t = time.sub(/\:/, '')
+    t = time.gsub(/\:/, '')
     @type = 
     if (1..2) === t.size
       Tick.new(t.to_i * 60 * 60, true)
@@ -34,8 +34,13 @@ class Chronic::RepeaterTime < Chronic::Repeater #:nodoc:
     elsif t.size == 4
       ambiguous = time =~ /:/ && t[0..0].to_i != 0 && t[0..1].to_i <= 12
       Tick.new(t[0..1].to_i * 60 * 60 + t[2..3].to_i * 60, ambiguous)
+    elsif t.size == 5
+      Tick.new(t[0..0].to_i * 60 * 60 + t[1..2].to_i * 60 + t[3..4].to_i, true)
+    elsif t.size == 6
+      ambiguous = time =~ /:/ && t[0..0].to_i != 0 && t[0..1].to_i <= 12
+      Tick.new(t[0..1].to_i * 60 * 60 + t[2..3].to_i * 60 + t[4..5].to_i, ambiguous)
     else
-      raise("Time cannot exceed four digits")
+      raise("Time cannot exceed six digits")
     end
   end
   
