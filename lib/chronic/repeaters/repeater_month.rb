@@ -6,12 +6,12 @@ class Chronic::RepeaterMonth < Chronic::Repeater #:nodoc:
     super
     
     if !@current_month_start
-      @current_month_start = offset_by(Time.local(@now.year, @now.month), 1, pointer)
+      @current_month_start = offset_by(Time.construct(@now.year, @now.month), 1, pointer)
     else
-      @current_month_start = offset_by(Time.local(@current_month_start.year, @current_month_start.month), 1, pointer)
+      @current_month_start = offset_by(Time.construct(@current_month_start.year, @current_month_start.month), 1, pointer)
     end
     
-    Chronic::Span.new(@current_month_start, Time.local(@current_month_start.year, @current_month_start.month + 1))
+    Chronic::Span.new(@current_month_start, Time.construct(@current_month_start.year, @current_month_start.month + 1))
   end
   
   def this(pointer = :future)
@@ -19,14 +19,14 @@ class Chronic::RepeaterMonth < Chronic::Repeater #:nodoc:
     
     case pointer
     when :future
-      month_start = Time.local(@now.year, @now.month, @now.day + 1)
-      month_end = self.offset_by(Time.local(@now.year, @now.month), 1, :future)
+      month_start = Time.construct(@now.year, @now.month, @now.day + 1)
+      month_end = self.offset_by(Time.construct(@now.year, @now.month), 1, :future)
     when :past
-      month_start = Time.local(@now.year, @now.month)
-      month_end = Time.local(@now.year, @now.month, @now.day)
+      month_start = Time.construct(@now.year, @now.month)
+      month_end = Time.construct(@now.year, @now.month, @now.day)
     when :none
-      month_start = Time.local(@now.year, @now.month)
-      month_end = self.offset_by(Time.local(@now.year, @now.month), 1, :future)
+      month_start = Time.construct(@now.year, @now.month)
+      month_end = self.offset_by(Time.construct(@now.year, @now.month), 1, :future)
     end
     
     Chronic::Span.new(month_start, month_end)
@@ -48,7 +48,7 @@ class Chronic::RepeaterMonth < Chronic::Repeater #:nodoc:
       new_year += 1
       new_month -= YEAR_MONTHS
     end
-    Time.local(new_year, new_month, time.day, time.hour, time.min, time.sec)
+    Time.construct(new_year, new_month, time.day, time.hour, time.min, time.sec)
   end
   
   def width

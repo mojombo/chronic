@@ -214,17 +214,19 @@ module Chronic
     def handle_s_r_p(tokens, options) #:nodoc:
       repeater = tokens[1].get_tag(Repeater)
             
-      span = 
-      case true
-      when [RepeaterYear, RepeaterSeason, RepeaterSeasonName, RepeaterMonth, RepeaterMonthName, RepeaterFortnight, RepeaterWeek].include?(repeater.class)
-        self.parse("this hour", :guess => false, :now => @now)
-      when [RepeaterWeekend, RepeaterDay, RepeaterDayName, RepeaterDayPortion, RepeaterHour].include?(repeater.class)
-        self.parse("this minute", :guess => false, :now => @now)
-      when [RepeaterMinute, RepeaterSecond].include?(repeater.class)
-        self.parse("this second", :guess => false, :now => @now)
-      else
-        raise(ChronicPain, "Invalid repeater: #{repeater.class}")
-      end
+      # span = 
+      # case true
+      # when [RepeaterYear, RepeaterSeason, RepeaterSeasonName, RepeaterMonth, RepeaterMonthName, RepeaterFortnight, RepeaterWeek].include?(repeater.class)
+      #   self.parse("this hour", :guess => false, :now => @now)
+      # when [RepeaterWeekend, RepeaterDay, RepeaterDayName, RepeaterDayPortion, RepeaterHour].include?(repeater.class)
+      #   self.parse("this minute", :guess => false, :now => @now)
+      # when [RepeaterMinute, RepeaterSecond].include?(repeater.class)
+      #   self.parse("this second", :guess => false, :now => @now)
+      # else
+      #   raise(ChronicPain, "Invalid repeater: #{repeater.class}")
+      # end
+      
+      span = self.parse("this second", :guess => false, :now => @now)
       
       self.handle_srp(tokens, span, options)
     end

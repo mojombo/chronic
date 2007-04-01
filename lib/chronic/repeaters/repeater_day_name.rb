@@ -7,7 +7,7 @@ class Chronic::RepeaterDayName < Chronic::Repeater #:nodoc:
     direction = pointer == :future ? 1 : -1
     
     if !@current_day_start
-      @current_day_start = Time.local(@now.year, @now.month, @now.day)
+      @current_day_start = Time.construct(@now.year, @now.month, @now.day)
       @current_day_start += direction * DAY_SECONDS
 
       day_num = symbol_to_number(@type)

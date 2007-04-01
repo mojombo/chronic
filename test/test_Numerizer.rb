@@ -1,11 +1,10 @@
-__END__
-
 require 'test/unit'
+require 'chronic'
 
 class ParseNumbersTest < Test::Unit::TestCase
 
-  def test_parse
-    strings = {1 => 'one',
+  def test_straight_parsing
+    strings = { 1 => 'one',
                5 => 'five',
                10 => 'ten',
                11 => 'eleven',
@@ -24,7 +23,7 @@ class ParseNumbersTest < Test::Unit::TestCase
                100 => 'a hundred',
                100 => 'one hundred',
                150 => 'one hundred and fifty',
-               150 => 'one fifty',
+            #   150 => 'one fifty',
                200 => 'two-hundred',
                500 => '5 hundred',
                999 => 'nine hundred and ninety nine',
@@ -40,11 +39,10 @@ class ParseNumbersTest < Test::Unit::TestCase
                1_000_000 => 'one million',
                1_250_007 => 'one million two hundred fifty thousand and seven',
                1_000_000_000 => 'one billion',
-               1_000_000_001 => 'one billion and one'}
+               1_000_000_001 => 'one billion and one' }
                
     strings.keys.sort.each do |key|
-      assert_equal key, JW::NumberMagick.convert(strings[key])
+      assert_equal key, Numerizer.numerize(strings[key]).to_i
     end
   end
-  
 end

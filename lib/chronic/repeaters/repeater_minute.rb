@@ -15,13 +15,13 @@ class Chronic::RepeaterMinute < Chronic::Repeater #:nodoc:
     case pointer
     when :future
       minute_begin = @now
-      minute_end = Time.local(@now.year, @now.month, @now.day, @now.hour, @now.min)
+      minute_end = Time.construct(@now.year, @now.month, @now.day, @now.hour, @now.min)
     when :past
-      minute_begin = Time.local(@now.year, @now.month, @now.day, @now.hour, @now.min)
+      minute_begin = Time.construct(@now.year, @now.month, @now.day, @now.hour, @now.min)
       minute_end = @now
     when :none
-      minute_begin = Time.local(@now.year, @now.month, @now.day, @now.hour, @now.min)
-      minute_end = Time.local(@now.year, @now.month, @now.day, @now.hour, @now.min) + MINUTE_SECONDS
+      minute_begin = Time.construct(@now.year, @now.month, @now.day, @now.hour, @now.min)
+      minute_end = Time.construct(@now.year, @now.month, @now.day, @now.hour, @now.min) + MINUTE_SECONDS
     end
     
     Chronic::Span.new(minute_begin, minute_end)

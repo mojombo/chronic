@@ -101,6 +101,7 @@ module Chronic
     # ordinals (third => 3rd)
     def pre_normalize(text) #:nodoc:
       normalized_text = text.to_s.downcase
+      normalized_text = numericize_numbers(normalized_text)
       normalized_text.gsub!(/['"\.]/, '')
       normalized_text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
       normalized_text.gsub!(/\btoday\b/, 'this day')
@@ -118,15 +119,12 @@ module Chronic
       normalized_text.gsub!(/\btonight\b/, 'this night')
       normalized_text.gsub!(/(?=\w)([ap]m|oclock)\b/, ' \1')
       normalized_text.gsub!(/\b(hence|after|from)\b/, 'future')
-      normalized_text.gsub!(/\ba\b/, '1')
-      normalized_text.gsub!(/\s+/, ' ')
-      normalized_text = numericize_numbers(normalized_text)
       normalized_text = numericize_ordinals(normalized_text)
     end
   
     # Convert number words to numbers (three => 3)
     def numericize_numbers(text) #:nodoc:
-      text
+      Numerizer.numerize(text)
     end
   
     # Convert ordinal words to numeric ordinals (third => 3rd)

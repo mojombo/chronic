@@ -1,3 +1,8 @@
+= 0.2.0 2007-03-20
+
+* fixed time overflow issue
+* implemented numerizer, allowing the use of number words (e.g. five weeks ago) (thanks shalev!)
+
 = 0.1.6 2006-01-15
 
 * added 'weekend' support (eventualbuddha)

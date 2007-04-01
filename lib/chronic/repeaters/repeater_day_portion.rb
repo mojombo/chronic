@@ -28,27 +28,27 @@ class Chronic::RepeaterDayPortion < Chronic::Repeater #:nodoc:
     full_day = 60 * 60 * 24
     
     if !@current_span
-      now_seconds = @now - Time.local(@now.year, @now.month, @now.day)
+      now_seconds = @now - Time.construct(@now.year, @now.month, @now.day)
       if now_seconds < @range.begin
         case pointer
         when :future
-          range_start = Time.local(@now.year, @now.month, @now.day) + @range.begin
+          range_start = Time.construct(@now.year, @now.month, @now.day) + @range.begin
         when :past
-          range_start = Time.local(@now.year, @now.month, @now.day) - full_day + @range.begin
+          range_start = Time.construct(@now.year, @now.month, @now.day) - full_day + @range.begin
         end
       elsif now_seconds > @range.end
         case pointer
         when :future
-          range_start = Time.local(@now.year, @now.month, @now.day) + full_day + @range.begin
+          range_start = Time.construct(@now.year, @now.month, @now.day) + full_day + @range.begin
         when :past
-          range_start = Time.local(@now.year, @now.month, @now.day) + @range.begin
+          range_start = Time.construct(@now.year, @now.month, @now.day) + @range.begin
         end
       else
         case pointer
         when :future
-          range_start = Time.local(@now.year, @now.month, @now.day) + full_day + @range.begin
+          range_start = Time.construct(@now.year, @now.month, @now.day) + full_day + @range.begin
         when :past
-          range_start = Time.local(@now.year, @now.month, @now.day) - full_day + @range.begin
+          range_start = Time.construct(@now.year, @now.month, @now.day) - full_day + @range.begin
         end
       end
       
@@ -66,7 +66,7 @@ class Chronic::RepeaterDayPortion < Chronic::Repeater #:nodoc:
   def this(context = :future)
     super
     
-    range_start = Time.local(@now.year, @now.month, @now.day) + @range.begin
+    range_start = Time.construct(@now.year, @now.month, @now.day) + @range.begin
     @current_span = Chronic::Span.new(range_start, range_start + (@range.end - @range.begin))
   end
   
