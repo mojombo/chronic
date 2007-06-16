@@ -1,4 +1,5 @@
 require 'chronic'
+require 'time'
 require 'test/unit'
 
 class TestParsing < Test::Unit::TestCase
@@ -207,6 +208,18 @@ class TestParsing < Test::Unit::TestCase
     
     time = parse_now("4 am", :ambiguous_time_range => :none)
     assert_equal Time.local(2006, 8, 16, 4), time
+    
+    time = parse_now("12 pm")
+    assert_equal Time.local(2006, 8, 16, 12), time
+    
+    time = parse_now("12:01 pm")
+    assert_equal Time.local(2006, 8, 16, 12, 1), time
+    
+    time = parse_now("12:01 am")
+    assert_equal Time.local(2006, 8, 16, 0, 1), time
+    
+    time = parse_now("12 am")
+    assert_equal Time.local(2006, 8, 16), time
     
     time = parse_now("4:00 in the morning")
     assert_equal Time.local(2006, 8, 16, 4), time

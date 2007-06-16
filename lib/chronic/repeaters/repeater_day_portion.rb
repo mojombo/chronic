@@ -10,8 +10,8 @@ class Chronic::RepeaterDayPortion < Chronic::Repeater #:nodoc:
     if type.kind_of? Integer
       @range = (@type * 60 * 60)..((@type + 12) * 60 * 60)
     else
-      lookup = {:am => 1..(12 * 60 * 60),
-                :pm => (12 * 60 * 60)..(24 * 60 * 60),
+      lookup = {:am => 0..(12 * 60 * 60 - 1),
+                :pm => (12 * 60 * 60)..(24 * 60 * 60 - 1),
                 :morning => @@morning,
                 :afternoon => @@afternoon,
                 :evening => @@evening,
