@@ -34,7 +34,7 @@ class Chronic::RepeaterDayName < Chronic::Repeater #:nodoc:
   end
   
   def to_s
-    super << '-dayofweek-' << @type.to_s
+    super << '-dayname-' << @type.to_s
   end
   
   private

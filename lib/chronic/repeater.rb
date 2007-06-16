@@ -33,6 +33,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
   def self.scan_for_day_names(token)
     scanner = {/^m[ou]n(day)?$/ => :monday,
                /^t(ue|eu|oo|u|)s(day)?$/ => :tuesday,
+               /^tue$/ => :tuesday,
                /^we(dnes|nds|nns)day$/ => :wednesday,
                /^wed$/ => :wednesday,
                /^th(urs|ers)day$/ => :thursday,

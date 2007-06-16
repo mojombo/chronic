@@ -4,9 +4,19 @@ class Chronic::RepeaterMinute < Chronic::Repeater #:nodoc:
   def next(pointer = :future)
     super
     
-    direction = pointer == :future ? 1 : -1
+    if !@current_minute_start
+      case pointer
+      when :future
+        @current_minute_start = Time.construct(@now.year, @now.month, @now.day, @now.hour, @now.min + 1)
+      when :past
+        @current_minute_start = Time.construct(@now.year, @now.month, @now.day, @now.hour, @now.min - 1)
+      end
+    else
+      direction = pointer == :future ? 1 : -1
+      @current_minute_start += direction * MINUTE_SECONDS
+    end
     
-    raise 'not implemented'
+    Chronic::Span.new(@current_minute_start, @current_minute_start + MINUTE_SECONDS)
   end
   
   def this(pointer = :future)

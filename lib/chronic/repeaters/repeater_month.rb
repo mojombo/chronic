@@ -54,4 +54,8 @@ class Chronic::RepeaterMonth < Chronic::Repeater #:nodoc:
   def width
     MONTH_SECONDS
   end
+  
+  def to_s
+    super << '-month'
+  end
 end

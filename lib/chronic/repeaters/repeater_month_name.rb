@@ -70,7 +70,7 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
   end
   
   def to_s
-    super << '-month-' << @type.to_s
+    super << '-monthname-' << @type.to_s
   end
   
   private

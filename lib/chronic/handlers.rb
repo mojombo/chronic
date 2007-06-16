@@ -6,7 +6,8 @@ module Chronic
 	    @definitions ||= 
       {:time => [Handler.new([:repeater_time, :repeater_day_portion?], nil)],
         
-       :date => [Handler.new([:repeater_month_name, :scalar_day, :scalar_year], :handle_rmn_sd_sy),
+       :date => [Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :repeater_time, :time_zone, :scalar_year], :handle_rdn_rmn_sd_t_tz_sy),
+                 Handler.new([:repeater_month_name, :scalar_day, :scalar_year], :handle_rmn_sd_sy),
                  Handler.new([:repeater_month_name, :scalar_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_sd_sy),
                  Handler.new([:repeater_month_name, :scalar_day, :separator_at?, 'time?'], :handle_rmn_sd),
                  Handler.new([:repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rmn_od),
@@ -17,13 +18,17 @@ module Chronic
                  Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
                  Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_year], :handle_sm_sy)],
                  
+       # tonight at 7pm
        :anchor => [Handler.new([:grabber?, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
+                   Handler.new([:grabber?, :repeater, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
                    Handler.new([:repeater, :grabber, :repeater], :handle_r_g_r)],
                    
+       # 3 weeks from now, in 2 months
        :arrow => [Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
                   Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),
                   Handler.new([:scalar, :repeater, :pointer, 'anchor'], :handle_s_r_p_a)],
                   
+       # 3rd week in march
        :narrow => [Handler.new([:ordinal, :repeater, :separator_in, :repeater], :handle_o_r_s_r),
                    Handler.new([:ordinal, :repeater, :grabber, :repeater], :handle_o_r_g_r)]
       }
@@ -34,6 +39,7 @@ module Chronic
       
       self.definitions[:date].each do |handler|
         if handler.match(tokens, self.definitions)
+          puts "-date" if Chronic.debug
           good_tokens = tokens.select { |o| !o.get_tag Separator }
           return self.send(handler.handler_method, good_tokens, options)
         end
@@ -43,6 +49,7 @@ module Chronic
             
       self.definitions[:anchor].each do |handler|
         if handler.match(tokens, self.definitions)
+          puts "-anchor" if Chronic.debug
           good_tokens = tokens.select { |o| !o.get_tag Separator }
           return self.send(handler.handler_method, good_tokens, options)
         end
@@ -52,21 +59,24 @@ module Chronic
       
       self.definitions[:arrow].each do |handler|
         if handler.match(tokens, self.definitions)
+          puts "-arrow" if Chronic.debug
           good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) }
           return self.send(handler.handler_method, good_tokens, options)
         end
       end
       
-      # not an arrow, let's hope it's an narrow
+      # not an arrow, let's hope it's a narrow
       
       self.definitions[:narrow].each do |handler|
         if handler.match(tokens, self.definitions)
+          puts "-narrow" if Chronic.debug
           #good_tokens = tokens.select { |o| !o.get_tag Separator }
           return self.send(handler.handler_method, tokens, options)
         end
       end
       
       # I guess you're out of luck!
+      puts "-none" if Chronic.debug
       return nil
     end
     
@@ -117,6 +127,19 @@ module Chronic
       
       begin
         Span.new(Time.local(year, month), Time.local(next_month_year, next_month_month))
+      rescue ArgumentError
+        nil
+      end
+    end
+    
+    def handle_rdn_rmn_sd_t_tz_sy(tokens, options) #:nodoc:
+      month = tokens[1].get_tag(RepeaterMonthName).index
+      day = tokens[2].get_tag(ScalarDay).type
+      year = tokens[5].get_tag(ScalarYear).type
+      
+      begin
+        day_start = Time.local(year, month, day)
+        day_or_time(day_start, [tokens[3]], options)
       rescue ArgumentError
         nil
       end
@@ -333,22 +356,54 @@ module Chronic
     
     def dealias_and_disambiguate_times(tokens, options) #:nodoc:
       # handle aliases of am/pm
-      # 5:00 in the morning => 5:00 am
-      # 7:00 in the evening => 7:00 pm
-      #ttokens = []
-      tokens.each_with_index do |t0, i|
-        t1 = tokens[i + 1]
-        if t1 && (t1tag = t1.get_tag(RepeaterDayPortion)) && t0.get_tag(RepeaterTime)
-          if [:morning].include?(t1tag.type)
-            t1.untag(RepeaterDayPortion)
-            t1.tag(RepeaterDayPortion.new(:am))
-          elsif [:afternoon, :evening, :night].include?(t1tag.type)
-            t1.untag(RepeaterDayPortion)
-            t1.tag(RepeaterDayPortion.new(:pm))
-          end
+      # 5:00 in the morning -> 5:00 am
+      # 7:00 in the evening -> 7:00 pm
+      
+      day_portion_index = nil
+      tokens.each_with_index do |t, i|
+        if t.get_tag(RepeaterDayPortion)
+          day_portion_index = i
+          break
         end
       end
-      #tokens = ttokens
+       
+      time_index = nil
+      tokens.each_with_index do |t, i|
+        if t.get_tag(RepeaterTime)
+          time_index = i
+          break
+        end
+      end
+      
+      if (day_portion_index && time_index)
+        t1 = tokens[day_portion_index]
+        t1tag = t1.get_tag(RepeaterDayPortion)
+      
+        if [:morning].include?(t1tag.type)
+          puts '--morning->am' if Chronic.debug
+          t1.untag(RepeaterDayPortion)
+          t1.tag(RepeaterDayPortion.new(:am))
+        elsif [:afternoon, :evening, :night].include?(t1tag.type)
+          puts "--#{t1tag.type}->pm" if Chronic.debug
+          t1.untag(RepeaterDayPortion)
+          t1.tag(RepeaterDayPortion.new(:pm))
+        end
+      end
+      
+      # tokens.each_with_index do |t0, i|
+      #   t1 = tokens[i + 1]
+      #   if t1 && (t1tag = t1.get_tag(RepeaterDayPortion)) && t0.get_tag(RepeaterTime)
+      #     if [:morning].include?(t1tag.type)
+      #       puts '--morning->am' if Chronic.debug
+      #       t1.untag(RepeaterDayPortion)
+      #       t1.tag(RepeaterDayPortion.new(:am))
+      #     elsif [:afternoon, :evening, :night].include?(t1tag.type)
+      #       puts "--#{t1tag.type}->pm" if Chronic.debug
+      #       t1.untag(RepeaterDayPortion)
+      #       t1.tag(RepeaterDayPortion.new(:pm))
+      #     end
+      #   end
+      # end
             
       # handle ambiguous times if :ambiguous_time_range is specified
       if options[:ambiguous_time_range] != :none
