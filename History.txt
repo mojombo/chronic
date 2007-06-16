@@ -1,6 +1,10 @@
+= HEAD
+
+* fixed 12am/12pm (by Nicholas Schlueter)
+
 = 0.2.2
 
-* added missing files (damn you manifest
+* added missing files (damn you manifest)
 
 = 0.2.1
 
