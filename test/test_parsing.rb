@@ -1,5 +1,4 @@
 require 'chronic'
-require 'time'
 require 'test/unit'
 
 class TestParsing < Test::Unit::TestCase
@@ -70,6 +69,9 @@ class TestParsing < Test::Unit::TestCase
     #time = parse_now("January 12, '00")
     #assert_equal Time.local(2000, 1, 12, 12), time
     
+    time = parse_now("may 27, 1979")
+    assert_equal Time.local(1979, 5, 27, 12), time
+    
     time = parse_now("may 27 79")
     assert_equal Time.local(1979, 5, 27, 12), time
     
@@ -86,6 +88,9 @@ class TestParsing < Test::Unit::TestCase
     
     time = parse_now("3 jan 2010 4pm")
     assert_equal Time.local(2010, 1, 3, 16), time
+    
+    time = parse_now("27 Oct 2006 7:30pm")
+    assert_equal Time.local(2006, 10, 27, 19, 30), time
     
     # sm_sd_sy
     
@@ -140,7 +145,7 @@ class TestParsing < Test::Unit::TestCase
     # rdn_rm_rd_rt_rtz_ry
     
     time = parse_now("Mon Apr 02 17:00:00 PDT 2007")
-    assert_equal Time.local(2007, 4, 2, 17), time
+    assert_equal 1175558400, time.to_i
     
     now = Time.now
     time = parse_now(now.to_s)
@@ -163,10 +168,6 @@ class TestParsing < Test::Unit::TestCase
     assert_equal nil, time
   end
   
-  def test_foo
-    Chronic.parse('two months ago this friday')
-  end
-
   def test_parse_guess_r
     time = parse_now("friday")
     assert_equal Time.local(2006, 8, 18, 12), time
@@ -424,6 +425,12 @@ class TestParsing < Test::Unit::TestCase
     
     time = parse_now("tomorrow morning at 5:30")
     assert_equal Time.local(2006, 8, 17, 5, 30), time
+    
+    time = parse_now("next monday at 12:01 am")
+    assert_equal Time.local(2006, 8, 21, 00, 1), time
+    
+    time = parse_now("next monday at 12:01 pm")
+    assert_equal Time.local(2006, 8, 21, 12, 1), time
   end
   
   def test_parse_guess_rgr
@@ -563,6 +570,9 @@ class TestParsing < Test::Unit::TestCase
   def test_parse_guess_nonsense
     time = parse_now("some stupid nonsense")
     assert_equal nil, time
+    
+    time = parse_now("Ham Sandwich")
+    assert_equal nil, time
   end
   
   def test_parse_span
@@ -591,6 +601,11 @@ class TestParsing < Test::Unit::TestCase
     assert_equal parse_now("meeting today at 2pm"), @time_2006_08_16_14_00_00
   end
   
+  def test_am_pm
+    assert_equal Time.local(2006, 8, 16), parse_now("8/16/2006 at 12am")
+    assert_equal Time.local(2006, 8, 16, 12), parse_now("8/16/2006 at 12pm")
+  end
+  
   def test_argument_validation
     assert_raise(Chronic::InvalidArgumentException) do
       time = Chronic.parse("may 27", :foo => :bar)
@@ -599,6 +614,31 @@ class TestParsing < Test::Unit::TestCase
     assert_raise(Chronic::InvalidArgumentException) do
       time = Chronic.parse("may 27", :context => :bar)
     end
+  end
+  
+  # regression
+  
+  # def test_partial
+  #   assert_equal '', parse_now("2 hours")
+  # end
+  
+  def test_days_in_november
+    t1 = Chronic.parse('1st thursday in november', :now => Time.local(2007))
+    assert_equal Time.local(2007, 11, 1, 12), t1
+    
+    t1 = Chronic.parse('1st friday in november', :now => Time.local(2007))
+    assert_equal Time.local(2007, 11, 2, 12), t1
+    
+    t1 = Chronic.parse('1st saturday in november', :now => Time.local(2007))
+    assert_equal Time.local(2007, 11, 3, 12), t1
+    
+    t1 = Chronic.parse('1st sunday in november', :now => Time.local(2007))
+    assert_equal Time.local(2007, 11, 4, 11), t1
+    
+    # Chronic.debug = true
+    # 
+    # t1 = Chronic.parse('1st monday in november', :now => Time.local(2007))
+    # assert_equal Time.local(2007, 11, 5, 11), t1
   end
   
   private

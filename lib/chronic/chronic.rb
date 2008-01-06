@@ -19,7 +19,7 @@ module Chronic
     #     Time (defaults to Time.now)
     #
     #     By setting <tt>:now</tt> to a Time, all computations will be based off
-    #     of that time instead of Time.now
+    #     of that time instead of Time.now. If set to nil, Chronic will use Time.now.
     #
     # [<tt>:guess</tt>]
     #     +true+ or +false+ (defaults to +true+)
@@ -39,12 +39,19 @@ module Chronic
     #     will be made, and the first matching instance of that time will 
     #     be used.
     def parse(text, specified_options = {})
+      @text = text
+      
       # get options and set defaults if necessary
       default_options = {:context => :future,
                          :now => Time.now,
                          :guess => true,
                          :ambiguous_time_range => 6}
       options = default_options.merge specified_options
+      
+      # handle options that were set to nil
+      options[:context] = :future unless options[:context]
+      options[:now] = Time.now unless options[:context]
+      options[:ambiguous_time_range] = 6 unless options[:ambiguous_time_range]
             
       # ensure the specified options are valid
       specified_options.keys.each do |key|
@@ -102,7 +109,8 @@ module Chronic
     def pre_normalize(text) #:nodoc:
       normalized_text = text.to_s.downcase
       normalized_text = numericize_numbers(normalized_text)
-      normalized_text.gsub!(/['"\.]/, '')
+      normalized_text.gsub!(/['"\.,]/, '')
+      normalized_text.gsub!(/ \-(\d{4})\b/, ' tzminus\1')
       normalized_text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
       normalized_text.gsub!(/\btoday\b/, 'this day')
       normalized_text.gsub!(/\btomm?orr?ow\b/, 'next day')
@@ -117,7 +125,7 @@ module Chronic
       normalized_text.gsub!(/\b(?:in|during) the (morning)\b/, '\1')
       normalized_text.gsub!(/\b(?:in the|during the|at) (afternoon|evening|night)\b/, '\1')
       normalized_text.gsub!(/\btonight\b/, 'this night')
-      normalized_text.gsub!(/(?=\w)([ap]m|oclock)\b/, ' \1')
+      normalized_text.gsub!(/(\d)([ap]m|oclock)\b/, '\1 \2')
       normalized_text.gsub!(/\b(hence|after|from)\b/, 'future')
       normalized_text = numericize_ordinals(normalized_text)
     end

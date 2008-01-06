@@ -6,7 +6,7 @@ module Chronic
 	    @definitions ||= 
       {:time => [Handler.new([:repeater_time, :repeater_day_portion?], nil)],
         
-       :date => [Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :repeater_time, :time_zone, :scalar_year], :handle_rdn_rmn_sd_t_tz_sy),
+       :date => [Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :repeater_time, :separator_slash_or_dash?, :time_zone, :scalar_year], :handle_rdn_rmn_sd_t_tz_sy),
                  Handler.new([:repeater_month_name, :scalar_day, :scalar_year], :handle_rmn_sd_sy),
                  Handler.new([:repeater_month_name, :scalar_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_sd_sy),
                  Handler.new([:repeater_month_name, :scalar_day, :separator_at?, 'time?'], :handle_rmn_sd),
@@ -34,7 +34,7 @@ module Chronic
       }
     end
     
-    def tokens_to_span(tokens, options) #:nodoc:                   
+    def tokens_to_span(tokens, options) #:nodoc:
       # maybe it's a specific date
       
       self.definitions[:date].each do |handler|
@@ -133,16 +133,8 @@ module Chronic
     end
     
     def handle_rdn_rmn_sd_t_tz_sy(tokens, options) #:nodoc:
-      month = tokens[1].get_tag(RepeaterMonthName).index
-      day = tokens[2].get_tag(ScalarDay).type
-      year = tokens[5].get_tag(ScalarYear).type
-      
-      begin
-        day_start = Time.local(year, month, day)
-        day_or_time(day_start, [tokens[3]], options)
-      rescue ArgumentError
-        nil
-      end
+      t = Time.parse(@text)
+      Span.new(t, t + 1)
     end
     
     def handle_rmn_sd_sy(tokens, options) #:nodoc:

@@ -1,4 +1,11 @@
-= HEAD
+= 0.2.4
+
+* fixed numerizer number combination bug (27 Oct 2006 7:30pm works now) (reported by reynard h)
+* allow numeric timezone offset (e.g -0500)
+* disregard commas (so as to not return nil)
+* fix parse of (am|pm|oclock) separation to handle "Ham sandwich" properly
+
+= 0.2.3
 
 * fixed 12am/12pm (by Nicholas Schlueter)
 

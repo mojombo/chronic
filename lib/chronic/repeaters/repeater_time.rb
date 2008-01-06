@@ -26,24 +26,26 @@ class Chronic::RepeaterTime < Chronic::Repeater #:nodoc:
   
   def initialize(time, options = {})
     t = time.gsub(/\:/, '')
+    
     @type = 
-    if (1..2) === t.size
-      hours = t.to_i
-      hours == 12 ? Tick.new(0 * 60 * 60, true) : Tick.new(hours * 60 * 60, true)
-    elsif t.size == 3
-      Tick.new((t[0..0].to_i * 60 * 60) + (t[1..2].to_i * 60), true)
-    elsif t.size == 4
-      ambiguous = time =~ /:/ && t[0..0].to_i != 0 && t[0..1].to_i <= 12
-      hours = t[0..1].to_i
-      hours == 12 ? Tick.new(0 * 60 * 60 + t[2..3].to_i * 60, ambiguous) : Tick.new(hours * 60 * 60 + t[2..3].to_i * 60, ambiguous)
-    elsif t.size == 5
-      Tick.new(t[0..0].to_i * 60 * 60 + t[1..2].to_i * 60 + t[3..4].to_i, true)
-    elsif t.size == 6
-      ambiguous = time =~ /:/ && t[0..0].to_i != 0 && t[0..1].to_i <= 12
-      hours = t[0..1].to_i
-      hours == 12 ? Tick.new(0 * 60 * 60 + t[2..3].to_i * 60 + t[4..5].to_i, ambiguous) : Tick.new(hours * 60 * 60 + t[2..3].to_i * 60 + t[4..5].to_i, ambiguous)
-    else
-      raise("Time cannot exceed six digits")
+    case t.size
+      when 1..2
+        hours = t.to_i
+        hours == 12 ? Tick.new(0 * 60 * 60, true) : Tick.new(hours * 60 * 60, true)
+      when 3
+        Tick.new((t[0..0].to_i * 60 * 60) + (t[1..2].to_i * 60), true)
+      when 4
+        ambiguous = time =~ /:/ && t[0..0].to_i != 0 && t[0..1].to_i <= 12
+        hours = t[0..1].to_i
+        hours == 12 ? Tick.new(0 * 60 * 60 + t[2..3].to_i * 60, ambiguous) : Tick.new(hours * 60 * 60 + t[2..3].to_i * 60, ambiguous)
+      when 5
+        Tick.new(t[0..0].to_i * 60 * 60 + t[1..2].to_i * 60 + t[3..4].to_i, true)
+      when 6
+        ambiguous = time =~ /:/ && t[0..0].to_i != 0 && t[0..1].to_i <= 12
+        hours = t[0..1].to_i
+        hours == 12 ? Tick.new(0 * 60 * 60 + t[2..3].to_i * 60 + t[4..5].to_i, ambiguous) : Tick.new(hours * 60 * 60 + t[2..3].to_i * 60 + t[4..5].to_i, ambiguous)
+      else
+        raise("Time cannot exceed six digits")
     end
   end
   

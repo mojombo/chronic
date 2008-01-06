@@ -9,6 +9,8 @@
 
 $:.unshift File.dirname(__FILE__)     # For use/testing when no gem is installed
 
+require 'time'
+
 require 'chronic/chronic'
 require 'chronic/handlers'
 
@@ -39,9 +41,13 @@ require 'chronic/time_zone'
 require 'numerizer/numerizer'
 
 module Chronic
-  VERSION = "0.2.2"
+  VERSION = "0.2.3"
   
-  def self.debug; false; end
+  class << self
+    attr_accessor :debug
+  end
+  
+  self.debug = false
 end
 
 alias p_orig p
