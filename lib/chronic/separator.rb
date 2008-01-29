@@ -7,6 +7,7 @@ module Chronic
         if t = self.scan_for_slash_or_dash(tokens[i]) then tokens[i].tag(t); next end
         if t = self.scan_for_at(tokens[i]) then tokens[i].tag(t); next end
         if t = self.scan_for_in(tokens[i]) then tokens[i].tag(t); next end
+        if t = self.scan_for_on(tokens[i]) then tokens[i].tag(t); next end
       end
       tokens
     end
@@ -44,6 +45,14 @@ module Chronic
       return nil
     end
     
+    def self.scan_for_on(token)
+      scanner = {/^on$/ => :on}
+      scanner.keys.each do |scanner_item|
+        return SeparatorOn.new(scanner[scanner_item]) if scanner_item =~ token.word
+      end
+      return nil
+    end
+    
     def to_s
       'separator'
     end
@@ -70,6 +79,12 @@ module Chronic
   class SeparatorIn < Separator #:nodoc:
     def to_s
       super << '-in'
+    end
+  end
+  
+  class SeparatorOn < Separator #:nodoc:
+    def to_s
+      super << '-on'
     end
   end
 
