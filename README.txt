@@ -11,6 +11,12 @@ Chronic is a natural language date/time parser written in pure Ruby. See below f
 Chronic can be installed via RubyGems:
 
   $ sudo gem install chronic
+  
+== CODE:
+
+You can grab the code (and help with development) via git:
+
+  $ git clone git://github.com/mojombo/chronic.git
 
 == USAGE:
 
