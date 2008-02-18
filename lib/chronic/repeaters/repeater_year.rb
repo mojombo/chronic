@@ -1,4 +1,5 @@
 class Chronic::RepeaterYear < Chronic::Repeater #:nodoc:
+  YEAR_SECONDS =  31536000  # 365 * 24 * 60 * 60
   
   def next(pointer)
     super

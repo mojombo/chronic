@@ -2,6 +2,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
   def self.scan(tokens, options)
     # for each token
     tokens.each_index do |i|
+      if t = self.scan_for_season_names(tokens[i]) then tokens[i].tag(t); next end
       if t = self.scan_for_month_names(tokens[i]) then tokens[i].tag(t); next end
       if t = self.scan_for_day_names(tokens[i]) then tokens[i].tag(t); next end
       if t = self.scan_for_day_portions(tokens[i]) then tokens[i].tag(t); next end
@@ -9,6 +10,18 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
       if t = self.scan_for_units(tokens[i]) then tokens[i].tag(t); next end
     end
     tokens
+  end
+  
+  def self.scan_for_season_names(token)
+    scanner = {/^springs?$/ => :spring,
+               /^summers?$/ => :summer,
+               /^(autumn)|(fall)s?$/ => :autumn,
+               /^winters?$/ => :winter}
+    scanner.keys.each do |scanner_item|
+      return Chronic::RepeaterSeasonName.new(scanner[scanner_item]) if scanner_item =~ token.word
+    end
+    
+    return nil
   end
   
   def self.scan_for_month_names(token)
@@ -74,6 +87,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
                /^fortnights?$/ => :fortnight,
                /^weeks?$/ => :week,
                /^weekends?$/ => :weekend,
+               /^(week|business)days?$/ => :weekday,
                /^days?$/ => :day,
                /^hours?$/ => :hour,
                /^minutes?$/ => :minute,
