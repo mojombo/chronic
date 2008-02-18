@@ -14,6 +14,10 @@ Chronic can be installed via RubyGems:
   
 == CODE:
 
+Browse the code and get an RSS feed of the commit log at:
+
+  http://github.com/mojombo/chronic.git
+
 You can grab the code (and help with development) via git:
 
   $ git clone git://github.com/mojombo/chronic.git
@@ -133,7 +137,7 @@ Time zones other than the local one are not currently supported. Support for oth
 
 (The MIT License)
 
-Copyright (c) 2006 Ryan Davis, Zen Spider Software
+Copyright (c) 2008 Tom Preston-Werner
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
