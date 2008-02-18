@@ -5,6 +5,8 @@
 * disregard commas (so as to not return nil)
 * fix parse of (am|pm|oclock) separation to handle "Ham sandwich" properly
 * handle 'on' e.g. 5pm on Monday (by indirect)
+* support seasons (by Edwin Chen)
+* support weekend/weekday (by Edwin Chen)
 
 = 0.2.3
 
