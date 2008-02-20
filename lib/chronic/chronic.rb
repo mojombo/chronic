@@ -45,7 +45,8 @@ module Chronic
       default_options = {:context => :future,
                          :now => Time.now,
                          :guess => true,
-                         :ambiguous_time_range => 6}
+                         :ambiguous_time_range => 6,
+                         :endian_precedence => nil}
       options = default_options.merge specified_options
       
       # handle options that were set to nil

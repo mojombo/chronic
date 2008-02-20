@@ -611,6 +611,20 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 8, 21), span.end
   end
   
+  def test_parse_with_endian_precedence
+    date = '11/02/2007'
+
+    expect_for_middle_endian = Time.local(2007, 11, 2, 12)
+    expect_for_little_endian = Time.local(2007, 2, 11, 12)
+
+    # default precedence should be toward middle endianness
+    assert_equal expect_for_middle_endian, Chronic.parse(date)
+
+    assert_equal expect_for_middle_endian, Chronic.parse(date, :endian_precedence => [:middle, :little])
+
+    assert_equal expect_for_little_endian, Chronic.parse(date, :endian_precedence => [:little, :middle])
+  end
+
   def test_parse_words
     assert_equal parse_now("33 days from now"), parse_now("thirty-three days from now")
     assert_equal parse_now("2867532 seconds from now"), parse_now("two million eight hundred and sixty seven thousand five hundred and thirty two seconds from now")
