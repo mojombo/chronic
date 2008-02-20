@@ -7,6 +7,7 @@
 * handle 'on' e.g. 5pm on Monday (by indirect)
 * support seasons (by Edwin Chen)
 * support weekend/weekday (by Edwin Chen)
+* add endianness option (by Mark Johnson/Thomas Lee)
 
 = 0.2.3
 
