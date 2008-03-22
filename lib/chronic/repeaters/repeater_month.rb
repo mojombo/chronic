@@ -1,7 +1,12 @@
 class Chronic::RepeaterMonth < Chronic::Repeater #:nodoc:
   MONTH_SECONDS = 2_592_000 # 30 * 24 * 60 * 60
   YEAR_MONTHS = 12
-  
+
+  def initialize(type)
+    super
+    @current_month_start = nil
+  end
+
   def next(pointer)
     super
     

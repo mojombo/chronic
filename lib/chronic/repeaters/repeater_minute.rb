@@ -1,6 +1,11 @@
 class Chronic::RepeaterMinute < Chronic::Repeater #:nodoc:
   MINUTE_SECONDS = 60
-  
+
+  def initialize(type)
+    super
+    @current_minute_start = nil
+  end
+
   def next(pointer = :future)
     super
     

@@ -1,6 +1,11 @@
 class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
   MONTH_SECONDS = 2_592_000 # 30 * 24 * 60 * 60
-  
+
+  def initialize(type)
+    super
+    @current_month_begin = nil
+  end
+
   def next(pointer)
     super
     
@@ -10,19 +15,19 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
       when :future
         if @now.month < target_month
           @current_month_begin = Time.construct(@now.year, target_month)
-        else @now.month > target_month
+        elsif @now.month > target_month
           @current_month_begin = Time.construct(@now.year + 1, target_month)
         end
       when :none
         if @now.month <= target_month
           @current_month_begin = Time.construct(@now.year, target_month)
-        else @now.month > target_month
+        elsif @now.month > target_month
           @current_month_begin = Time.construct(@now.year + 1, target_month)
         end
       when :past
         if @now.month > target_month
           @current_month_begin = Time.construct(@now.year, target_month)
-        else @now.month < target_month
+        elsif @now.month < target_month
           @current_month_begin = Time.construct(@now.year - 1, target_month)
         end
       end

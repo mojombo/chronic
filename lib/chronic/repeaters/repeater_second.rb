@@ -1,6 +1,11 @@
 class Chronic::RepeaterSecond < Chronic::Repeater #:nodoc:
   SECOND_SECONDS = 1 # haha, awesome
-  
+
+  def initialize(type)
+    super
+    @second_start = nil
+  end
+
   def next(pointer = :future)
     super
     

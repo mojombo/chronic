@@ -2,6 +2,11 @@ class Chronic::RepeaterWeekday < Chronic::Repeater #:nodoc:
   WEEK_WEEKDAYS = 5
   DAY_SECONDS = 86400 # (24 * 60 * 60)
   
+  def initialize(type)
+    super
+    @current_weekday_start = nil
+  end
+  
   def next(pointer)
     super
     

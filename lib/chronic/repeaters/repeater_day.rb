@@ -1,6 +1,11 @@
 class Chronic::RepeaterDay < Chronic::Repeater #:nodoc:
   DAY_SECONDS = 86_400 # (24 * 60 * 60)
   
+  def initialize(type)
+    super
+    @current_day_start = nil
+  end
+  
   def next(pointer)
     super
     

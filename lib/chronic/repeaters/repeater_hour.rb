@@ -1,6 +1,11 @@
 class Chronic::RepeaterHour < Chronic::Repeater #:nodoc:
   HOUR_SECONDS = 3600 # 60 * 60
-  
+
+  def initialize(type)
+    super
+    @current_hour_start = nil
+  end
+
   def next(pointer)
     super
     

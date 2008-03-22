@@ -55,7 +55,12 @@ class Chronic::RepeaterSeason < Chronic::Repeater #:nodoc:
               :summer => Season.new( MiniDate.new(6,21),MiniDate.new(9,22) ),
               :autumn => Season.new( MiniDate.new(9,23),MiniDate.new(12,21) ),
               :winter => Season.new( MiniDate.new(12,22),MiniDate.new(3,19) ) }
-  
+
+  def initialize(type)
+    super
+    @next_season_start = nil
+  end
+
   def next(pointer)
     super
     

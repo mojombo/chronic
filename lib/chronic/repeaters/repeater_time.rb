@@ -25,6 +25,7 @@ class Chronic::RepeaterTime < Chronic::Repeater #:nodoc:
   end
   
   def initialize(time, options = {})
+    @current_time = nil
     t = time.gsub(/\:/, '')
     
     @type = 

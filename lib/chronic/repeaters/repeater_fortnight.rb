@@ -1,6 +1,11 @@
 class Chronic::RepeaterFortnight < Chronic::Repeater #:nodoc:
   FORTNIGHT_SECONDS = 1_209_600 # (14 * 24 * 60 * 60)
-  
+
+  def initialize(type)
+    super
+    @current_fortnight_start = nil
+  end
+
   def next(pointer)
     super
     
