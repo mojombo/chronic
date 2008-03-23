@@ -63,7 +63,7 @@ class Chronic::RepeaterTime < Chronic::Repeater #:nodoc:
     
     unless @current_time
       first = true
-      midnight = Time.local(@now.year, @now.month, @now.day)
+      midnight = Chronic.time_class.local(@now.year, @now.month, @now.day)
       yesterday_midnight = midnight - full_day
       tomorrow_midnight = midnight + full_day
 

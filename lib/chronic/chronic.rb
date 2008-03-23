@@ -43,7 +43,7 @@ module Chronic
       
       # get options and set defaults if necessary
       default_options = {:context => :future,
-                         :now => Time.now,
+                         :now => Chronic.time_class.now,
                          :guess => true,
                          :ambiguous_time_range => 6,
                          :endian_precedence => nil}
@@ -51,7 +51,7 @@ module Chronic
       
       # handle options that were set to nil
       options[:context] = :future unless options[:context]
-      options[:now] = Time.now unless options[:context]
+      options[:now] = Chronic.time_class.now unless options[:context]
       options[:ambiguous_time_range] = 6 unless options[:ambiguous_time_range]
             
       # ensure the specified options are valid

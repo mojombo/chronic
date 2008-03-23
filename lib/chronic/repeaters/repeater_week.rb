@@ -36,14 +36,14 @@ class Chronic::RepeaterWeek < Chronic::Repeater #:nodoc:
     
     case pointer
     when :future
-      this_week_start = Time.local(@now.year, @now.month, @now.day, @now.hour) + Chronic::RepeaterHour::HOUR_SECONDS
+      this_week_start = Chronic.time_class.local(@now.year, @now.month, @now.day, @now.hour) + Chronic::RepeaterHour::HOUR_SECONDS
       sunday_repeater = Chronic::RepeaterDayName.new(:sunday)
       sunday_repeater.start = @now
       this_sunday_span = sunday_repeater.this(:future)
       this_week_end = this_sunday_span.begin
       Chronic::Span.new(this_week_start, this_week_end)
     when :past
-      this_week_end = Time.local(@now.year, @now.month, @now.day, @now.hour)
+      this_week_end = Chronic.time_class.local(@now.year, @now.month, @now.day, @now.hour)
       sunday_repeater = Chronic::RepeaterDayName.new(:sunday)
       sunday_repeater.start = @now
       last_sunday_span = sunday_repeater.next(:past)

@@ -10,7 +10,7 @@ class Chronic::RepeaterDay < Chronic::Repeater #:nodoc:
     super
     
     if !@current_day_start
-      @current_day_start = Time.local(@now.year, @now.month, @now.day)
+      @current_day_start = Chronic.time_class.local(@now.year, @now.month, @now.day)
     end
     
     direction = pointer == :future ? 1 : -1

@@ -46,9 +46,11 @@ module Chronic
   
   class << self
     attr_accessor :debug
+    attr_accessor :time_class
   end
-  
+
   self.debug = false
+  self.time_class = Time
 end
 
 alias p_orig p
@@ -127,6 +129,6 @@ class Time
       end
     end
     
-    Time.local(year, month, day, hour, minute, second)
+    Chronic.time_class.local(year, month, day, hour, minute, second)
   end
 end

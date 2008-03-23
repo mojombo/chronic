@@ -143,7 +143,7 @@ module Chronic
       month.start = @now
       span = month.this(options[:context])
       
-      day_start = Time.local(span.begin.year, span.begin.month, day)
+      day_start = Chronic.time_class.local(span.begin.year, span.begin.month, day)
       
       day_or_time(day_start, time_tokens, options)
     end
@@ -185,14 +185,14 @@ module Chronic
       end
       
       begin
-        Span.new(Time.local(year, month), Time.local(next_month_year, next_month_month))
+        Span.new(Chronic.time_class.local(year, month), Chronic.time_class.local(next_month_year, next_month_month))
       rescue ArgumentError
         nil
       end
     end
     
     def handle_rdn_rmn_sd_t_tz_sy(tokens, options) #:nodoc:
-      t = Time.parse(@text)
+      t = Chronic.time_class.parse(@text)
       Span.new(t, t + 1)
     end
     
@@ -204,7 +204,7 @@ module Chronic
       time_tokens = tokens.last(tokens.size - 3)
       
       begin
-        day_start = Time.local(year, month, day)
+        day_start = Chronic.time_class.local(year, month, day)
         day_or_time(day_start, time_tokens, options)
       rescue ArgumentError
         nil
@@ -225,7 +225,7 @@ module Chronic
       time_tokens = tokens.last(tokens.size - 3)
       
       begin
-        day_start = Time.local(year, month, day) #:nodoc:
+        day_start = Chronic.time_class.local(year, month, day) #:nodoc:
         day_or_time(day_start, time_tokens, options)
       rescue ArgumentError
         nil
@@ -257,7 +257,7 @@ module Chronic
       end
       
       begin
-        Span.new(Time.local(year, month), Time.local(next_month_year, next_month_month))
+        Span.new(Chronic.time_class.local(year, month), Chronic.time_class.local(next_month_year, next_month_month))
       rescue ArgumentError
         nil
       end
