@@ -7,7 +7,7 @@ SPEC = Gem::Specification.new do |s|
   s.email = 'tom@rubyisawesome.com'
   s.homepage = 'http://chronic.rubyforge.org'
   s.platform = Gem::Platform::RUBY
-  s.summary = "A natural language date parser"
+  s.summary = "A natural language date parser with timezone support"
   candidates = Dir["{lib,test}/**/*"]
   s.files = candidates.delete_if do |item|
     item.include?('.svn')
