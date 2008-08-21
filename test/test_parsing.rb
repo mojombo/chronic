@@ -642,6 +642,11 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 8, 16, 12), parse_now("8/16/2006 at 12pm")
   end
   
+  def test_a_p
+    assert_equal Time.local(2006, 8, 16, 0, 15), parse_now("8/16/2006 at 12:15a")
+    assert_equal Time.local(2006, 8, 16, 18, 30), parse_now("8/16/2006 at 6:30p")
+  end
+  
   def test_argument_validation
     assert_raise(Chronic::InvalidArgumentException) do
       time = Chronic.parse("may 27", :foo => :bar)

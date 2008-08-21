@@ -126,6 +126,7 @@ module Chronic
       normalized_text.gsub!(/\b(?:in|during) the (morning)\b/, '\1')
       normalized_text.gsub!(/\b(?:in the|during the|at) (afternoon|evening|night)\b/, '\1')
       normalized_text.gsub!(/\btonight\b/, 'this night')
+      normalized_text.gsub!(/\b\d+:?\d*[ap]\b/,'\0m')
       normalized_text.gsub!(/(\d)([ap]m|oclock)\b/, '\1 \2')
       normalized_text.gsub!(/\b(hence|after|from)\b/, 'future')
       normalized_text = numericize_ordinals(normalized_text)
