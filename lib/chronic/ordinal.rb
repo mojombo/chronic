@@ -19,7 +19,7 @@ module Chronic
     
     def self.scan_for_days(token)
       if token.word =~ /^(\d*)(st|nd|rd|th)$/
-        unless $1.to_i > 31
+        unless $1.to_i > 31 || $1.to_i < 1
           return OrdinalDay.new(token.word.to_i)
         end
       end

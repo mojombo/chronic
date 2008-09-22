@@ -8,6 +8,8 @@
 * support seasons (by Edwin Chen)
 * support weekend/weekday (by Edwin Chen)
 * add endianness option (by Mark Johnson/Thomas Lee)
+* updated version number in the module (Jeffrey 'jf' Lim)
+* fixed/improved logic checks in Ordinal, and Scalar (Jeffrey 'jf' Lim)
 
 = 0.2.3
 
