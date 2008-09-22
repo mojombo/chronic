@@ -53,13 +53,6 @@ module Chronic
   self.time_class = Time
 end
 
-alias p_orig p
-
-def p(val)
-  p_orig val
-  puts
-end
-
 # class Time
 #   def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
 #     # extra_seconds = second > 60 ? second - 60 : 0
