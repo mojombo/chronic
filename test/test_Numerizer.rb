@@ -23,6 +23,8 @@ class ParseNumbersTest < Test::Unit::TestCase
       'thirty-seven' => 37,
       'thirty seven' => 37,
       'fifty nine' => 59,
+      'forty two' => 42,
+      'fourty two' => 42,
       # 'a hundred' => 100,
       'one hundred' => 100,
       'one hundred and fifty' => 150,

@@ -29,7 +29,8 @@ class Numerizer
 
   TEN_PREFIXES = [ ['twenty', 20],
                     ['thirty', 30],
-                    ['fourty', 40],
+                    ['forty', 40],
+                    ['fourty', 40], # another common mis-spelling; see http://lmgtfy.com/?q=forty+or+fourty
                     ['fifty', 50],
                     ['sixty', 60],
                     ['seventy', 70],
