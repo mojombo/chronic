@@ -56,8 +56,6 @@ Gem::Specification.new do |s|
     lib/chronic/scalar.rb
     lib/chronic/separator.rb
     lib/chronic/time_zone.rb
-    lib/numerizer/numerizer.rb
-    test/suite.rb
     test/test_Chronic.rb
     test/test_DaylightSavings.rb
     test/test_Handler.rb
