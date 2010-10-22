@@ -39,7 +39,7 @@ require 'chronic/ordinal'
 require 'chronic/separator'
 require 'chronic/time_zone'
 
-require 'numerizer/numerizer'
+require 'chronic/numerizer/numerizer'
 
 module Chronic
   VERSION = "0.3.0"

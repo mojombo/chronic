@@ -1,3 +1,7 @@
+= 0.3.0
+
+* the dark days
+
 = 0.2.4
 
 * fixed numerizer number combination bug (27 Oct 2006 7:30pm works now) (reported by reynard h)
