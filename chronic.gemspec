@@ -22,10 +22,10 @@ Gem::Specification.new do |s|
 
   # = MANIFEST =
   s.files = %w[
-    History.txt
+    HISTORY.md
     LICENSE
     Manifest.txt
-    README
+    README.md
     Rakefile
     benchmark/benchmark.rb
     chronic.gemspec
@@ -56,6 +56,7 @@ Gem::Specification.new do |s|
     lib/chronic/scalar.rb
     lib/chronic/separator.rb
     lib/chronic/time_zone.rb
+    test/helper.rb
     test/test_Chronic.rb
     test/test_DaylightSavings.rb
     test/test_Handler.rb
