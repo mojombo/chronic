@@ -177,16 +177,16 @@ class TestParsing < Test::Unit::TestCase
     #time = parse_now("jan 5 13:00")
     #assert_equal Time.local(2007, 1, 5, 13), time
 
-    # due to limitations of the Time class, these don't work
+    # old dates
 
     time = parse_now("may 40")
-    assert_equal nil, time
+    assert_equal Time.local(40, 5, 16, 12, 0, 0), time
 
     time = parse_now("may 27 40")
-    assert_equal nil, time
+    assert_equal Time.local(40, 5, 27, 12, 0, 0), time
 
     time = parse_now("1800-08-20")
-    assert_equal nil, time
+    assert_equal Time.local(1800, 8, 20, 12, 0, 0), time
   end
 
   def test_parse_guess_r
