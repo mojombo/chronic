@@ -1,4 +1,4 @@
-# 0.3.0
+# 0.3.0 / 2010-10-22
 
 * Fix numerizer number combination bug (27 Oct 2006 7:30pm works now)
 * Allow numeric timezone offset (e.g -0500)
