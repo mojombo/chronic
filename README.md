@@ -9,7 +9,7 @@ for the wide variety of formats Chronic will parse.
 
 ## INSTALLATION
 
-The best way to install Gollum is with RubyGems:
+The best way to install Chronic is with RubyGems:
 
     $ [sudo] gem install chronic
 
