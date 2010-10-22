@@ -10,6 +10,12 @@
 * Add endianness option
 * Update version number in the module
 * Fix/improve logic checks in Ordinal, and Scalar
+* Parse 'a' or 'p' as 'am' and 'pm' google-calendar style
+* Dates < 1 are not valid
+* Fix bugs related to timezone offset
+* Use RakeGem for build management
+* Reformat README and HISTORY to use Markdown
+* Global whitespace removal
 
 # 0.2.3
 
