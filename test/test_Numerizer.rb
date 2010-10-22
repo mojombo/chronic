@@ -1,5 +1,4 @@
-require 'test/unit'
-require 'chronic'
+require File.join(File.dirname(__FILE__), *%w[helper])
 
 class ParseNumbersTest < Test::Unit::TestCase
 

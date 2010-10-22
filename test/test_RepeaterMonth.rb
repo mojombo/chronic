@@ -1,5 +1,4 @@
-require 'chronic'
-require 'test/unit'
+require File.join(File.dirname(__FILE__), *%w[helper])
 
 class TestRepeaterMonth < Test::Unit::TestCase
 

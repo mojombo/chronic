@@ -1,5 +1,4 @@
-require 'chronic'
-require 'test/unit'
+require File.join(File.dirname(__FILE__), *%w[helper])
 
 class TestParsing < Test::Unit::TestCase
   # Wed Aug 16 14:00:00 UTC 2006
