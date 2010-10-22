@@ -8,7 +8,7 @@ module Chronic
       end
       tokens
     end
-  
+
     def self.scan_for_all(token)
       scanner = {/\bpast\b/ => :past,
                  /\bfuture\b/ => :future,
@@ -18,7 +18,7 @@ module Chronic
       end
       return nil
     end
-    
+
     def to_s
       'pointer-' << @type.to_s
     end

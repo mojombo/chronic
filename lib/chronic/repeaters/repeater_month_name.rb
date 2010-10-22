@@ -8,7 +8,7 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
 
   def next(pointer)
     super
-    
+
     if !@current_month_begin
       target_month = symbol_to_number(@type)
       case pointer
@@ -40,10 +40,10 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
         @current_month_begin = Time.construct(@current_month_begin.year - 1, @current_month_begin.month)
       end
     end
-    
+
     cur_month_year = @current_month_begin.year
     cur_month_month = @current_month_begin.month
-    
+
     if cur_month_month == 12
       next_month_year = cur_month_year + 1
       next_month_month = 1
@@ -51,13 +51,13 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
       next_month_year = cur_month_year
       next_month_month = cur_month_month + 1
     end
-      
+
     Chronic::Span.new(@current_month_begin, Time.construct(next_month_year, next_month_month))
   end
-  
+
   def this(pointer = :future)
     super
-    
+
     case pointer
     when :past
       self.next(pointer)
@@ -65,21 +65,21 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
       self.next(:none)
     end
   end
-  
+
   def width
     MONTH_SECONDS
   end
-  
+
   def index
     symbol_to_number(@type)
   end
-  
+
   def to_s
     super << '-monthname-' << @type.to_s
   end
-  
+
   private
-  
+
   def symbol_to_number(sym)
     lookup = {:january => 1,
               :february => 2,

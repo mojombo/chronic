@@ -10,7 +10,7 @@ class TestRepeaterMinute < Test::Unit::TestCase
   def test_next_future
     minutes = Chronic::RepeaterMinute.new(:minute)
     minutes.start = @now
-    
+
     next_minute = minutes.next(:future)
     assert_equal Time.local(2008, 6, 25, 7, 16), next_minute.begin
     assert_equal Time.local(2008, 6, 25, 7, 17), next_minute.end
@@ -23,7 +23,7 @@ class TestRepeaterMinute < Test::Unit::TestCase
   def test_next_past
     minutes = Chronic::RepeaterMinute.new(:minute)
     minutes.start = @now
-    
+
     prev_minute = minutes.next(:past)
     assert_equal Time.local(2008, 6, 25, 7, 14), prev_minute.begin
     assert_equal Time.local(2008, 6, 25, 7, 15), prev_minute.end

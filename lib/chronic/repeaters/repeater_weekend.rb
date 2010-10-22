@@ -5,10 +5,10 @@ class Chronic::RepeaterWeekend < Chronic::Repeater #:nodoc:
     super
     @current_week_start = nil
   end
-  
+
   def next(pointer)
     super
-    
+
     if !@current_week_start
       case pointer
       when :future
@@ -26,13 +26,13 @@ class Chronic::RepeaterWeekend < Chronic::Repeater #:nodoc:
       direction = pointer == :future ? 1 : -1
       @current_week_start += direction * Chronic::RepeaterWeek::WEEK_SECONDS
     end
-    
+
     Chronic::Span.new(@current_week_start, @current_week_start + WEEKEND_SECONDS)
   end
-  
+
   def this(pointer = :future)
     super
-    
+
     case pointer
     when :future, :none
       saturday_repeater = Chronic::RepeaterDayName.new(:saturday)
@@ -46,7 +46,7 @@ class Chronic::RepeaterWeekend < Chronic::Repeater #:nodoc:
       Chronic::Span.new(last_saturday_span.begin, last_saturday_span.begin + WEEKEND_SECONDS)
     end
   end
-  
+
   def offset(span, amount, pointer)
     direction = pointer == :future ? 1 : -1
     weekend = Chronic::RepeaterWeekend.new(:weekend)
@@ -54,11 +54,11 @@ class Chronic::RepeaterWeekend < Chronic::Repeater #:nodoc:
     start = weekend.next(pointer).begin + (amount - 1) * direction * Chronic::RepeaterWeek::WEEK_SECONDS
     Chronic::Span.new(start, start + (span.end - span.begin))
   end
-  
+
   def width
     WEEKEND_SECONDS
   end
-  
+
   def to_s
     super << '-weekend'
   end

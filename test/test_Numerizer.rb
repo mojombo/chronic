@@ -40,12 +40,12 @@ class ParseNumbersTest < Test::Unit::TestCase
                1_250_007 => 'one million two hundred fifty thousand and seven',
                1_000_000_000 => 'one billion',
                1_000_000_001 => 'one billion and one' }
-               
+
     strings.keys.sort.each do |key|
       assert_equal key, Numerizer.numerize(strings[key]).to_i
     end
   end
-  
+
   def test_edges
     assert_equal "27 Oct 2006 7:30am", Numerizer.numerize("27 Oct 2006 7:30am")
   end

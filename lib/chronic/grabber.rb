@@ -7,7 +7,7 @@
       end
       tokens
     end
-    
+
     def self.scan_for_all(token)
       scanner = {/last/ => :last,
                  /this/ => :this,
@@ -17,7 +17,7 @@
       end
       return nil
     end
-    
+
     def to_s
       'grabber-' << @type.to_s
     end

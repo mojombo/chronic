@@ -3,15 +3,15 @@ require 'chronic/repeaters/repeater_season.rb'
 class Chronic::RepeaterSeasonName < Chronic::RepeaterSeason #:nodoc:
   SEASON_SECONDS = 7_862_400 # 91 * 24 * 60 * 60
   DAY_SECONDS = 86_400 # (24 * 60 * 60)
-  
+
   def next(pointer)
     direction = pointer == :future ? 1 : -1
     find_next_season_span(direction, @type)
   end
-  
+
   def this(pointer = :future)
     # super
-    
+
     direction = pointer == :future ? 1 : -1
 
     today = Time.construct(@now.year, @now.month, @now.day)
@@ -29,15 +29,15 @@ class Chronic::RepeaterSeasonName < Chronic::RepeaterSeason #:nodoc:
       this_ssn_start = goal_ssn_start
       this_ssn_end = goal_ssn_end
     end
-    
+
     Chronic::Span.new(this_ssn_start, this_ssn_end)
   end
-  
+
   def offset(span, amount, pointer)
     Chronic::Span.new(offset_by(span.begin, amount, pointer), offset_by(span.end, amount, pointer))
   end
-  
-  def offset_by(time, amount, pointer) 
+
+  def offset_by(time, amount, pointer)
     direction = pointer == :future ? 1 : -1
     time + amount * direction * Chronic::RepeaterYear::YEAR_SECONDS
   end

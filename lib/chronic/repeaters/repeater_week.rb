@@ -8,7 +8,7 @@ class Chronic::RepeaterWeek < Chronic::Repeater #:nodoc:
 
   def next(pointer)
     super
-    
+
     if !@current_week_start
       case pointer
       when :future
@@ -27,13 +27,13 @@ class Chronic::RepeaterWeek < Chronic::Repeater #:nodoc:
       direction = pointer == :future ? 1 : -1
       @current_week_start += direction * WEEK_SECONDS
     end
-    
+
     Chronic::Span.new(@current_week_start, @current_week_start + WEEK_SECONDS)
   end
-  
+
   def this(pointer = :future)
     super
-    
+
     case pointer
     when :future
       this_week_start = Chronic.time_class.local(@now.year, @now.month, @now.day, @now.hour) + Chronic::RepeaterHour::HOUR_SECONDS
@@ -57,16 +57,16 @@ class Chronic::RepeaterWeek < Chronic::Repeater #:nodoc:
       Chronic::Span.new(this_week_start, this_week_start + WEEK_SECONDS)
     end
   end
-  
+
   def offset(span, amount, pointer)
     direction = pointer == :future ? 1 : -1
     span + direction * amount * WEEK_SECONDS
   end
-  
+
   def width
     WEEK_SECONDS
   end
-  
+
   def to_s
     super << '-week'
   end

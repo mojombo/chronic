@@ -1,17 +1,18 @@
 Chronic
-	http://chronic.rubyforge.org/
-	by Tom Preston-Werner
+  http://chronic.rubyforge.org/
+  by Tom Preston-Werner
 
 == DESCRIPTION:
 
-Chronic is a natural language date/time parser written in pure Ruby. See below for the wide variety of formats Chronic will parse.
+Chronic is a natural language date/time parser written in pure Ruby. See below
+for the wide variety of formats Chronic will parse.
 
 == INSTALLATION:
 
 Chronic can be installed via RubyGems:
 
   $ sudo gem install chronic
-  
+
 == CODE:
 
 Browse the code and get an RSS feed of the commit log at:
@@ -24,7 +25,8 @@ You can grab the code (and help with development) via git:
 
 == USAGE:
 
-You can parse strings containing a natural language date using the Chronic.parse method.
+You can parse strings containing a natural language date using the
+Chronic.parse method.
 
   require 'rubygems'
   require 'chronic'
@@ -33,7 +35,7 @@ You can parse strings containing a natural language date using the Chronic.parse
 
   #---
 
-  Chronic.parse('tomorrow')       
+  Chronic.parse('tomorrow')
     #=> Mon Aug 28 12:00:00 PDT 2006
 
   Chronic.parse('monday', :context => :past)
@@ -55,7 +57,9 @@ See Chronic.parse for detailed usage instructions.
 
 == EXAMPLES:
 
-Chronic can parse a huge variety of date and time formats. Following is a small sample of strings that will be properly parsed. Parsing is case insensitive and will handle common abbreviations and misspellings.
+Chronic can parse a huge variety of date and time formats. Following is a
+small sample of strings that will be properly parsed. Parsing is case
+insensitive and will handle common abbreviations and misspellings.
 
 Simple
 
@@ -129,8 +133,10 @@ Specific Times (many of the above with an added time)
 
 == TIME ZONES:
 
-Chronic allows you to set which Time class to use when constructing times.  By default, the built in Ruby time class creates times in your system's
-local time zone.  You can set this to something like ActiveSupport's TimeZone class to get full time zone support.
+Chronic allows you to set which Time class to use when constructing times. By
+default, the built in Ruby time class creates times in your system's local
+time zone. You can set this to something like ActiveSupport's TimeZone class
+to get full time zone support.
 
   >> Time.zone = "UTC"
   >> Chronic.time_class = Time.zone
@@ -138,5 +144,8 @@ local time zone.  You can set this to something like ActiveSupport's TimeZone cl
   => Thu, 15 Jun 2006 05:45:00 UTC +00:00
 
 == LIMITATIONS:
-  
-Chronic uses Ruby's built in Time class for all time storage and computation. Because of this, only times that the Time class can handle will be properly parsed. Parsing for times outside of this range will simply return nil. Support for a wider range of times is planned for a future release.
+
+Chronic uses Ruby's built in Time class for all time storage and computation.
+Because of this, only times that the Time class can handle will be properly
+parsed. Parsing for times outside of this range will simply return nil.
+Support for a wider range of times is planned for a future release.
