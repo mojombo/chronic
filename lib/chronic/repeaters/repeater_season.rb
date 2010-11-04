@@ -51,10 +51,10 @@ end
 class Chronic::RepeaterSeason < Chronic::Repeater #:nodoc:
   YEAR_SEASONS = 4
   SEASON_SECONDS = 7_862_400 # 91 * 24 * 60 * 60
-  SEASONS = { :spring => Season.new( MiniDate.new(3,20),MiniDate.new(6,20) ),
-              :summer => Season.new( MiniDate.new(6,21),MiniDate.new(9,22) ),
-              :autumn => Season.new( MiniDate.new(9,23),MiniDate.new(12,21) ),
-              :winter => Season.new( MiniDate.new(12,22),MiniDate.new(3,19) ) }
+  SEASONS = { :spring => Chronic::Season.new( MiniDate.new(3,20),MiniDate.new(6,20) ),
+              :summer => Chronic::Season.new( MiniDate.new(6,21),MiniDate.new(9,22) ),
+              :autumn => Chronic::Season.new( MiniDate.new(9,23),MiniDate.new(12,21) ),
+              :winter => Chronic::Season.new( MiniDate.new(12,22),MiniDate.new(3,19) ) }
 
   def initialize(type)
     super
@@ -65,7 +65,7 @@ class Chronic::RepeaterSeason < Chronic::Repeater #:nodoc:
     super
 
     direction = pointer == :future ? 1 : -1
-    next_season = Season.find_next_season(find_current_season(@now.to_minidate), direction)
+    next_season = Chronic::Season.find_next_season(find_current_season(@now.to_minidate), direction)
 
     find_next_season_span(direction, next_season)
   end
