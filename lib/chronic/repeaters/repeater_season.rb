@@ -4,7 +4,7 @@ class Time
   end
 end
 
-class Season
+class Chronic::Season
   attr_reader :start, :end
 
   def initialize(myStart, myEnd)
