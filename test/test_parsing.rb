@@ -73,7 +73,45 @@ class TestParsing < Test::Unit::TestCase
     time = parse_now("dec 79")
     assert_equal Time.local(1979, 12, 16, 12), time
 
+    # rm_od_sy
+
+    time = parse_now("November 18th 2010")
+    assert_equal Time.local(2010, 11, 18, 12), time
+
+    time = parse_now("November 18th, 2010")
+    assert_equal Time.local(2010, 11, 18, 12), time
+
+    time = parse_now("November 18th 2010 midnight")
+    assert_equal Time.local(2010, 11, 19, 0), time
+
+    time = parse_now("November 18th 2010 at midnight")
+    assert_equal Time.local(2010, 11, 19, 0), time
+
+    time = parse_now("November 18th 2010 at 4")
+    assert_equal Time.local(2010, 11, 18, 16), time
+
+    time = parse_now("November 18th 2010 at 4", :ambiguous_time_range => :none)
+    assert_equal Time.local(2010, 11, 18, 4), time
+
+    time = parse_now("March 30th, 1979")
+    assert_equal Time.local(1979, 3, 30, 12), time
+
+    time = parse_now("March 30th 79")
+    assert_equal Time.local(1979, 3, 30, 12), time
+
+    time = parse_now("March 30th 79 4:30")
+    assert_equal Time.local(1979, 3, 30, 16, 30), time
+
+    time = parse_now("March 30th 79 at 4:30", :ambiguous_time_range => :none)
+    assert_equal Time.local(1979, 3, 30, 4, 30), time
+
     # rm_sd_sy
+
+    time = parse_now("November 18, 2010")
+    assert_equal Time.local(2010, 11, 18, 12), time
+
+    time = parse_now("February 14, 2004")
+    assert_equal Time.local(2004, 2, 14, 12), time
 
     time = parse_now("jan 3 2010")
     assert_equal Time.local(2010, 1, 3, 12), time
