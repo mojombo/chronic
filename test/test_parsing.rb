@@ -703,6 +703,21 @@ class TestParsing < Test::Unit::TestCase
     # assert_equal Time.local(2007, 11, 5, 11), t1
   end
 
+  def test_past_in_last_month
+    t = parse_now('jul 12', :context => :past, :ambiguous_time_range => :none)
+    assert_equal Time.local(2006, 7, 12, 12), t
+  end
+
+  def test_past_in_this_month
+    t = parse_now('aug 12', :context => :past, :ambiguous_time_range => :none)
+    assert_equal Time.local(2006, 8, 12, 12), t
+  end
+
+  def test_past_after_today_in_this_month
+    t = parse_now('aug 18', :context => :past, :ambiguous_time_range => :none)
+    assert_equal Time.local(2005, 8, 18, 12), t
+  end
+
   private
   def parse_now(string, options={})
     Chronic.parse(string, {:now => TIME_2006_08_16_14_00_00 }.merge(options))
