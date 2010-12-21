@@ -25,7 +25,7 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
           @current_month_begin = Time.construct(@now.year + 1, target_month)
         end
       when :past
-        if @now.month > target_month
+        if @now.month >= target_month
           @current_month_begin = Time.construct(@now.year, target_month)
         elsif @now.month < target_month
           @current_month_begin = Time.construct(@now.year - 1, target_month)
