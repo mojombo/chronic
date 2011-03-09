@@ -149,7 +149,7 @@ Support for a wider range of times is planned for a future release.
 
 If you'd like to hack on Chronic, start by forking the repo on GitHub:
 
-http://github.com/github/chronic
+https://github.com/mojombo/chronic
 
 To get all of the dependencies, install the gem first. The best way to get
 your changes merged back into core is as follows:
