@@ -36,7 +36,7 @@ class Chronic::RepeaterHour < Chronic::Repeater #:nodoc:
       hour_end = Time.construct(@now.year, @now.month, @now.day, @now.hour, @now.min)
     when :none
       hour_start = Time.construct(@now.year, @now.month, @now.day, @now.hour)
-      hour_end = hour_begin + HOUR_SECONDS
+      hour_end = hour_start + HOUR_SECONDS
     end
 
     Chronic::Span.new(hour_start, hour_end)
