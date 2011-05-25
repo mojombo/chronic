@@ -1,6 +1,4 @@
 Gem::Specification.new do |s|
-  s.rubygems_version = '1.3.5'
-
   s.name              = 'chronic'
   s.version           = '0.3.0'
   s.date              = '2010-10-22'
