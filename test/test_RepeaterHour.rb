@@ -45,6 +45,10 @@ class TestRepeaterHour < Test::Unit::TestCase
     this_hour = hours.this(:past)
     assert_equal Time.local(2006, 8, 16, 14), this_hour.begin
     assert_equal Time.local(2006, 8, 16, 14, 30), this_hour.end
+
+    this_hour = hours.this(:none)
+    assert_equal Time.local(2006, 8, 16, 14), this_hour.begin
+    assert_equal Time.local(2006, 8, 16, 15), this_hour.end
   end
 
   def test_offset
