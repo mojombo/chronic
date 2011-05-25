@@ -12,49 +12,39 @@ module Chronic
     end
 
     def self.scan_for_commas(token)
+      scan_for token, SeparatorComma,
       {
         /^,$/ => :comma
-      }.each do |item, symbol|
-        return SeparatorComma.new(symbol) if item =~ token.word
-      end
-      return nil
+      }
     end
 
     def self.scan_for_slash_or_dash(token)
+      scan_for token, SeparatorSlashOrDash,
       {
         /^-$/ => :dash,
         /^\/$/ => :slash
-      }.each do |item, symbol|
-        return SeparatorSlashOrDash.new(symbol) if item =~ token.word
-      end
-      return nil
+      }
     end
 
     def self.scan_for_at(token)
+      scan_for token, SeparatorAt,
       {
         /^(at|@)$/ => :at
-      }.each do |item, symbol|
-        return SeparatorAt.new(symbol) if item =~ token.word
-      end
-      return nil
+      }
     end
 
     def self.scan_for_in(token)
+      scan_for token, SeparatorIn,
       {
         /^in$/ => :in
-      }.each do |item, symbol|
-        return SeparatorIn.new(symbol) if item =~ token.word
-      end
-      return nil
+      }
     end
 
     def self.scan_for_on(token)
+      scan_for token, SeparatorOn,
       {
         /^on$/ => :on
-      }.each do |item, symbol|
-        return SeparatorOn.new(symbol) if item =~ token.word
-      end
-      return nil
+      }
     end
 
     def to_s

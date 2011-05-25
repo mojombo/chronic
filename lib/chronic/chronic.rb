@@ -236,6 +236,17 @@ module Chronic
     def start=(s)
       @now = s
     end
+
+    class << self
+      private
+
+      def scan_for(token, klass, items={})
+        items.each do |item, symbol|
+          return klass.new(symbol) if item =~ token.word
+        end
+        nil
+      end
+    end
   end
 
   # Internal exception

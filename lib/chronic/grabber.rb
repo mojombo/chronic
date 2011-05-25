@@ -8,14 +8,12 @@
     end
 
     def self.scan_for_all(token)
+      scan_for token, self,
       {
         /last/ => :last,
         /this/ => :this,
         /next/ => :next
-      }.each do |item, symbol|
-        return self.new(symbol) if item =~ token.word
-      end
-      return nil
+      }
     end
 
     def to_s
