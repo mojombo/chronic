@@ -15,8 +15,6 @@ Gem::Specification.new do |s|
   s.email    = 'tom@mojombo.com'
   s.homepage = 'http://github.com/mojombo/chronic'
 
-  s.require_paths = %w[lib]
-
   s.rdoc_options = ["--charset=UTF-8"]
   s.extra_rdoc_files = %w[README.md HISTORY.md LICENSE]
 
