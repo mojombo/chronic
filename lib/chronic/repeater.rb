@@ -94,8 +94,8 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
                /^seconds?$/ => :second}
     scanner.keys.each do |scanner_item|
       if scanner_item =~ token.word
-        klass_name = 'Chronic::Repeater' + scanner[scanner_item].to_s.capitalize
-        klass = eval(klass_name)
+        klass_name = 'Repeater' + scanner[scanner_item].to_s.capitalize
+        klass = Chronic.const_get(klass_name)
         return klass.new(scanner[scanner_item])
       end
     end
