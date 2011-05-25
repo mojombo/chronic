@@ -17,7 +17,6 @@ module Chronic
           return Scalar.new(token.word.to_i)
         end
       end
-      return nil
     end
 
     def self.scan_for_days(token, post_token)
@@ -37,7 +36,6 @@ module Chronic
           return ScalarMonth.new(toi)
         end
       end
-      return nil
     end
 
     def self.scan_for_years(token, post_token)
@@ -46,7 +44,6 @@ module Chronic
           return ScalarYear.new(token.word.to_i)
         end
       end
-      return nil
     end
 
     def to_s
