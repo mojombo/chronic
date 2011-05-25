@@ -398,7 +398,7 @@ module Chronic
       head.start = pointer == :future ? span.begin : span.end
       h = head.this(:none)
 
-      if span.include?(h.begin) || span.include?(h.end)
+      if span.cover?(h.begin) || span.cover?(h.end)
         return find_within(rest, h, pointer)
       else
         return nil
