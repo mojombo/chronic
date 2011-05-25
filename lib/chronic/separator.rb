@@ -13,42 +13,47 @@ module Chronic
     end
 
     def self.scan_for_commas(token)
-      scanner = {/^,$/ => :comma}
-      scanner.keys.each do |scanner_item|
-        return SeparatorComma.new(scanner[scanner_item]) if scanner_item =~ token.word
+      {
+        /^,$/ => :comma
+      }.each do |item, symbol|
+        return SeparatorComma.new(symbol) if item =~ token.word
       end
       return nil
     end
 
     def self.scan_for_slash_or_dash(token)
-      scanner = {/^-$/ => :dash,
-                 /^\/$/ => :slash}
-      scanner.keys.each do |scanner_item|
-        return SeparatorSlashOrDash.new(scanner[scanner_item]) if scanner_item =~ token.word
+      {
+        /^-$/ => :dash,
+        /^\/$/ => :slash
+      }.each do |item, symbol|
+        return SeparatorSlashOrDash.new(symbol) if item =~ token.word
       end
       return nil
     end
 
     def self.scan_for_at(token)
-      scanner = {/^(at|@)$/ => :at}
-      scanner.keys.each do |scanner_item|
-        return SeparatorAt.new(scanner[scanner_item]) if scanner_item =~ token.word
+      {
+        /^(at|@)$/ => :at
+      }.each do |item, symbol|
+        return SeparatorAt.new(symbol) if item =~ token.word
       end
       return nil
     end
 
     def self.scan_for_in(token)
-      scanner = {/^in$/ => :in}
-      scanner.keys.each do |scanner_item|
-        return SeparatorIn.new(scanner[scanner_item]) if scanner_item =~ token.word
+      {
+        /^in$/ => :in
+      }.each do |item, symbol|
+        return SeparatorIn.new(symbol) if item =~ token.word
       end
       return nil
     end
 
     def self.scan_for_on(token)
-      scanner = {/^on$/ => :on}
-      scanner.keys.each do |scanner_item|
-        return SeparatorOn.new(scanner[scanner_item]) if scanner_item =~ token.word
+      {
+        /^on$/ => :on
+      }.each do |item, symbol|
+        return SeparatorOn.new(symbol) if item =~ token.word
       end
       return nil
     end
