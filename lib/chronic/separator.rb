@@ -9,7 +9,6 @@ module Chronic
         if t = self.scan_for_in(tokens[i]) then tokens[i].tag(t); next end
         if t = self.scan_for_on(tokens[i]) then tokens[i].tag(t); next end
       end
-      tokens
     end
 
     def self.scan_for_commas(token)

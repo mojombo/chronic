@@ -9,7 +9,6 @@ module Chronic
         if t = self.scan_for_months(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
         if t = self.scan_for_years(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
       end
-      tokens
     end
 
     def self.scan_for_scalars(token, post_token)
