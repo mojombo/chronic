@@ -26,7 +26,6 @@ module Chronic
           return ScalarDay.new(toi)
         end
       end
-      return nil
     end
 
     def self.scan_for_months(token, post_token)
