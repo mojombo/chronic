@@ -3,17 +3,17 @@ Gem::Specification.new do |s|
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.rubygems_version = '1.3.5'
 
-  s.name              = 'chronic'
-  s.version           = '0.3.0'
+  s.name              = 'slaxor-chronic'
+  s.version           = '0.3.1'
   s.date              = '2010-10-22'
-  s.rubyforge_project = 'chronic'
+  s.rubyforge_project = 'slaxor-chronic'
 
-  s.summary     = "Natural language date/time parsing."
-  s.description = "Chronic is a natural language date/time parser written in pure Ruby."
+  s.summary     = "Natural language date/time parsing with proper namespacing."
+  s.description = "Chronic is a natural language date/time parser written in pure Ruby. Use this if you get naming conflicts with the original"
 
-  s.authors  = ["Tom Preston-Werner"]
-  s.email    = 'tom@mojombo.com'
-  s.homepage = 'http://github.com/mojombo/chronic'
+  s.authors  = ["Tom Preston-Werner", "Sascha Teske"]
+  s.email    = 'sascha.teske@gmail.com'
+  s.homepage = 'http://github.com/slaxor/chronic'
 
   s.require_paths = %w[lib]
 
@@ -28,7 +28,7 @@ Gem::Specification.new do |s|
     README.md
     Rakefile
     benchmark/benchmark.rb
-    chronic.gemspec
+    slaxor-chronic.gemspec
     lib/chronic.rb
     lib/chronic/chronic.rb
     lib/chronic/grabber.rb

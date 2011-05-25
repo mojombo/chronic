@@ -11,7 +11,7 @@ for the wide variety of formats Chronic will parse.
 
 The best way to install Chronic is with RubyGems:
 
-    $ [sudo] gem install chronic
+    $ [sudo] gem install slaxor-chronic
 
 
 ## USAGE
