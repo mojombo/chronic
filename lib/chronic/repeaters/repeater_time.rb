@@ -22,7 +22,7 @@ class Chronic::RepeaterTime < Chronic::Repeater #:nodoc:
     def to_s
       @time.to_s + (@ambiguous ? '?' : '')
     end
-      
+
   end
 
   def initialize(time, options = {})
@@ -35,7 +35,9 @@ class Chronic::RepeaterTime < Chronic::Repeater #:nodoc:
         hours = t.to_i
         hours == 12 ? Tick.new(0 * 60 * 60, true) : Tick.new(hours * 60 * 60, true)
       when 3
-        Tick.new((t[0..0].to_i * 60 * 60) + (t[1..2].to_i * 60), true)
+        hours = t[0..0].to_i
+        ambiguous = hours > 1
+        Tick.new((hours * 60 * 60) + (t[1..2].to_i * 60), ambiguous)
       when 4
         ambiguous = time =~ /:/ && t[0..0].to_i != 0 && t[0..1].to_i <= 12
         hours = t[0..1].to_i
