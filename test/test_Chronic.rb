@@ -7,6 +7,11 @@ class TestChronic < Test::Unit::TestCase
     @now = Time.local(2006, 8, 16, 14, 0, 0, 0)
   end
 
+  def test_pre_normalize_numerized_string
+    string = 'two and a half years'
+    assert_equal Numerizer.numerize(string), Chronic.pre_normalize(string)
+  end
+
   def test_post_normalize_am_pm_aliases
     # affect wanted patterns
 
