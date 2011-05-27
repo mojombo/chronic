@@ -185,9 +185,7 @@ module Chronic
 
     # Return the Tag that matches the given class
     def get_tag(tag_class)
-      matches = @tags.select { |m| m.kind_of? tag_class }
-      #matches.size < 2 || raise("Multiple identical tags found")
-      return matches.first
+      @tags.find { |m| m.kind_of? tag_class }
     end
 
     # Print this Token in a pretty way
