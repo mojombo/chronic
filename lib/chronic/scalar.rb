@@ -15,7 +15,7 @@ module Chronic
 
     def self.scan_for_scalars(token, post_token)
       if token.word =~ /^\d*$/
-        unless post_token && DAY_PORTIONS.include?(post_token)
+        unless post_token && DAY_PORTIONS.include?(post_token.word)
           return Scalar.new(token.word.to_i)
         end
       end
