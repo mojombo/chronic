@@ -11,19 +11,15 @@ module Chronic
     end
 
     def self.scan_for_ordinals(token)
-      if token.word =~ /^(\d*)(st|nd|rd|th)$/
-        return Ordinal.new($1.to_i)
-      end
-      return nil
+      Ordinal.new($1.to_i) if token.word =~ /^(\d*)(st|nd|rd|th)$/
     end
 
     def self.scan_for_days(token)
       if token.word =~ /^(\d*)(st|nd|rd|th)$/
         unless $1.to_i > 31 || $1.to_i < 1
-          return OrdinalDay.new(token.word.to_i)
+          OrdinalDay.new(token.word.to_i)
         end
       end
-      return nil
     end
 
     def to_s
