@@ -1,4 +1,13 @@
 module Chronic
+
+  DEFAULT_OPTIONS = {
+    :context => :future,
+    :now     => Chronic.time_class.now,
+    :guess   => true,
+    :ambiguous_time_range => 6,
+    :endian_precedence    => nil
+  }
+
   class << self
 
     # Parses a string containing a natural language date or time. If the parser
@@ -40,23 +49,16 @@ module Chronic
     #     be used.
     def parse(text, specified_options = {})
       @text = text
-
-      # get options and set defaults if necessary
-      default_options = {:context => :future,
-                         :now => Chronic.time_class.now,
-                         :guess => true,
-                         :ambiguous_time_range => 6,
-                         :endian_precedence => nil}
-      options = default_options.merge specified_options
+      options = DEFAULT_OPTIONS.merge specified_options
 
       # handle options that were set to nil
-      options[:context] = :future unless options[:context]
-      options[:now] = Chronic.time_class.now unless options[:context]
-      options[:ambiguous_time_range] = 6 unless options[:ambiguous_time_range]
+      options[:context] ||= :future
+      options[:now] ||= Chronic.time_class.now
+      options[:ambiguous_time_range] ||= 6
 
       # ensure the specified options are valid
       specified_options.keys.each do |key|
-        default_options.keys.include?(key) || raise(InvalidArgumentException, "#{key} is not a valid option key.")
+        DEFAULT_OPTIONS.keys.include?(key) || raise(InvalidArgumentException, "#{key} is not a valid option key.")
       end
       [:past, :future, :none].include?(options[:context]) || raise(InvalidArgumentException, "Invalid value ':#{options[:context]}' for :context specified. Valid values are :past and :future.")
 
