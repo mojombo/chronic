@@ -46,11 +46,11 @@ class ParseNumbersTest < Test::Unit::TestCase
       'one billion and one' => 1_000_000_001}
 
     strings.each do |key, val|
-      assert_equal val, Numerizer.numerize(key).to_i
+      assert_equal val, Chronic::Numerizer.numerize(key).to_i
     end
   end
 
   def test_edges
-    assert_equal "27 Oct 2006 7:30am", Numerizer.numerize("27 Oct 2006 7:30am")
+    assert_equal "27 Oct 2006 7:30am", Chronic::Numerizer.numerize("27 Oct 2006 7:30am")
   end
 end
