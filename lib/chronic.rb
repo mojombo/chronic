@@ -12,6 +12,9 @@ require 'time'
 require 'chronic/chronic'
 require 'chronic/handlers'
 require 'chronic/mini_date'
+require 'chronic/tag'
+require 'chronic/span'
+require 'chronic/token'
 
 require 'chronic/repeater'
 require 'chronic/repeaters/repeater_year'
@@ -38,7 +41,7 @@ require 'chronic/ordinal'
 require 'chronic/separator'
 require 'chronic/time_zone'
 
-require 'chronic/numerizer/numerizer'
+require 'chronic/numerizer'
 
 module Chronic
   VERSION = "0.3.0"

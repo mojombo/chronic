@@ -1,6 +1,5 @@
-# module Chronic
-
-  class Chronic::Grabber < Chronic::Tag #:nodoc:
+module Chronic
+  class Grabber < Tag #:nodoc:
     def self.scan(tokens)
       tokens.each_index do |i|
         if t = self.scan_for_all(tokens[i]) then tokens[i].tag(t); next end
@@ -20,5 +19,4 @@
       'grabber-' << @type.to_s
     end
   end
-
-#end
+end
