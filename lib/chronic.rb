@@ -7,6 +7,18 @@
 #
 #=============================================================================
 
+module Chronic
+  VERSION = "0.3.0"
+
+  class << self
+    attr_accessor :debug
+    attr_accessor :time_class
+  end
+
+  self.debug = false
+  self.time_class = Time
+end
+
 require 'time'
 
 require 'chronic/chronic'
@@ -42,18 +54,6 @@ require 'chronic/separator'
 require 'chronic/time_zone'
 
 require 'chronic/numerizer'
-
-module Chronic
-  VERSION = "0.3.0"
-
-  class << self
-    attr_accessor :debug
-    attr_accessor :time_class
-  end
-
-  self.debug = false
-  self.time_class = Time
-end
 
 # class Time
 #   def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
