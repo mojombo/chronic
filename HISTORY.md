@@ -1,3 +1,23 @@
+# TBA
+
+* Fix pre_normalize() to remove periods before numerizing
+* Fix RepeaterDays to not add an extra hour in future tense. This meant
+  when parsing 'yesterday' after 11PM, Chronic would return today
+* Discard any prefixed 0 for time strings when using post noon portion
+* Gemspec updates for RubyGems deprecations
+* Ensure 0:10 is treated like 00:10
+* Ensure we load classes after setting Chronic class instance variables
+  so we can debug initialization and do assignments at compile time
+* Added a Tag.scan_for method for DRYing up some scanning code
+* Move some classes into their own files for maintainability
+* Numerizer.andition should be a private class method, make it so
+* Namespaced Numerizer, Season and MiniDate (Sascha Teske)
+* Support for Ruby 1.9 (Dave Lee, Aaron Hurley)
+* Fix `:context => :past` where parsed date is in current month (Marc Hedlund)
+* Fix undefined variable in RepeaterHour (Ryan Garver)
+* Added support for parsing 'Fourty' as another mis-spelling (Lee Reilly)
+* Added ordinal format support: ie 'February 14th, 2004' (Jeff Felchner)
+
 # 0.3.0 / 2010-10-22
 
 * Fix numerizer number combination bug (27 Oct 2006 7:30pm works now)
