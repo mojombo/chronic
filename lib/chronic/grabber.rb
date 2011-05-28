@@ -1,4 +1,4 @@
-#module Chronic
+# module Chronic
 
   class Chronic::Grabber < Chronic::Tag #:nodoc:
     def self.scan(tokens)
