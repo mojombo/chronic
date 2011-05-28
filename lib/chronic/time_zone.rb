@@ -7,10 +7,11 @@ module Chronic
     end
 
     def self.scan_for_all(token)
-      scanner = {/[PMCE][DS]T/i => :tz,
-                 /(tzminus)?\d{4}/ => :tz}
-      scanner.keys.each do |scanner_item|
-        return self.new(scanner[scanner_item]) if scanner_item =~ token.word
+      {
+        /[PMCE][DS]T/i => :tz,
+        /(tzminus)?\d{4}/ => :tz
+      }.each do |item, symbol|
+        return self.new(symbol) if item =~ token.word
       end
       return nil
     end
