@@ -11,6 +11,7 @@ require 'time'
 
 require 'chronic/chronic'
 require 'chronic/handlers'
+require 'chronic/mini_date'
 
 require 'chronic/repeater'
 require 'chronic/repeaters/repeater_year'
