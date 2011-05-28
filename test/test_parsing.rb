@@ -383,16 +383,20 @@ class TestParsing < Test::Unit::TestCase
     # day
 
     time = parse_now("this day")
-    assert_equal Time.local(2006, 8, 16, 19, 30), time
+    assert_equal Time.local(2006, 8, 16, 19), time
 
     time = parse_now("this day", :context => :past)
     assert_equal Time.local(2006, 8, 16, 7), time
 
     time = parse_now("today")
-    assert_equal Time.local(2006, 8, 16, 19, 30), time
+    assert_equal Time.local(2006, 8, 16, 19), time
 
     time = parse_now("yesterday")
     assert_equal Time.local(2006, 8, 15, 12), time
+
+    now = Time.parse("2011-05-27 23:10") # after 11pm
+    time = parse_now("yesterday", :now => now)
+    assert_equal Time.local(2011, 05, 26, 12), time
 
     time = parse_now("tomorrow")
     assert_equal Time.local(2006, 8, 17, 12), time
