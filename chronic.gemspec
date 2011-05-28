@@ -27,7 +27,8 @@ Gem::Specification.new do |s|
     lib/chronic/chronic.rb
     lib/chronic/grabber.rb
     lib/chronic/handlers.rb
-    lib/chronic/numerizer/numerizer.rb
+    lib/chronic/mini_date.rb
+    lib/chronic/numerizer.rb
     lib/chronic/ordinal.rb
     lib/chronic/pointer.rb
     lib/chronic/repeater.rb
@@ -49,7 +50,10 @@ Gem::Specification.new do |s|
     lib/chronic/repeaters/repeater_year.rb
     lib/chronic/scalar.rb
     lib/chronic/separator.rb
+    lib/chronic/span.rb
+    lib/chronic/tag.rb
     lib/chronic/time_zone.rb
+    lib/chronic/token.rb
     test/helper.rb
     test/test_Chronic.rb
     test/test_DaylightSavings.rb
