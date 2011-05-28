@@ -92,8 +92,8 @@ class Chronic::RepeaterSeason < Chronic::Repeater #:nodoc:
   end
 
   def find_current_season(md)
-    [:spring, :summer, :autumn, :winter].each do |season|
-      return season if md.is_between?(SEASONS[season].start, SEASONS[season].end)
+    [:spring, :summer, :autumn, :winter].find do |season|
+      md.is_between?(SEASONS[season].start, SEASONS[season].end)
     end
   end
 
