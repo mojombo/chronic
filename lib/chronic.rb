@@ -122,4 +122,8 @@ class Time
 
     Chronic.time_class.local(year, month, day, hour, minute, second)
   end
+
+  def to_minidate
+    Chronic::MiniDate.new(self.month, self.day)
+  end
 end

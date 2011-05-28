@@ -1,9 +1,3 @@
-class Time
-  def to_minidate
-    Chronic::MiniDate.new(self.month, self.day)
-  end
-end
-
 class Chronic::Season
   attr_reader :start, :end
 
