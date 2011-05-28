@@ -85,14 +85,16 @@ class Numerizer
     string.gsub(/<num>/, '')
   end
 
-  private
+  class << self
+    private
 
-  def self.andition(string)
-    sc = StringScanner.new(string)
-    while(sc.scan_until(/<num>(\d+)( | and )<num>(\d+)(?=[^\w]|$)/i))
-      if sc[2] =~ /and/ || sc[1].size > sc[3].size
-        string[(sc.pos - sc.matched_size)..(sc.pos-1)] = '<num>' + (sc[1].to_i + sc[3].to_i).to_s
-        sc.reset
+    def andition(string)
+      sc = StringScanner.new(string)
+      while(sc.scan_until(/<num>(\d+)( | and )<num>(\d+)(?=[^\w]|$)/i))
+        if sc[2] =~ /and/ || sc[1].size > sc[3].size
+          string[(sc.pos - sc.matched_size)..(sc.pos-1)] = '<num>' + (sc[1].to_i + sc[3].to_i).to_s
+          sc.reset
+        end
       end
     end
   end
