@@ -1,5 +1,3 @@
-require 'chronic/repeaters/repeater_season.rb'
-
 class Chronic::RepeaterSeasonName < Chronic::RepeaterSeason #:nodoc:
   SEASON_SECONDS = 7_862_400 # 91 * 24 * 60 * 60
   DAY_SECONDS = 86_400 # (24 * 60 * 60)
