@@ -47,6 +47,14 @@ module Chronic
     #     assume that means 5:00pm. If <tt>:none</tt> is given, no assumption
     #     will be made, and the first matching instance of that time will
     #     be used.
+    #
+    # [<tt>:endian_precedence</tt>]
+    #     Array (defaults to <tt>[:middle, :little]</tt>)
+    #
+    #     By default, Chronic will parse "03/04/2011" as the fourth day
+    #     of the third month. Alternatively you can tell Chronic to parse
+    #     this as the third day of the fourth month by altering the
+    #     <tt>:endian_precedence</tt> to <tt>[:little, :middle]</tt>.
     def parse(text, specified_options = {})
       @text = text
       options = DEFAULT_OPTIONS.merge specified_options
