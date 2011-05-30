@@ -17,6 +17,7 @@
 * Fix undefined variable in RepeaterHour (Ryan Garver)
 * Added support for parsing 'Fourty' as another mis-spelling (Lee Reilly)
 * Added ordinal format support: ie 'February 14th, 2004' (Jeff Felchner)
+* Fix dates when working with daylight saving times Mike Mangino
 
 # 0.3.0 / 2010-10-22
 
