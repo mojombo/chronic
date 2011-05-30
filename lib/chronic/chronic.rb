@@ -72,19 +72,12 @@ module Chronic
         puts "+---------------------------------------------------"
       end
 
-      # do the heavy lifting
-      begin
-        span = self.tokens_to_span(@tokens, options)
-      rescue
-        raise
-        return nil
-      end
+      span = self.tokens_to_span(@tokens, options)
 
-      # guess a time within a span if required
       if options[:guess]
-        return self.guess(span)
+        guess span
       else
-        return span
+        span
       end
     end
 
