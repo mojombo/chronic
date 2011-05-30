@@ -12,10 +12,7 @@ module Chronic
     end
 
     def self.scan_for_commas(token)
-      scan_for token, SeparatorComma,
-      {
-        /^,$/ => :comma
-      }
+      scan_for token, SeparatorComma, { /^,$/ => :comma }
     end
 
     def self.scan_for_slash_or_dash(token)
@@ -27,24 +24,15 @@ module Chronic
     end
 
     def self.scan_for_at(token)
-      scan_for token, SeparatorAt,
-      {
-        /^(at|@)$/ => :at
-      }
+      scan_for token, SeparatorAt, { /^(at|@)$/ => :at }
     end
 
     def self.scan_for_in(token)
-      scan_for token, SeparatorIn,
-      {
-        /^in$/ => :in
-      }
+      scan_for token, SeparatorIn, { /^in$/ => :in }
     end
 
     def self.scan_for_on(token)
-      scan_for token, SeparatorOn,
-      {
-        /^on$/ => :on
-      }
+      scan_for token, SeparatorOn, { /^on$/ => :on }
     end
 
     def to_s
