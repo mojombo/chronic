@@ -1,5 +1,6 @@
 # TBA
 
+* Support parsing 'thurs' for Thursday
 * Fix pre_normalize() to remove periods before numerizing
 * Fix RepeaterDays to not add an extra hour in future tense. This meant
   when parsing 'yesterday' after 11PM, Chronic would return today

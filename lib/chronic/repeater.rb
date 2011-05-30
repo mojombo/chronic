@@ -52,7 +52,7 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
       /^we(dnes|nds|nns)day$/ => :wednesday,
       /^wed$/ => :wednesday,
       /^th(urs|ers)day$/ => :thursday,
-      /^thu$/ => :thursday,
+      /^thu(rs)?$/ => :thursday,
       /^fr[iy](day)?$/ => :friday,
       /^sat(t?[ue]rday)?$/ => :saturday,
       /^su[nm](day)?$/ => :sunday
