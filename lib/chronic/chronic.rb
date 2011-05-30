@@ -51,11 +51,6 @@ module Chronic
       @text = text
       options = DEFAULT_OPTIONS.merge specified_options
 
-      # handle options that were set to nil
-      options[:context] ||= :future
-      options[:now] ||= Chronic.time_class.now
-      options[:ambiguous_time_range] ||= 6
-
       # ensure the specified options are valid
       specified_options.keys.each do |key|
         DEFAULT_OPTIONS.keys.include?(key) || raise(InvalidArgumentException, "#{key} is not a valid option key.")
