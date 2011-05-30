@@ -7,7 +7,6 @@ module Chronic
         if t = self.scan_for_ordinals(tokens[i]) then tokens[i].tag(t) end
         if t = self.scan_for_days(tokens[i]) then tokens[i].tag(t) end
       end
-      tokens
     end
 
     def self.scan_for_ordinals(token)

@@ -10,7 +10,6 @@ module Chronic
         if t = self.scan_for_times(tokens[i]) then tokens[i].tag(t); next end
         if t = self.scan_for_units(tokens[i]) then tokens[i].tag(t); next end
       end
-      tokens
     end
 
     def self.scan_for_season_names(token)

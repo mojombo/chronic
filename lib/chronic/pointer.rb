@@ -6,7 +6,6 @@ module Chronic
       tokens.each_index do |i|
         if t = self.scan_for_all(tokens[i]) then tokens[i].tag(t) end
       end
-      tokens
     end
 
     def self.scan_for_all(token)
