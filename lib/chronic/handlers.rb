@@ -141,10 +141,9 @@ module Chronic
 
       if !time_tokens.empty?
         @now = outer_span.begin
-        time = get_anchor(dealias_and_disambiguate_times(time_tokens, options), options)
-        return time
+        get_anchor(dealias_and_disambiguate_times(time_tokens, options), options)
       else
-        return outer_span
+        outer_span
       end
     end
 
