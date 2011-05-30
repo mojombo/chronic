@@ -63,16 +63,8 @@ module Chronic
       # put the text into a normal format to ease scanning
       text = self.pre_normalize(text)
 
-      # get base tokens for each word
-      @tokens = self.base_tokenize(text)
-
-      # scan the tokens with each token scanner
-      [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tokenizer|
-        @tokens = tokenizer.scan(@tokens)
-      end
-
-      # strip any non-tagged tokens
-      @tokens.delete_if { |token| !token.tagged? }
+      # tokenize words
+      @tokens = self.tokenize(text)
 
       if Chronic.debug
         puts "+---------------------------------------------------"
@@ -136,10 +128,12 @@ module Chronic
       text
     end
 
-    # Split the text on spaces and convert each word into
-    # a Token
-    def base_tokenize(text) #:nodoc:
-      text.split(' ').map { |word| Token.new(word) }
+    def tokenize(text) #:nodoc:
+      tokens = text.split(' ').map { |word| Token.new(word) }
+      [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
+        tokens = tok.scan(tokens)
+      end
+      tokens.delete_if { |token| !token.tagged? }
     end
 
     # Guess a specific time within the given span
