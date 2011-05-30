@@ -1,12 +1,12 @@
 class Chronic::Repeater < Chronic::Tag #:nodoc:
-  def self.scan(tokens, options)
+  def self.scan(tokens)
     # for each token
     tokens.each_index do |i|
       if t = self.scan_for_season_names(tokens[i]) then tokens[i].tag(t); next end
       if t = self.scan_for_month_names(tokens[i]) then tokens[i].tag(t); next end
       if t = self.scan_for_day_names(tokens[i]) then tokens[i].tag(t); next end
       if t = self.scan_for_day_portions(tokens[i]) then tokens[i].tag(t); next end
-      if t = self.scan_for_times(tokens[i], options) then tokens[i].tag(t); next end
+      if t = self.scan_for_times(tokens[i]) then tokens[i].tag(t); next end
       if t = self.scan_for_units(tokens[i]) then tokens[i].tag(t); next end
     end
     tokens
@@ -76,9 +76,9 @@ class Chronic::Repeater < Chronic::Tag #:nodoc:
     return nil
   end
 
-  def self.scan_for_times(token, options)
+  def self.scan_for_times(token)
     if token.word =~ /^\d{1,2}(:?\d{2})?([\.:]?\d{2})?$/
-      return Chronic::RepeaterTime.new(token.word, options)
+      return Chronic::RepeaterTime.new(token.word)
     end
     return nil
   end

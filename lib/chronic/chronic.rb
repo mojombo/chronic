@@ -72,11 +72,7 @@ module Chronic
       @tokens = self.base_tokenize(text)
 
       # scan the tokens with each token scanner
-      [Repeater].each do |tokenizer|
-        @tokens = tokenizer.scan(@tokens, options)
-      end
-
-      [Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tokenizer|
+      [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tokenizer|
         @tokens = tokenizer.scan(@tokens)
       end
 
