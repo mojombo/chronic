@@ -424,9 +424,7 @@ module Chronic
       h = head.this(:none)
 
       if span.cover?(h.begin) || span.cover?(h.end)
-        return find_within(rest, h, pointer)
-      else
-        return nil
+        find_within(rest, h, pointer)
       end
     end
 
