@@ -3,8 +3,7 @@ module Chronic
   class << self
 
     def definitions(options={}) #:nodoc:
-      options[:endian_precedence] = [:middle, :little] if options[:endian_precedence].nil?
-
+      options[:endian_precedence] ||= [:middle, :little]
       # ensure the endian precedence is exactly two elements long
       raise ChronicPain, "More than two elements specified for endian precedence array" unless options[:endian_precedence].length == 2
 

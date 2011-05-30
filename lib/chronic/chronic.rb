@@ -5,7 +5,7 @@ module Chronic
     :now     => Chronic.time_class.now,
     :guess   => true,
     :ambiguous_time_range => 6,
-    :endian_precedence    => nil
+    :endian_precedence    => [:middle, :little]
   }
 
   class << self
