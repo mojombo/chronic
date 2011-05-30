@@ -649,6 +649,10 @@ class TestParsing < Test::Unit::TestCase
     time = parse_now("3rd thursday this september")
     assert_equal Time.local(2006, 9, 21, 12), time
 
+    now = Time.parse("1/10/2010")
+    time = parse_now("3rd thursday this november", :now => now)
+    assert_equal Time.local(2010, 11, 18, 12), time
+
     time = parse_now("4th day last week")
     assert_equal Time.local(2006, 8, 9, 12), time
   end

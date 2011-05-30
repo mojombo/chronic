@@ -11,20 +11,20 @@ class Chronic::RepeaterDayName < Chronic::Repeater #:nodoc:
 
     direction = pointer == :future ? 1 : -1
 
-    if !@current_day_start
-      @current_day_start = Time.construct(@now.year, @now.month, @now.day)
-      @current_day_start += direction * DAY_SECONDS
+    if !@current_date
+      @current_date = Date.new(@now.year, @now.month, @now.day)
+      @current_date += direction
 
       day_num = symbol_to_number(@type)
 
-      while @current_day_start.wday != day_num
-        @current_day_start += direction * DAY_SECONDS
+      while @current_date.wday != day_num
+        @current_date += direction
       end
     else
-      @current_day_start += direction * 7 * DAY_SECONDS
+      @current_date += direction * 7
     end
-
-    Chronic::Span.new(@current_day_start, @current_day_start + DAY_SECONDS)
+    next_date = @current_date.succ
+    Chronic::Span.new(Time.construct(@current_date.year, @current_date.month, @current_date.day), Time.construct(next_date.year, next_date.month, next_date.day))
   end
 
   def this(pointer = :future)

@@ -20,6 +20,7 @@ module Chronic
 end
 
 require 'time'
+require 'date'
 
 require 'chronic/chronic'
 require 'chronic/handlers'
