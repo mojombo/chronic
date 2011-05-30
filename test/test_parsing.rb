@@ -720,12 +720,12 @@ class TestParsing < Test::Unit::TestCase
 
   def test_seasons
     t = parse_now("this spring", :guess => false)
-    assert_equal Time.local(2007, 3, 20), t.begin
+    assert_equal Time.local(2007, 3, 20, 23), t.begin
     assert_equal Time.local(2007, 6, 20), t.end
 
     t = parse_now("this winter", :guess => false)
     assert_equal Time.local(2006, 12, 22, 23), t.begin
-    assert_equal Time.local(2007, 3, 19), t.end
+    assert_equal Time.local(2007, 3, 19, 23), t.end
 
     t = parse_now("last spring", :guess => false)
     assert_equal Time.local(2006, 3, 20, 23), t.begin
@@ -736,7 +736,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 3, 19, 23), t.end
 
     t = parse_now("next spring", :guess => false)
-    assert_equal Time.local(2007, 3, 20), t.begin
+    assert_equal Time.local(2007, 3, 20, 23), t.begin
     assert_equal Time.local(2007, 6, 20), t.end
   end
 
