@@ -244,6 +244,17 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(1800, 8, 20, 12, 0, 0), time
   end
 
+  def test_parse_two_digit_years
+    time = parse_now("may 97")
+    assert_equal Time.local(1997, 5, 16, 12), time
+
+    time = parse_now("may 1st 01")
+    assert_equal Time.local(2001, 5, 1, 12), time
+
+    time = parse_now("may 79", :ambiguous_year_future_bias => 10)
+    assert_equal Time.local(2079, 5, 16, 12), time
+  end
+
   def test_parse_guess_r
     time = parse_now("friday")
     assert_equal Time.local(2006, 8, 18, 12), time
