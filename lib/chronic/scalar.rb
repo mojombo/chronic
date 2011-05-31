@@ -50,13 +50,12 @@ module Chronic
 
     # Build a year from a 2 digit suffix
     def self.make_year(year, bias)
-      string = year.to_s
-      return string if string.size > 2
-      string.insert(0, '0') if string.size == 1
-      start_year = Chronic.time_class.now.year - bias
-      suffix = start_year.to_s[-2, 2].to_i
-      which = year <= suffix ? start_year + 100 : start_year
-      which.to_s[0, 2] + string
+      return year if year.to_s.size > 2
+      start_year = Time.now.year - bias
+      century = (start_year / 100) * 100
+      full_year = century + year
+      full_year += 100 if full_year < start_year
+      full_year
     end
 
     def to_s
