@@ -42,9 +42,21 @@ module Chronic
     def self.scan_for_years(token, post_token)
       if token.word =~ /^([1-9]\d)?\d\d?$/
         unless post_token && DAY_PORTIONS.include?(post_token.word)
-          return ScalarYear.new(token.word.to_i)
+          year = make_year(token.word.to_i)
+          return ScalarYear.new(year.to_i)
         end
       end
+    end
+
+    # Build a year from a 2 digit suffix
+    def self.make_year(year)
+      string = year.to_s
+      return string if string.size > 2
+      string.insert(0, '0') if string.size == 1
+      start_year = Time.now.year - 50
+      suffix = start_year.to_s[-2, 2].to_i
+      which = year <= suffix ? start_year + 100 : start_year
+      which.to_s[0, 2] + string
     end
 
     def to_s
