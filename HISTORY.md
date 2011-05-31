@@ -1,5 +1,6 @@
 # TBA
 
+* Support parsing 2 digit years and added `ambiguous_year_future_bias` option
 * Support parsing 'thurs' for Thursday
 * Fix pre_normalize() to remove periods before numerizing
 * Fix RepeaterDays to not add an extra hour in future tense. This meant
