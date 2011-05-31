@@ -5,7 +5,8 @@ module Chronic
     :now     => Chronic.time_class.now,
     :guess   => true,
     :ambiguous_time_range => 6,
-    :endian_precedence    => [:middle, :little]
+    :endian_precedence    => [:middle, :little],
+    :ambiguous_year_future_bias => 50
   }
 
   class << self
@@ -72,7 +73,7 @@ module Chronic
       text = pre_normalize(text)
 
       # tokenize words
-      @tokens = tokenize(text)
+      @tokens = tokenize(text, options)
 
       if Chronic.debug
         puts "+---------------------------------------------------"
@@ -129,10 +130,10 @@ module Chronic
       text
     end
 
-    def tokenize(text) #:nodoc:
+    def tokenize(text, options) #:nodoc:
       tokens = text.split(' ').map { |word| Token.new(word) }
       [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
-        tokens = tok.scan(tokens)
+        tokens = tok.scan(tokens, options)
       end
       tokens.delete_if { |token| !token.tagged? }
     end
