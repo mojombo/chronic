@@ -1,52 +1,54 @@
-class Chronic::RepeaterDay < Chronic::Repeater #:nodoc:
-  DAY_SECONDS = 86_400 # (24 * 60 * 60)
+module Chronic
+  class RepeaterDay < Repeater #:nodoc:
+    DAY_SECONDS = 86_400 # (24 * 60 * 60)
 
-  def initialize(type)
-    super
-    @current_day_start = nil
-  end
-
-  def next(pointer)
-    super
-
-    if !@current_day_start
-      @current_day_start = Chronic.time_class.local(@now.year, @now.month, @now.day)
+    def initialize(type)
+      super
+      @current_day_start = nil
     end
 
-    direction = pointer == :future ? 1 : -1
-    @current_day_start += direction * DAY_SECONDS
+    def next(pointer)
+      super
 
-    Chronic::Span.new(@current_day_start, @current_day_start + DAY_SECONDS)
-  end
+      if !@current_day_start
+        @current_day_start = Chronic.time_class.local(@now.year, @now.month, @now.day)
+      end
 
-  def this(pointer = :future)
-    super
+      direction = pointer == :future ? 1 : -1
+      @current_day_start += direction * DAY_SECONDS
 
-    case pointer
-    when :future
-      day_begin = Time.construct(@now.year, @now.month, @now.day, @now.hour)
-      day_end = Time.construct(@now.year, @now.month, @now.day) + DAY_SECONDS
-    when :past
-      day_begin = Time.construct(@now.year, @now.month, @now.day)
-      day_end = Time.construct(@now.year, @now.month, @now.day, @now.hour)
-    when :none
-      day_begin = Time.construct(@now.year, @now.month, @now.day)
-      day_end = Time.construct(@now.year, @now.month, @now.day) + DAY_SECONDS
+      Span.new(@current_day_start, @current_day_start + DAY_SECONDS)
     end
 
-    Chronic::Span.new(day_begin, day_end)
-  end
+    def this(pointer = :future)
+      super
 
-  def offset(span, amount, pointer)
-    direction = pointer == :future ? 1 : -1
-    span + direction * amount * DAY_SECONDS
-  end
+      case pointer
+      when :future
+        day_begin = Time.construct(@now.year, @now.month, @now.day, @now.hour)
+        day_end = Time.construct(@now.year, @now.month, @now.day) + DAY_SECONDS
+      when :past
+        day_begin = Time.construct(@now.year, @now.month, @now.day)
+        day_end = Time.construct(@now.year, @now.month, @now.day, @now.hour)
+      when :none
+        day_begin = Time.construct(@now.year, @now.month, @now.day)
+        day_end = Time.construct(@now.year, @now.month, @now.day) + DAY_SECONDS
+      end
 
-  def width
-    DAY_SECONDS
-  end
+      Span.new(day_begin, day_end)
+    end
 
-  def to_s
-    super << '-day'
+    def offset(span, amount, pointer)
+      direction = pointer == :future ? 1 : -1
+      span + direction * amount * DAY_SECONDS
+    end
+
+    def width
+      DAY_SECONDS
+    end
+
+    def to_s
+      super << '-day'
+    end
   end
 end
