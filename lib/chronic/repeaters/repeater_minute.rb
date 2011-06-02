@@ -1,15 +1,15 @@
 module Chronic
   class RepeaterMinute < Repeater #:nodoc:
     MINUTE_SECONDS = 60
-  
+
     def initialize(type)
       super
       @current_minute_start = nil
     end
-  
+
     def next(pointer = :future)
       super
-  
+
       if !@current_minute_start
         case pointer
         when :future
@@ -21,13 +21,13 @@ module Chronic
         direction = pointer == :future ? 1 : -1
         @current_minute_start += direction * MINUTE_SECONDS
       end
-  
+
       Span.new(@current_minute_start, @current_minute_start + MINUTE_SECONDS)
     end
-  
+
     def this(pointer = :future)
       super
-  
+
       case pointer
       when :future
         minute_begin = @now
@@ -39,19 +39,19 @@ module Chronic
         minute_begin = Time.construct(@now.year, @now.month, @now.day, @now.hour, @now.min)
         minute_end = Time.construct(@now.year, @now.month, @now.day, @now.hour, @now.min) + MINUTE_SECONDS
       end
-  
+
       Span.new(minute_begin, minute_end)
     end
-  
+
     def offset(span, amount, pointer)
       direction = pointer == :future ? 1 : -1
       span + direction * amount * MINUTE_SECONDS
     end
-  
+
     def width
       MINUTE_SECONDS
     end
-  
+
     def to_s
       super << '-minute'
     end

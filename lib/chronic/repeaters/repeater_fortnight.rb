@@ -1,15 +1,15 @@
 module Chronic
   class RepeaterFortnight < Repeater #:nodoc:
     FORTNIGHT_SECONDS = 1_209_600 # (14 * 24 * 60 * 60)
-  
+
     def initialize(type)
       super
       @current_fortnight_start = nil
     end
-  
+
     def next(pointer)
       super
-  
+
       if !@current_fortnight_start
         case pointer
         when :future
@@ -28,15 +28,15 @@ module Chronic
         direction = pointer == :future ? 1 : -1
         @current_fortnight_start += direction * FORTNIGHT_SECONDS
       end
-  
+
       Span.new(@current_fortnight_start, @current_fortnight_start + FORTNIGHT_SECONDS)
     end
-  
+
     def this(pointer = :future)
       super
-  
+
       pointer = :future if pointer == :none
-  
+
       case pointer
       when :future
         this_fortnight_start = Time.construct(@now.year, @now.month, @now.day, @now.hour) + RepeaterHour::HOUR_SECONDS
@@ -55,16 +55,16 @@ module Chronic
         Span.new(this_fortnight_start, this_fortnight_end)
       end
     end
-  
+
     def offset(span, amount, pointer)
       direction = pointer == :future ? 1 : -1
       span + direction * amount * FORTNIGHT_SECONDS
     end
-  
+
     def width
       FORTNIGHT_SECONDS
     end
-  
+
     def to_s
       super << '-fortnight'
     end
