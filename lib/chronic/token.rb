@@ -14,7 +14,7 @@ module Chronic
 
     # Remove all tags of the given class
     def untag(tag_class)
-      @tags = @tags.select { |m| !m.kind_of? tag_class }
+      @tags.delete_if { |m| m.kind_of? tag_class }
     end
 
     # Return true if this token has any tags
