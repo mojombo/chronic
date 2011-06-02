@@ -28,9 +28,7 @@ class Chronic::RepeaterSeasonName < Chronic::RepeaterSeason #:nodoc:
       this_ssn_end = goal_ssn_end
     end
 
-    start = construct_season(this_ssn_start)
-    finish = construct_season(this_ssn_end)
-    Chronic::Span.new(start, finish)
+    construct_season(this_ssn_start, this_ssn_end)
   end
 
   def offset(span, amount, pointer)
