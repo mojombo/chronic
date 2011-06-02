@@ -17,7 +17,6 @@ class Chronic::Season
 end
 
 class Chronic::RepeaterSeason < Chronic::Repeater #:nodoc:
-  YEAR_SEASONS = 4
   SEASON_SECONDS = 7_862_400 # 91 * 24 * 60 * 60
   SEASONS = {
     :spring => Chronic::Season.new(Chronic::MiniDate.new(3,20), Chronic::MiniDate.new(6,20)),
