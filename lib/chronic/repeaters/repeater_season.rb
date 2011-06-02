@@ -19,10 +19,12 @@ end
 class Chronic::RepeaterSeason < Chronic::Repeater #:nodoc:
   YEAR_SEASONS = 4
   SEASON_SECONDS = 7_862_400 # 91 * 24 * 60 * 60
-  SEASONS = { :spring => Chronic::Season.new( Chronic::MiniDate.new(3,20),Chronic::MiniDate.new(6,20) ),
-              :summer => Chronic::Season.new( Chronic::MiniDate.new(6,21),Chronic::MiniDate.new(9,22) ),
-              :autumn => Chronic::Season.new( Chronic::MiniDate.new(9,23),Chronic::MiniDate.new(12,21) ),
-              :winter => Chronic::Season.new( Chronic::MiniDate.new(12,22),Chronic::MiniDate.new(3,19) ) }
+  SEASONS = {
+    :spring => Chronic::Season.new(Chronic::MiniDate.new(3,20), Chronic::MiniDate.new(6,20)),
+    :summer => Chronic::Season.new(Chronic::MiniDate.new(6,21), Chronic::MiniDate.new(9,22)),
+    :autumn => Chronic::Season.new(Chronic::MiniDate.new(9,23), Chronic::MiniDate.new(12,21)),
+    :winter => Chronic::Season.new(Chronic::MiniDate.new(12,22), Chronic::MiniDate.new(3,19))
+  }
 
   def initialize(type)
     super
