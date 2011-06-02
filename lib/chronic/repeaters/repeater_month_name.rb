@@ -1,5 +1,19 @@
 class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
   MONTH_SECONDS = 2_592_000 # 30 * 24 * 60 * 60
+  MONTHS = {
+    :january => 1,
+    :february => 2,
+    :march => 3,
+    :april => 4,
+    :may => 5,
+    :june => 6,
+    :july => 7,
+    :august => 8,
+    :september => 9,
+    :october => 10,
+    :november => 11,
+    :december => 12
+  }
 
   def initialize(type)
     super
@@ -81,18 +95,6 @@ class Chronic::RepeaterMonthName < Chronic::Repeater #:nodoc:
   private
 
   def symbol_to_number(sym)
-    lookup = {:january => 1,
-              :february => 2,
-              :march => 3,
-              :april => 4,
-              :may => 5,
-              :june => 6,
-              :july => 7,
-              :august => 8,
-              :september => 9,
-              :october => 10,
-              :november => 11,
-              :december => 12}
-    lookup[sym] || raise("Invalid symbol specified")
+    MONTHS[sym] || raise("Invalid symbol specified")
   end
 end
