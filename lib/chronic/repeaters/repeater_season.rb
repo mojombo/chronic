@@ -57,7 +57,9 @@ class Chronic::RepeaterSeason < Chronic::Repeater #:nodoc:
       this_ssn_end = today + direction * num_seconds_til_end(this_ssn, direction)
     end
 
-    Chronic::Span.new(this_ssn_start, this_ssn_end)
+    start = construct_season(this_ssn_start)
+    finish = construct_season(this_ssn_end)
+    Chronic::Span.new(start, finish)
   end
 
   def offset(span, amount, pointer)
@@ -88,7 +90,9 @@ class Chronic::RepeaterSeason < Chronic::Repeater #:nodoc:
     @next_season_start += direction * num_seconds_til_start(next_season, direction)
     @next_season_end += direction * num_seconds_til_end(next_season, direction)
 
-    Chronic::Span.new(@next_season_start, @next_season_end)
+    start = construct_season(@next_season_start)
+    finish = construct_season(@next_season_end)
+    Chronic::Span.new(start, finish)
   end
 
   def find_current_season(md)
@@ -114,5 +118,9 @@ class Chronic::RepeaterSeason < Chronic::Repeater #:nodoc:
 
   def num_seconds_til_end(season_symbol, direction)
     num_seconds_til(SEASONS[season_symbol].end, direction)
+  end
+
+  def construct_season(time)
+    Time.construct(time.year, time.month, time.day)
   end
 end
