@@ -34,7 +34,7 @@ class Chronic::RepeaterSeason < Chronic::Repeater #:nodoc:
     super
 
     direction = pointer == :future ? 1 : -1
-    next_season = Season.find_next_season(find_current_season(@now.to_minidate), direction)
+    next_season = Chronic::Season.find_next_season(find_current_season(@now.to_minidate), direction)
 
     find_next_season_span(direction, next_season)
   end
