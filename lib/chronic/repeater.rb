@@ -3,12 +3,12 @@ module Chronic
     def self.scan(tokens, options)
       # for each token
       tokens.each_index do |i|
-        if t = self.scan_for_season_names(tokens[i]) then tokens[i].tag(t); next end
-        if t = self.scan_for_month_names(tokens[i]) then tokens[i].tag(t); next end
-        if t = self.scan_for_day_names(tokens[i]) then tokens[i].tag(t); next end
-        if t = self.scan_for_day_portions(tokens[i]) then tokens[i].tag(t); next end
-        if t = self.scan_for_times(tokens[i]) then tokens[i].tag(t); next end
-        if t = self.scan_for_units(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_season_names(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_month_names(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_day_names(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_day_portions(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_times(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_units(tokens[i]) then tokens[i].tag(t); next end
       end
     end
 

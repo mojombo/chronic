@@ -2,7 +2,7 @@ module Chronic
   class Grabber < Tag #:nodoc:
     def self.scan(tokens, options)
       tokens.each_index do |i|
-        if t = self.scan_for_all(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_all(tokens[i]) then tokens[i].tag(t); next end
       end
     end
 

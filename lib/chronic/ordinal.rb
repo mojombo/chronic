@@ -4,8 +4,8 @@ module Chronic
     def self.scan(tokens, options)
       # for each token
       tokens.each_index do |i|
-        if t = self.scan_for_ordinals(tokens[i]) then tokens[i].tag(t) end
-        if t = self.scan_for_days(tokens[i]) then tokens[i].tag(t) end
+        if t = scan_for_ordinals(tokens[i]) then tokens[i].tag(t) end
+        if t = scan_for_days(tokens[i]) then tokens[i].tag(t) end
       end
     end
 

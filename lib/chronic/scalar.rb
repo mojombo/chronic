@@ -6,10 +6,10 @@ module Chronic
     def self.scan(tokens, options)
       # for each token
       tokens.each_index do |i|
-        if t = self.scan_for_scalars(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
-        if t = self.scan_for_days(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
-        if t = self.scan_for_months(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
-        if t = self.scan_for_years(tokens[i], tokens[i + 1], options) then tokens[i].tag(t) end
+        if t = scan_for_scalars(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
+        if t = scan_for_days(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
+        if t = scan_for_months(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
+        if t = scan_for_years(tokens[i], tokens[i + 1], options) then tokens[i].tag(t) end
       end
     end
 

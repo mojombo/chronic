@@ -3,11 +3,11 @@ module Chronic
   class Separator < Tag #:nodoc:
     def self.scan(tokens, options)
       tokens.each_index do |i|
-        if t = self.scan_for_commas(tokens[i]) then tokens[i].tag(t); next end
-        if t = self.scan_for_slash_or_dash(tokens[i]) then tokens[i].tag(t); next end
-        if t = self.scan_for_at(tokens[i]) then tokens[i].tag(t); next end
-        if t = self.scan_for_in(tokens[i]) then tokens[i].tag(t); next end
-        if t = self.scan_for_on(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_commas(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_slash_or_dash(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_at(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_in(tokens[i]) then tokens[i].tag(t); next end
+        if t = scan_for_on(tokens[i]) then tokens[i].tag(t); next end
       end
     end
 
