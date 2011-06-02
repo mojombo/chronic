@@ -1,5 +1,6 @@
 # TBA
 
+* Seasons now ignore DST and return 00 as an hour
 * Support parsing 2 digit years and added `ambiguous_year_future_bias` option
 * Support parsing 'thurs' for Thursday
 * Fix pre_normalize() to remove periods before numerizing
