@@ -1,34 +1,33 @@
 module Chronic
   class RepeaterDayPortion < Repeater #:nodoc:
-    @@morning = (6 * 60 * 60)..(12 * 60 * 60) # 6am-12am
-    @@afternoon = (13 * 60 * 60)..(17 * 60 * 60) # 1pm-5pm
-    @@evening = (17 * 60 * 60)..(20 * 60 * 60) # 5pm-8pm
-    @@night = (20 * 60 * 60)..(24 * 60 * 60) # 8pm-12pm
-  
+    PORTIONS = {
+      :am => 0..(12 * 60 * 60 - 1),
+      :pm => (12 * 60 * 60)..(24 * 60 * 60 - 1),
+      :morning => (6 * 60 * 60)..(12 * 60 * 60),   # 6am-12am,
+      :afternoon =>(13 * 60 * 60)..(17 * 60 * 60), # 1pm-5pm,
+      :evening => (17 * 60 * 60)..(20 * 60 * 60),  # 5pm-8pm,
+      :night =>(20 * 60 * 60)..(24 * 60 * 60),     # 8pm-12pm
+    }
+
     def initialize(type)
       super
       @current_span = nil
-  
+
       if type.kind_of? Integer
         @range = (@type * 60 * 60)..((@type + 12) * 60 * 60)
       else
-        lookup = {:am => 0..(12 * 60 * 60 - 1),
-                  :pm => (12 * 60 * 60)..(24 * 60 * 60 - 1),
-                  :morning => @@morning,
-                  :afternoon => @@afternoon,
-                  :evening => @@evening,
-                  :night => @@night}
-        @range = lookup[type]
-        lookup[type] || raise("Invalid type '#{type}' for RepeaterDayPortion")
+        @range = PORTIONS[type]
+        @range || raise("Invalid type '#{type}' for RepeaterDayPortion")
       end
+
       @range || raise("Range should have been set by now")
     end
-  
+
     def next(pointer)
       super
-  
+
       full_day = 60 * 60 * 24
-  
+
       if !@current_span
         now_seconds = @now - Time.construct(@now.year, @now.month, @now.day)
         if now_seconds < @range.begin
@@ -53,7 +52,7 @@ module Chronic
             range_start = Time.construct(@now.year, @now.month, @now.day) - full_day + @range.begin
           end
         end
-  
+
         @current_span = Span.new(range_start, range_start + (@range.end - @range.begin))
       else
         case pointer
@@ -64,21 +63,21 @@ module Chronic
         end
       end
     end
-  
+
     def this(context = :future)
       super
-  
+
       range_start = Time.construct(@now.year, @now.month, @now.day) + @range.begin
       @current_span = Span.new(range_start, range_start + (@range.end - @range.begin))
     end
-  
+
     def offset(span, amount, pointer)
       @now = span.begin
       portion_span = self.next(pointer)
       direction = pointer == :future ? 1 : -1
       portion_span + (direction * (amount - 1) * RepeaterDay::DAY_SECONDS)
     end
-  
+
     def width
       @range || raise("Range has not been set")
       return @current_span.width if @current_span
@@ -88,7 +87,7 @@ module Chronic
         @range.end - @range.begin
       end
     end
-  
+
     def to_s
       super << '-dayportion-' << @type.to_s
     end
