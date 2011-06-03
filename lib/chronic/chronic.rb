@@ -118,6 +118,7 @@ module Chronic
       normalized_text.gsub!(/\b\d+:?\d*[ap]\b/,'\0m')
       normalized_text.gsub!(/(\d)([ap]m|oclock)\b/, '\1 \2')
       normalized_text.gsub!(/\b(hence|after|from)\b/, 'future')
+      normalized_text
     end
 
     # Convert number words to numbers (three => 3)
