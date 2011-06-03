@@ -4,8 +4,3 @@ unless defined? Chronic
 end
 
 require 'test/unit'
-
-begin
-  require 'turn'
-rescue LoadError
-end
