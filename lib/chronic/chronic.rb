@@ -126,11 +126,6 @@ module Chronic
       Numerizer.numerize(text)
     end
 
-    # Convert ordinal words to numeric ordinals (third => 3rd)
-    def numericize_ordinals(text) #:nodoc:
-      text
-    end
-
     def tokenize(text, options) #:nodoc:
       tokens = text.split(' ').map { |word| Token.new(word) }
       [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
