@@ -62,12 +62,12 @@ module Chronic
 
       # ensure the specified options are valid
       (specified_options.keys-DEFAULT_OPTIONS.keys).each {|key| raise(InvalidArgumentException, "#{key} is not a valid option key.")}
-      
+
       [:past, :future, :none].include?(options[:context]) || raise(InvalidArgumentException, "Invalid value ':#{options[:context]}' for :context specified. Valid values are :past and :future.")
 
-      # store now for later =)
-      @now = options[:now] || Chronic.time_class.now
-      
+      options[:now] ||= Chronic.time_class.now
+      @now = options[:now]
+
       # put the text into a normal format to ease scanning
       text = pre_normalize(text)
 
