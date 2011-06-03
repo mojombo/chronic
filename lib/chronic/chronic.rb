@@ -2,8 +2,8 @@ module Chronic
 
   DEFAULT_OPTIONS = {
     :context => :future,
-    :now     => Chronic.time_class.now,
-    :guess   => true,
+    :now => nil,
+    :guess => true,
     :ambiguous_time_range => 6,
     :endian_precedence    => [:middle, :little],
     :ambiguous_year_future_bias => 50
@@ -61,14 +61,13 @@ module Chronic
       options = DEFAULT_OPTIONS.merge specified_options
 
       # ensure the specified options are valid
-      specified_options.keys.each do |key|
-        DEFAULT_OPTIONS.keys.include?(key) || raise(InvalidArgumentException, "#{key} is not a valid option key.")
-      end
+      (specified_options.keys-DEFAULT_OPTIONS.keys).each {|key| raise(InvalidArgumentException, "#{key} is not a valid option key.")}
+      
       [:past, :future, :none].include?(options[:context]) || raise(InvalidArgumentException, "Invalid value ':#{options[:context]}' for :context specified. Valid values are :past and :future.")
 
       # store now for later =)
-      @now = options[:now]
-
+      @now = options[:now] || Chronic.time_class.now
+      
       # put the text into a normal format to ease scanning
       text = pre_normalize(text)
 
