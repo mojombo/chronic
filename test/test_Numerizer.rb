@@ -50,6 +50,22 @@ class ParseNumbersTest < Test::Unit::TestCase
     end
   end
 
+  def test_ordinal_strings
+    {
+      'first' => '1st',
+      'second' => 'second',
+      'second day' => '2nd day',
+      'second of may' => '2nd of may',
+      'fifth' => '5th',
+      'twenty third' => '23rd',
+      'first day month two' => '1st day month 2'
+    }.each do |key, val|
+      # Use pre_normalize here instead of Numerizer directly because
+      # pre_normalize deals with parsing 'second' appropriately
+      assert_equal val, Chronic.pre_normalize(key)
+    end
+  end
+
   def test_edges
     assert_equal "27 Oct 2006 7:30am", Chronic::Numerizer.numerize("27 Oct 2006 7:30am")
   end

@@ -97,6 +97,7 @@ module Chronic
     def pre_normalize(text) #:nodoc:
       normalized_text = text.to_s.downcase
       normalized_text.gsub!(/['"\.,]/, '')
+      normalized_text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
       normalized_text = numericize_numbers(normalized_text)
       normalized_text.gsub!(/ \-(\d{4})\b/, ' tzminus\1')
       normalized_text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }

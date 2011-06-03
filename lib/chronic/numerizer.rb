@@ -28,6 +28,18 @@ module Chronic
       ['\ba[\b^$]', '1'] # doesn't make sense for an 'a' at the end to be a 1
     ]
 
+    ORDINALS = [
+      ['first', '1'],
+      ['third', '3'],
+      ['fourth', '4'],
+      ['fifth', '5'],
+      ['sixth', '6'],
+      ['seventh', '7'],
+      ['eighth', '8'],
+      ['ninth', '9'],
+      ['tenth', '10']
+    ]
+
     TEN_PREFIXES = [
       ['twenty', 20],
       ['thirty', 30],
@@ -59,6 +71,10 @@ module Chronic
 
       DIRECT_NUMS.each do |dn|
         string.gsub!(/#{dn[0]}/i, '<num>' + dn[1])
+      end
+
+      ORDINALS.each do |on|
+        string.gsub!(/#{on[0]}/i, '<num>' + on[1] + on[0][-2, 2])
       end
 
       # ten, twenty, etc.
