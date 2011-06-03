@@ -1,7 +1,11 @@
+unless defined? Chronic
+  $:.unshift File.expand_path('../../lib')
+  require 'chronic'
+end
+
 require 'test/unit'
 
-dir = File.dirname(File.expand_path(__FILE__))
-$LOAD_PATH.unshift(File.join(dir, '..', 'lib'))
-$LOAD_PATH.unshift(dir)
-
-require 'chronic'
+begin
+  require 'turn'
+rescue LoadError
+end
