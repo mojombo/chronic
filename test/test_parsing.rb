@@ -782,6 +782,10 @@ class TestParsing < Test::Unit::TestCase
     # t1 = Chronic.parse('1st monday in november', :now => Time.local(2007))
     # assert_equal Time.local(2007, 11, 5, 11), t1
   end
+  
+  def test_now_changes
+    assert_not_equal Chronic.parse("now"),Chronic.parse("now")
+  end
 
   private
   def parse_now(string, options={})
