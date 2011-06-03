@@ -9,22 +9,25 @@ for the wide variety of formats Chronic will parse.
 
 ## INSTALLATION
 
-The best way to install Chronic is with RubyGems:
+### RubyGems
 
     $ [sudo] gem install chronic
+
+### GitHub
+
+    $ git clone git@github.com:mojombo/chronic.git
+    $ cd chronic && gem build chronic.gemspec
+    $ gem install chronic-<version>.gem
 
 
 ## USAGE
 
 You can parse strings containing a natural language date using the
-Chronic.parse method.
+`Chronic.parse` method.
 
-    require 'rubygems'
     require 'chronic'
 
     Time.now   #=> Sun Aug 27 23:18:25 PDT 2006
-
-    #---
 
     Chronic.parse('tomorrow')
       #=> Mon Aug 28 12:00:00 PDT 2006
@@ -44,7 +47,7 @@ Chronic.parse method.
     Chronic.parse('may 27th', :guess => false)
       #=> Sun May 27 00:00:00 PDT 2007..Mon May 28 00:00:00 PDT 2007
 
-See Chronic.parse for detailed usage instructions.
+See `Chronic.parse` for detailed usage instructions.
 
 
 ## EXAMPLES
@@ -160,6 +163,7 @@ your changes merged back into core is as follows:
 1. Create a thoughtfully named topic branch to contain your change
 1. Hack away
 1. Add tests and make sure everything still passes by running `rake`
+1. Ensure your tests pass in multiple timezones
 1. If you are adding new functionality, document it in the README
 1. Do not change the version number, we will do that on our end
 1. If necessary, rebase your commits into logical chunks, without errors
