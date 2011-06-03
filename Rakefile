@@ -15,10 +15,6 @@ def version
   line.match(/.*VERSION\s*=\s*['"](.*)['"]/)[1]
 end
 
-def date
-  Date.today.to_s
-end
-
 def rubyforge_project
   name
 end
@@ -111,7 +107,7 @@ task :gemspec => :validate do
   # replace name version and date
   replace_header(head, :name)
   replace_header(head, :version)
-  replace_header(head, :date)
+
   #comment this out if your rubyforge_project has a different name
   replace_header(head, :rubyforge_project)
 
