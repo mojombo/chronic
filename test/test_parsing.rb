@@ -784,7 +784,10 @@ class TestParsing < Test::Unit::TestCase
   end
   
   def test_now_changes
-    assert_not_equal Chronic.parse("now"),Chronic.parse("now")
+    t1=Chronic.parse("now")
+    sleep 1
+    t2=Chronic.parse("now")
+    assert_not_equal t1,t2
   end
 
   private
