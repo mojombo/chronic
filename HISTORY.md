@@ -1,5 +1,6 @@
 # TBA
 
+* Support parsing ordinal strings (eg first, twenty third => 1st, 23rd)
 * Seasons now ignore DST and return 00 as an hour
 * Support parsing 2 digit years and added `ambiguous_year_future_bias` option
 * Support parsing 'thurs' for Thursday
