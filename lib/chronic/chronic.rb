@@ -2,8 +2,12 @@ module Chronic
 
   DEFAULT_OPTIONS = {
     :context => :future,
+<<<<<<< HEAD
     :now => nil,
     :guess => true,
+=======
+    :guess   => true,
+>>>>>>> 46a04d13ab8e8fad14a73799e3d967b7c299ec9e
     :ambiguous_time_range => 6,
     :endian_precedence    => [:middle, :little],
     :ambiguous_year_future_bias => 50
