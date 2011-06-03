@@ -15,7 +15,7 @@ for the wide variety of formats Chronic will parse.
 
 ### GitHub
 
-    $ git clone git@github.com:mojombo/chronic.git
+    $ git clone git://github.com/mojombo/chronic.git
     $ cd chronic && gem build chronic.gemspec
     $ gem install chronic-<version>.gem
 
