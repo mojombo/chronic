@@ -388,7 +388,7 @@ module Chronic
         when :last
           outer_span = head.next(:past)
         when :this
-          if repeaters.size > 0
+          if options[:context] != :past and repeaters.size > 0
             outer_span = head.this(:none)
           else
             outer_span = head.this(options[:context])
