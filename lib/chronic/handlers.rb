@@ -325,7 +325,7 @@ module Chronic
       #   raise(ChronicPain, "Invalid repeater: #{repeater.class}")
       # end
 
-      span = self.parse("this second", :guess => false, :now => @now)
+      span = Span.new(@now, @now + 1)
 
       self.handle_srp(tokens, span, options)
     end
