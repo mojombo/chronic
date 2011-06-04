@@ -110,13 +110,10 @@ module Chronic
     # returns the next occurance of this repeatable.
     def next(pointer)
       !@now.nil? || raise("Start point must be set before calling #next")
-      [:future, :none, :past].include?(pointer) || raise("First argument 'pointer' must be one of :past or :future")
-      #raise("Repeatable#next must be overridden in subclasses")
     end
 
     def this(pointer)
       !@now.nil? || raise("Start point must be set before calling #this")
-      [:future, :past, :none].include?(pointer) || raise("First argument 'pointer' must be one of :past, :future, :none")
     end
 
     def to_s
