@@ -109,11 +109,11 @@ module Chronic
 
     # returns the next occurance of this repeatable.
     def next(pointer)
-      !@now.nil? || raise("Start point must be set before calling #next")
+      raise("Start point must be set before calling #next") unless @now
     end
 
     def this(pointer)
-      !@now.nil? || raise("Start point must be set before calling #this")
+      raise("Start point must be set before calling #this") unless @now
     end
 
     def to_s
