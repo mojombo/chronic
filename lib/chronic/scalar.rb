@@ -1,10 +1,8 @@
 module Chronic
-
   class Scalar < Tag #:nodoc:
     DAY_PORTIONS = %w( am pm morning afternoon evening night )
 
     def self.scan(tokens, options)
-      # for each token
       tokens.each_index do |i|
         if t = scan_for_scalars(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
         if t = scan_for_days(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
@@ -80,5 +78,4 @@ module Chronic
       super << '-year-' << @type.to_s
     end
   end
-
 end

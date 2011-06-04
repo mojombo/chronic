@@ -1,5 +1,4 @@
 module Chronic
-
   class Separator < Tag #:nodoc:
     def self.scan(tokens, options)
       tokens.each_index do |i|
@@ -69,5 +68,4 @@ module Chronic
       super << '-on'
     end
   end
-
 end

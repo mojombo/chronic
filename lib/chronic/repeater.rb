@@ -1,7 +1,6 @@
 module Chronic
   class Repeater < Tag #:nodoc:
     def self.scan(tokens, options)
-      # for each token
       tokens.each_index do |i|
         if t = scan_for_season_names(tokens[i]) then tokens[i].tag(t); next end
         if t = scan_for_month_names(tokens[i]) then tokens[i].tag(t); next end

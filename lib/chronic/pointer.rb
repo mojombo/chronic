@@ -1,8 +1,6 @@
 module Chronic
-
   class Pointer < Tag #:nodoc:
     def self.scan(tokens, options)
-      # for each token
       tokens.each_index do |i|
         if t = scan_for_all(tokens[i]) then tokens[i].tag(t) end
       end
@@ -21,5 +19,4 @@ module Chronic
       'pointer-' << @type.to_s
     end
   end
-
 end
