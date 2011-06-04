@@ -3,18 +3,19 @@ module Chronic
     attr_accessor :month, :day
 
     def initialize(month, day)
+      raise(InvalidArgumentException, "1..12 are valid months") unless (1..12).include?(month)
       @month = month
       @day = day
     end
 
     def is_between?(md_start, md_end)
+      return false if (@month==md_start.month && @month==md_end.month && (@day < md_start.day || @day > md_end.day))
       return true if (@month == md_start.month and @day >= md_start.day) ||
                      (@month == md_end.month and @day <= md_end.day)
-
-      i = md_start.month + 1
+      i = (md_start.month % 12) + 1
       until i == md_end.month
         return true if @month == i
-        i = (i+1) % 12
+        i = (i % 12) + 1
       end
 
       return false
