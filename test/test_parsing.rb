@@ -760,6 +760,10 @@ class TestParsing < Test::Unit::TestCase
     t = parse_now("next spring", :guess => false)
     assert_equal Time.local(2007, 3, 20), t.begin
     assert_equal Time.local(2007, 6, 20), t.end
+    
+    t = Chronic.parse("summer", {:guess => false, :now => Time.local(2006, 12, 22, 14, 0, 0, 0)})
+    assert_equal Time.local(2007, 6, 21), t.begin
+    assert_equal Time.local(2007, 9, 22), t.end
   end
 
   # regression

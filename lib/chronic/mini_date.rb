@@ -14,7 +14,7 @@ module Chronic
       i = md_start.month + 1
       until i == md_end.month
         return true if @month == i
-        i = (i+1) % 12
+        i = (i+1) % 13
       end
 
       return false
