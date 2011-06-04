@@ -57,6 +57,7 @@ Gem::Specification.new do |s|
     test/test_Chronic.rb
     test/test_DaylightSavings.rb
     test/test_Handler.rb
+    test/test_MiniDate.rb
     test/test_Numerizer.rb
     test/test_RepeaterDayName.rb
     test/test_RepeaterFortnight.rb
