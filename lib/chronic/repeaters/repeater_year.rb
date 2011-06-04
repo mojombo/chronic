@@ -56,7 +56,7 @@ module Chronic
     end
 
     def width
-      (365 * 24 * 60 * 60)
+      YEAR_SECONDS
     end
 
     def to_s
