@@ -13,7 +13,7 @@ class TestMiniDate < Test::Unit::TestCase
     
     #There was a hang if date tested is in december and outside the testing range
     m=Chronic::MiniDate.new(12,24)
-    assert m.is_between?(Chronic::MiniDate.new(10,1), Chronic::MiniDate.new(12,21))
+    assert !m.is_between?(Chronic::MiniDate.new(10,1), Chronic::MiniDate.new(12,21))
   end
   
   def test_is_between_short_range
