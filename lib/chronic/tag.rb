@@ -16,8 +16,13 @@ module Chronic
       private
 
       def scan_for(token, klass, items={})
-        items.each do |item, symbol|
-          return klass.new(symbol) if item =~ token.word
+        case items
+        when Regexp
+          return klass.new(token.word) if items =~ token.word
+        when Hash
+          items.each do |item, symbol|
+            return klass.new(symbol) if item =~ token.word
+          end
         end
         nil
       end

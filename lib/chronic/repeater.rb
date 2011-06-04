@@ -69,10 +69,7 @@ module Chronic
     end
 
     def self.scan_for_times(token)
-      if token.word =~ /^\d{1,2}(:?\d{2})?([\.:]?\d{2})?$/
-        return RepeaterTime.new(token.word)
-      end
-      return nil
+      scan_for token, RepeaterTime, /^\d{1,2}(:?\d{2})?([\.:]?\d{2})?$/
     end
 
     def self.scan_for_units(token)
