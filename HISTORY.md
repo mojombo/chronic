@@ -1,4 +1,4 @@
-# TBA
+# 0.4.0 / 2011-06-04
 
 * Ensure context is being passed through grabbers. Now "Sunday at 2:18pm"
   with `:context => :past` will return the correct date
