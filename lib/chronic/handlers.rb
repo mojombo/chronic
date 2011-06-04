@@ -399,7 +399,7 @@ module Chronic
       end
 
       puts "--#{outer_span}" if Chronic.debug
-      anchor = find_within(repeaters, outer_span, pointer)
+      find_within(repeaters, outer_span, pointer)
     end
 
     def get_repeaters(tokens) #:nodoc:
