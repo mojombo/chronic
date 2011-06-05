@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name              = 'chronic'
-  s.version           = '0.4.0'
+  s.version           = '0.4.1'
   s.rubyforge_project = 'chronic'
 
   s.summary     = "Natural language date/time parsing."
