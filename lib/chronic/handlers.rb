@@ -515,7 +515,7 @@ module Chronic
       token_index = 0
       @pattern.each do |element|
         name = element.to_s
-        optional = name.reverse[0..0] == '?'
+        optional = name[-1, 1] == '?'
         name = name.chop if optional
         if element.instance_of? Symbol
           klass = constantize(name)
