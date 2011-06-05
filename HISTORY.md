@@ -1,4 +1,4 @@
-# 0.4.1
+# 0.4.1 / 2011-06-05
 
 * Fix MiniDate ranges for parsing seasons (Thomas Walpole)
 
