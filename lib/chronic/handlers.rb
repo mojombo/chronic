@@ -508,8 +508,7 @@ module Chronic
     end
 
     def constantize(name)
-      camel = name.to_s.gsub(/(^|_)(.)/) { $2.upcase }
-      ::Chronic.module_eval(camel, __FILE__, __LINE__)
+      Chronic.const_get name.to_s.gsub(/(^|_)(.)/) { $2.upcase }
     end
 
     def match(tokens, definitions)
