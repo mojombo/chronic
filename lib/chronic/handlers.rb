@@ -404,8 +404,8 @@ module Chronic
 
     def get_repeaters(tokens) #:nodoc:
       repeaters = []
-		  tokens.each do |token|
-		    if t = token.get_tag(Repeater)
+      tokens.each do |token|
+        if t = token.get_tag(Repeater)
           repeaters << t
         end
       end
