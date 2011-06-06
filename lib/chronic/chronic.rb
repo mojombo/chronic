@@ -68,9 +68,6 @@ module Chronic
       options[:now] ||= Chronic.time_class.now
       @now = options[:now]
 
-      # put the text into a normal format to ease scanning
-      text = pre_normalize(text)
-
       # tokenize words
       tokens = tokenize(text, options)
 
@@ -138,6 +135,7 @@ module Chronic
     private
 
     def tokenize(text, options) #:nodoc:
+      text = pre_normalize(text)
       tokens = text.split(' ').map { |word| Token.new(word) }
       [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
         tokens = tok.scan(tokens, options)
