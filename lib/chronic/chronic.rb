@@ -60,19 +60,18 @@ module Chronic
       options[:now] ||= Chronic.time_class.now
       @now = options[:now]
 
-      # put the text into a normal format to ease scanning
-      text = pre_normalize(text)
+      options[:text] = text
 
       # tokenize words
-      @tokens = tokenize(text, options)
+      tokens = tokenize(text, options)
 
       if Chronic.debug
         puts "+---------------------------------------------------"
-        puts "| " + @tokens.to_s
+        puts "| " + tokens.to_s
         puts "+---------------------------------------------------"
       end
 
-      span = tokens_to_span(@tokens, options)
+      span = tokens_to_span(tokens, options)
 
       if options[:guess]
         guess span
@@ -130,14 +129,6 @@ module Chronic
       Numerizer.numerize(text)
     end
 
-    def tokenize(text, options) #:nodoc:
-      tokens = text.split(' ').map { |word| Token.new(word) }
-      [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
-        tokens = tok.scan(tokens, options)
-      end
-      tokens.delete_if { |token| !token.tagged? }
-    end
-
     # Guess a specific time within the given span
     def guess(span) #:nodoc:
       return nil if span.nil?
@@ -147,6 +138,120 @@ module Chronic
         span.begin
       end
     end
+
+    def definitions(options={}) #:nodoc:
+      options[:endian_precedence] ||= [:middle, :little]
+
+      @definitions ||= {
+        :time => [
+          Handler.new([:repeater_time, :repeater_day_portion?], nil)
+        ],
+
+        :date => [
+          Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :repeater_time, :separator_slash_or_dash?, :time_zone, :scalar_year], :handle_rdn_rmn_sd_t_tz_sy),
+          Handler.new([:repeater_month_name, :scalar_day, :scalar_year], :handle_rmn_sd_sy),
+          Handler.new([:repeater_month_name, :ordinal_day, :scalar_year], :handle_rmn_od_sy),
+          Handler.new([:repeater_month_name, :scalar_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_sd_sy),
+          Handler.new([:repeater_month_name, :ordinal_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_od_sy),
+          Handler.new([:repeater_month_name, :scalar_day, :separator_at?, 'time?'], :handle_rmn_sd),
+          Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :scalar_day], :handle_rmn_sd_on),
+          Handler.new([:repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rmn_od),
+          Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :ordinal_day], :handle_rmn_od_on),
+          Handler.new([:repeater_month_name, :scalar_year], :handle_rmn_sy),
+          Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy),
+          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
+          Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_year], :handle_sm_sy)
+        ],
+
+        # tonight at 7pm
+        :anchor => [
+          Handler.new([:grabber?, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
+          Handler.new([:grabber?, :repeater, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
+          Handler.new([:repeater, :grabber, :repeater], :handle_r_g_r)
+        ],
+
+        # 3 weeks from now, in 2 months
+        :arrow => [
+          Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
+          Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),
+          Handler.new([:scalar, :repeater, :pointer, 'anchor'], :handle_s_r_p_a)
+        ],
+
+        # 3rd week in march
+        :narrow => [
+          Handler.new([:ordinal, :repeater, :separator_in, :repeater], :handle_o_r_s_r),
+          Handler.new([:ordinal, :repeater, :grabber, :repeater], :handle_o_r_g_r)
+        ]
+      }
+
+      endians = [
+        Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
+        Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
+      ]
+
+      case endian = Array(options[:endian_precedence]).first
+      when :little
+        @definitions[:endian] = endians.reverse
+      when :middle
+        @definitions[:endian] = endians
+      else
+        raise InvalidArgumentException, "Unknown endian option '#{endian}'"
+      end
+
+      @definitions
+    end
+
+    private
+
+    def tokenize(text, options) #:nodoc:
+      text = pre_normalize(text)
+      tokens = text.split(' ').map { |word| Token.new(word) }
+      [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
+        tokens = tok.scan(tokens, options)
+      end
+      tokens.select { |token| token.tagged? }
+    end
+
+    def tokens_to_span(tokens, options) #:nodoc:
+      definitions = definitions(options)
+
+      (definitions[:date] + definitions[:endian]).each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-date" if Chronic.debug
+          good_tokens = tokens.select { |o| !o.get_tag Separator }
+          return Handlers.send(handler.handler_method, good_tokens, options)
+        end
+      end
+
+      definitions[:anchor].each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-anchor" if Chronic.debug
+          good_tokens = tokens.select { |o| !o.get_tag Separator }
+          return Handlers.send(handler.handler_method, good_tokens, options)
+        end
+      end
+
+      definitions[:arrow].each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-arrow" if Chronic.debug
+          tags = [SeparatorAt, SeparatorSlashOrDash, SeparatorComma]
+          good_tokens = tokens.reject { |o| tags.any? { |t| o.get_tag(t) } }
+          return Handlers.send(handler.handler_method, good_tokens, options)
+        end
+      end
+
+      definitions[:narrow].each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-narrow" if Chronic.debug
+          good_tokens = tokens.select { |o| !o.get_tag Separator }
+          return Handlers.send(handler.handler_method, tokens, options)
+        end
+      end
+
+      puts "-none" if Chronic.debug
+      return nil
+    end
+
   end
 
   # Internal exception

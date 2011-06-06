@@ -43,6 +43,7 @@ module Chronic
     #
     # @return [Time] The time class Chronic uses internally
     attr_accessor :time_class
+    attr_accessor :now
   end
 
   self.debug = false
