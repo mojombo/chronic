@@ -98,33 +98,6 @@ require 'chronic/time_zone'
 
 require 'chronic/numerizer'
 
-# class Time
-#   def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
-#     # extra_seconds = second > 60 ? second - 60 : 0
-#     # extra_minutes = minute > 59 ? minute - 59 : 0
-#     # extra_hours = hour > 23 ? hour - 23 : 0
-#     # extra_days = day >
-#
-#     if month > 12
-#       if month % 12 == 0
-#         year += (month - 12) / 12
-#         month = 12
-#       else
-#         year += month / 12
-#         month = month % 12
-#       end
-#     end
-#
-#     base = Time.local(year, month)
-#     puts base
-#     offset = ((day - 1) * 24 * 60 * 60) + (hour * 60 * 60) + (minute * 60) + second
-#     puts offset.to_s
-#     date = base + offset
-#     puts date
-#     date
-#   end
-# end
-
 class Time
   def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
     if second >= 60
