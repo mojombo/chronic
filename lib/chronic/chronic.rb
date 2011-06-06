@@ -146,7 +146,12 @@ module Chronic
       end
     end
 
-    def definitions(options={}) #:nodoc:
+    # List of {Handler} definitions. See {parse} for a list of options this
+    # method accepts
+    #
+    # @see parse
+    # @return [Hash] A Hash of Handler definitions
+    def definitions(options={})
       options[:endian_precedence] ||= [:middle, :little]
 
       @definitions ||= {
@@ -210,7 +215,7 @@ module Chronic
 
     private
 
-    def tokenize(text, options) #:nodoc:
+    def tokenize(text, options)
       text = pre_normalize(text)
       tokens = text.split(' ').map { |word| Token.new(word) }
       [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
