@@ -140,7 +140,7 @@ module Chronic
       [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
         tokens = tok.scan(tokens, options)
       end
-      tokens.delete_if { |token| !token.tagged? }
+      tokens.select { |token| token.tagged? }
     end
   end
 
