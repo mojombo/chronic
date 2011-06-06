@@ -51,4 +51,24 @@ class TestChronic < Test::Unit::TestCase
     assert_equal Time.local(2006, 11, 16), Chronic.guess(span)
   end
 
+  def test_endian_definitions
+    # middle, little
+    endians = [
+      Chronic::Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
+      Chronic::Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
+    ]
+
+    assert_equal endians, Chronic.definitions[:endian]
+
+    defs = Chronic.definitions(:endian_precedence => :little)
+    assert_equal endians.reverse, defs[:endian]
+
+    defs = Chronic.definitions(:endian_precedence => [:little, :middle])
+    assert_equal endians.reverse, defs[:endian]
+
+    assert_raises(Chronic::InvalidArgumentException) do
+      Chronic.definitions(:endian_precedence => :invalid)
+    end
+  end
+
 end
