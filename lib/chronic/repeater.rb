@@ -1,5 +1,10 @@
 module Chronic
-  class Repeater < Tag #:nodoc:
+  class Repeater < Tag
+
+    # Scan an Array of {Token}s and apply any necessary tags to each token
+    #
+    # @param [Array<Token>] tokens Array of tokens to scan
+    # @return [Array] list of tokens
     def self.scan(tokens, options)
       tokens.each_index do |i|
         if t = scan_for_season_names(tokens[i]) then tokens[i].tag(t); next end
@@ -11,6 +16,8 @@ module Chronic
       end
     end
 
+    # @param [Token] token
+    # @return [RepeaterSeasonName, nil]
     def self.scan_for_season_names(token)
       scan_for token, RepeaterSeasonName,
       {
@@ -21,6 +28,8 @@ module Chronic
       }
     end
 
+    # @param [Token] token
+    # @return [RepeaterMonthName, nil]
     def self.scan_for_month_names(token)
       scan_for token, RepeaterMonthName,
       {
@@ -39,6 +48,8 @@ module Chronic
       }
     end
 
+    # @param [Token] token
+    # @return [RepeaterDayName, nil]
     def self.scan_for_day_names(token)
       scan_for token, RepeaterDayName,
       {
@@ -55,6 +66,8 @@ module Chronic
       }
     end
 
+    # @param [Token] token
+    # @return [RepeaterDayPortion, nil]
     def self.scan_for_day_portions(token)
       scan_for token, RepeaterDayPortion,
       {
@@ -67,10 +80,14 @@ module Chronic
       }
     end
 
+    # @param [Token] token
+    # @return [RepeaterTime, nil]
     def self.scan_for_times(token)
       scan_for token, RepeaterTime, /^\d{1,2}(:?\d{2})?([\.:]?\d{2})?$/
     end
 
+    # @param [Token] token
+    # @return [Repeater] A new instance of a subclass of Repeater
     def self.scan_for_units(token)
       {
         /^years?$/ => :year,
