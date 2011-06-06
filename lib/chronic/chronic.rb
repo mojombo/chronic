@@ -124,8 +124,12 @@ module Chronic
       normalized_text
     end
 
-    # Convert number words to numbers (three => 3)
-    def numericize_numbers(text) #:nodoc:
+    # Convert number words to numbers (three => 3, fourth => 4th)
+    #
+    # @see Numerizer.numerize
+    # @param [String] text The string to convert
+    # @return [String] A new string with words converted to numbers
+    def numericize_numbers(text)
       Numerizer.numerize(text)
     end
 
