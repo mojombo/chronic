@@ -1,18 +1,59 @@
-#=============================================================================
+# Parse natural language dates and times into Time or {Chronic::Span} objects
 #
-#  Name:       Chronic
-#  Author:     Tom Preston-Werner
-#  Purpose:    Parse natural language dates and times into Time or
-#              Chronic::Span objects
+# @example
+#   require 'chronic'
 #
-#=============================================================================
-
+#   Time.now   #=> Sun Aug 27 23:18:25 PDT 2006
+#
+#   Chronic.parse('tomorrow')
+#     #=> Mon Aug 28 12:00:00 PDT 2006
+#
+#   Chronic.parse('monday', :context => :past)
+#     #=> Mon Aug 21 12:00:00 PDT 2006
+#
+#   Chronic.parse('this tuesday 5:00')
+#     #=> Tue Aug 29 17:00:00 PDT 2006
+#
+#   Chronic.parse('this tuesday 5:00', :ambiguous_time_range => :none)
+#     #=> Tue Aug 29 05:00:00 PDT 2006
+#
+#   Chronic.parse('may 27th', :now => Time.local(2000, 1, 1))
+#     #=> Sat May 27 12:00:00 PDT 2000
+#
+#   Chronic.parse('may 27th', :guess => false)
+#     #=> Sun May 27 00:00:00 PDT 2007..Mon May 28 00:00:00 PDT 2007
+#
+# @author Tom Preston-Werner, Lee Jarvis
 module Chronic
   VERSION = "0.4.1"
 
   class << self
+
+    # @return [Boolean] true when debug mode is enabled
     attr_accessor :debug
+
+    # @example
+    #   require 'chronic'
+    #   require 'active_support/time'
+    #
+    #   Time.zone = 'UTC'
+    #   Chronic.time_class = Time.zone
+    #   Chronic.parse('June 15 2006 at 5:54 AM')
+    #     # => Thu, 15 Jun 2006 05:45:00 UTC +00:00
+    #
+    # @return [Time] The time class Chronic uses internally
     attr_accessor :time_class
+
+    # The current Time Chronic is using to base from
+    #
+    # @example
+    #   Time.now #=> 2011-06-06 14:13:43 +0100
+    #   Chronic.parse('yesterday') #=> 2011-06-05 12:00:00 +0100
+    #
+    #   now = Time.local(2025, 12, 24)
+    #   Chronic.parse('tomorrow', :now => now) #=> 2025-12-25 12:00:00 +0000
+    #
+    # @return [Time, nil]
     attr_accessor :now
   end
 

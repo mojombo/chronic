@@ -11,56 +11,55 @@ module Chronic
 
   class << self
 
-    # Parses a string containing a natural language date or time. If the parser
-    # can find a date or time, either a Time or Chronic::Span will be returned
-    # (depending on the value of <tt>:guess</tt>). If no date or time can be found,
-    # +nil+ will be returned.
+    # Parses a string containing a natural language date or time. If the
+    # parser can find a date or time, either a Time or Chronic::Span will
+    # be returned (depending on the value of <tt>:guess</tt>). If no date
+    # or time can be found, +nil+ will be returned.
     #
-    # Options are:
+    # @option opts [Symbol] :context (:future)
+    #   If your string represents a birthday, you can set `:context` to
+    #   `:past` and if an ambiguous string is given, it will assume it is
+    #   in the past. Specify `:future` or omit to set a future context.
     #
-    # [<tt>:context</tt>]
-    #     <tt>:past</tt> or <tt>:future</tt> (defaults to <tt>:future</tt>)
+    # @option opts [Object] :now (Time.now)
+    #   By setting `:now` to a Time, all computations will be based off of
+    #   that time instead of `Time.now`. If set to nil, Chronic will use
+    #   `Time.now`.
     #
-    #     If your string represents a birthday, you can set <tt>:context</tt> to <tt>:past</tt>
-    #     and if an ambiguous string is given, it will assume it is in the
-    #     past. Specify <tt>:future</tt> or omit to set a future context.
+    # @option opts [Boolean] :guess (true)
+    #   By default, the parser will guess a single point in time for the given
+    #   date or time. If you'd rather have the entire time span returned,
+    #   set `:guess` to `false` and a {Chronic::Span} will be returned.
     #
-    # [<tt>:now</tt>]
-    #     Time (defaults to Time.now)
+    # @option opts [Integer] :ambiguous_time_range (6)
+    #   If an Integer is given, ambiguous times (like 5:00) will be
+    #   assumed to be within the range of that time in the AM to that time
+    #   in the PM. For example, if you set it to <tt>7</tt>, then the parser
+    #   will look for the time between 7am and 7pm. In the case of 5:00, it
+    #   would assume that means 5:00pm. If <tt>:none</tt> is given, no
+    #   assumption will be made, and the first matching instance of that
+    #   time will be used.
     #
-    #     By setting <tt>:now</tt> to a Time, all computations will be based off
-    #     of that time instead of Time.now. If set to nil, Chronic will use Time.now.
+    # @option opts [Array] :endian_precedence ([:middle, :little])
+    #   By default, Chronic will parse "03/04/2011" as the fourth day
+    #   of the third month. Alternatively you can tell Chronic to parse
+    #   this as the third day of the fourth month by altering the
+    #   `:endian_precedence` to `[:little, :middle]`.
     #
-    # [<tt>:guess</tt>]
-    #     +true+ or +false+ (defaults to +true+)
+    # @option opts [Integer] :ambiguous_year_future_bias (50)
+    #   When parsing two digit years (ie 79) unlike Rubys Time class, Chronic
+    #   will attempt to assume the full year using this figure. Chronic will
+    #   look x amount of years into the future and past. If the two digit
+    #   year is `now + x years` it's assumed to be the future, `now - x
+    #   years` is assumed to be the past.
     #
-    #     By default, the parser will guess a single point in time for the
-    #     given date or time. If you'd rather have the entire time span returned,
-    #     set <tt>:guess</tt> to +false+ and a Chronic::Span will be returned.
-    #
-    # [<tt>:ambiguous_time_range</tt>]
-    #     Integer or <tt>:none</tt> (defaults to <tt>6</tt> (6am-6pm))
-    #
-    #     If an Integer is given, ambiguous times (like 5:00) will be
-    #     assumed to be within the range of that time in the AM to that time
-    #     in the PM. For example, if you set it to <tt>7</tt>, then the parser will
-    #     look for the time between 7am and 7pm. In the case of 5:00, it would
-    #     assume that means 5:00pm. If <tt>:none</tt> is given, no assumption
-    #     will be made, and the first matching instance of that time will
-    #     be used.
-    #
-    # [<tt>:endian_precedence</tt>]
-    #     Array (defaults to <tt>[:middle, :little]</tt>)
-    #
-    #     By default, Chronic will parse "03/04/2011" as the fourth day
-    #     of the third month. Alternatively you can tell Chronic to parse
-    #     this as the third day of the fourth month by altering the
-    #     <tt>:endian_precedence</tt> to <tt>[:little, :middle]</tt>.
-    def parse(text, specified_options = {})
-      options = DEFAULT_OPTIONS.merge specified_options
+    # @return [Time, Chronic::Span, nil]
+    def parse(text, opts={})
+      @text = text
+      options = DEFAULT_OPTIONS.merge opts
 
       # ensure the specified options are valid
-      (specified_options.keys - DEFAULT_OPTIONS.keys).each do |key|
+      (opts.keys - DEFAULT_OPTIONS.keys).each do |key|
         raise InvalidArgumentException, "#{key} is not a valid option key."
       end
 
@@ -92,6 +91,19 @@ module Chronic
     # converting idioms to their canonical form, converting number words
     # to numbers (three => 3), and converting ordinal words to numeric
     # ordinals (third => 3rd)
+    #
+    # @example
+    #   Chronic.pre_normalize('first day in May')
+    #     #=> "1st day in may"
+    #
+    #   Chronic.pre_normalize('tomorrow after noon')
+    #     #=> "next day future 12:00"
+    #
+    #   Chronic.pre_normalize('one hundred and thirty six days from now')
+    #     #=> "136 days future this second"
+    #
+    # @param [String] text The string to normalize
+    # @return [String] A new string ready for Chronic to parse
     def pre_normalize(text) #:nodoc:
       text = text.to_s.downcase
       text.gsub!(/['"\.,]/, '')
@@ -119,13 +131,20 @@ module Chronic
       text
     end
 
-    # Convert number words to numbers (three => 3)
-    def numericize_numbers(text) #:nodoc:
+    # Convert number words to numbers (three => 3, fourth => 4th)
+    #
+    # @see Numerizer.numerize
+    # @param [String] text The string to convert
+    # @return [String] A new string with words converted to numbers
+    def numericize_numbers(text)
       Numerizer.numerize(text)
     end
 
     # Guess a specific time within the given span
-    def guess(span) #:nodoc:
+    #
+    # @param [Span] span
+    # @return [Time]
+    def guess(span)
       return nil if span.nil?
       if span.width > 1
         span.begin + (span.width / 2)
@@ -134,7 +153,12 @@ module Chronic
       end
     end
 
-    def definitions(options={}) #:nodoc:
+    # List of {Handler} definitions. See {parse} for a list of options this
+    # method accepts
+    #
+    # @see parse
+    # @return [Hash] A Hash of Handler definitions
+    def definitions(options={})
       options[:endian_precedence] ||= [:middle, :little]
 
       @definitions ||= {
@@ -198,7 +222,7 @@ module Chronic
 
     private
 
-    def tokenize(text, options) #:nodoc:
+    def tokenize(text, options)
       text = pre_normalize(text)
       tokens = text.split(' ').map { |word| Token.new(word) }
       [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
@@ -250,13 +274,11 @@ module Chronic
   end
 
   # Internal exception
-  class ChronicPain < Exception #:nodoc:
-
+  class ChronicPain < Exception
   end
 
   # This exception is raised if an invalid argument is provided to
   # any of Chronic's methods
   class InvalidArgumentException < Exception
-
   end
 end
