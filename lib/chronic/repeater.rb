@@ -4,6 +4,7 @@ module Chronic
     # Scan an Array of {Token}s and apply any necessary tags to each token
     #
     # @param [Array<Token>] tokens Array of tokens to scan
+    # @param [Hash] options Options specified in {Chronic.parse}
     # @return [Array] list of tokens
     def self.scan(tokens, options)
       tokens.each_index do |i|
