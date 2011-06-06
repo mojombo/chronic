@@ -135,19 +135,6 @@ module Chronic
 
     def definitions(options={}) #:nodoc:
       options[:endian_precedence] ||= [:middle, :little]
-      # ensure the endian precedence is exactly two elements long
-      raise ChronicPain, "More than two elements specified for endian precedence array" unless options[:endian_precedence].length == 2
-
-      # handler for dd/mm/yyyy
-      @little_endian_handler ||= Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
-
-      # handler for mm/dd/yyyy
-      @middle_endian_handler ||= Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy)
-
-      # ensure we have valid endian values
-      options[:endian_precedence].each do |e|
-        raise ChronicPain, "Unknown endian type: #{e.to_s}" unless instance_variable_defined?(endian_variable_name_for(e))
-      end
 
       @definitions ||= {
         :time => [
@@ -166,8 +153,6 @@ module Chronic
           Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :ordinal_day], :handle_rmn_od_on),
           Handler.new([:repeater_month_name, :scalar_year], :handle_rmn_sy),
           Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy),
-          @middle_endian_handler,
-          @little_endian_handler,
           Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
           Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_year], :handle_sm_sy)
         ],
@@ -193,7 +178,19 @@ module Chronic
         ]
       }
 
-      apply_endian_precedences(options[:endian_precedence])
+      endians = [
+        Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
+        Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
+      ]
+
+      case endian = Array(options[:endian_precedence]).first
+      when :little
+        @definitions[:endian] = endians.reverse
+      when :middle
+        @definitions[:endian] = endians
+      else
+        raise InvalidArgumentException, "Unknown endian option '#{endian}'"
+      end
 
       @definitions
     end
@@ -213,7 +210,7 @@ module Chronic
       # maybe it's a specific date
 
       definitions = self.definitions(options)
-      definitions[:date].each do |handler|
+      (definitions[:date] + definitions[:endian]).each do |handler|
         if handler.match(tokens, definitions)
           puts "-date" if Chronic.debug
           good_tokens = tokens.select { |o| !o.get_tag Separator }
@@ -256,27 +253,6 @@ module Chronic
       return nil
     end
 
-    #--------------
-
-    def apply_endian_precedences(precedences)
-      date_defs = @definitions[:date]
-
-      # map the precedence array to indices on @definitions[:date]
-      indices = precedences.map { |e|
-        handler = instance_variable_get(endian_variable_name_for(e))
-        date_defs.index(handler)
-      }
-
-      # swap the handlers if we discover they are at odds with the desired preferences
-      swap(date_defs, indices.first, indices.last) if indices.first > indices.last
-    end
-
-    def endian_variable_name_for(e)
-      "@#{e.to_s}_endian_handler".to_sym
-    end
-
-    # exchange two elements in an array
-    def swap(arr, a, b); arr[a], arr[b] = arr[b], arr[a]; end
   end
 
   # Internal exception
