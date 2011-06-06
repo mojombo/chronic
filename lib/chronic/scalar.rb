@@ -19,6 +19,7 @@ module Chronic
 
     # @param [Token] token
     # @param [Token] post_token
+    # @return [Scalar, nil]
     def self.scan_for_scalars(token, post_token)
       if token.word =~ /^\d*$/
         unless post_token && DAY_PORTIONS.include?(post_token.word)
@@ -29,6 +30,7 @@ module Chronic
 
     # @param [Token] token
     # @param [Token] post_token
+    # @return [ScalarDay, nil]
     def self.scan_for_days(token, post_token)
       if token.word =~ /^\d\d?$/
         toi = token.word.to_i
@@ -40,6 +42,7 @@ module Chronic
 
     # @param [Token] token
     # @param [Token] post_token
+    # @return [ScalarMonth, nil]
     def self.scan_for_months(token, post_token)
       if token.word =~ /^\d\d?$/
         toi = token.word.to_i
@@ -52,6 +55,7 @@ module Chronic
     # @param [Token] token
     # @param [Token] post_token
     # @param [Hash] options Options specified in {Chronic.parse}
+    # @return [ScalarYear, nil]
     def self.scan_for_years(token, post_token, options)
       if token.word =~ /^([1-9]\d)?\d\d?$/
         unless post_token && DAY_PORTIONS.include?(post_token.word)
