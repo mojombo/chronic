@@ -1,3 +1,6 @@
+require 'time'
+require 'date'
+
 # Parse natural language dates and times into Time or {Chronic::Span} objects
 #
 # @example
@@ -61,15 +64,19 @@ module Chronic
   self.time_class = Time
 end
 
-require 'time'
-require 'date'
-
 require 'chronic/chronic'
 require 'chronic/handlers'
 require 'chronic/mini_date'
 require 'chronic/tag'
 require 'chronic/span'
 require 'chronic/token'
+require 'chronic/grabber'
+require 'chronic/pointer'
+require 'chronic/scalar'
+require 'chronic/ordinal'
+require 'chronic/separator'
+require 'chronic/time_zone'
+require 'chronic/numerizer'
 
 require 'chronic/repeater'
 require 'chronic/repeaters/repeater_year'
@@ -88,15 +95,6 @@ require 'chronic/repeaters/repeater_hour'
 require 'chronic/repeaters/repeater_minute'
 require 'chronic/repeaters/repeater_second'
 require 'chronic/repeaters/repeater_time'
-
-require 'chronic/grabber'
-require 'chronic/pointer'
-require 'chronic/scalar'
-require 'chronic/ordinal'
-require 'chronic/separator'
-require 'chronic/time_zone'
-
-require 'chronic/numerizer'
 
 class Time
   def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
