@@ -13,6 +13,7 @@ module Chronic
   class << self
     attr_accessor :debug
     attr_accessor :time_class
+    attr_accessor :now
   end
 
   self.debug = false

@@ -1,156 +1,9 @@
 module Chronic
-
-  class << self
-
-    def definitions(options={}) #:nodoc:
-      options[:endian_precedence] ||= [:middle, :little]
-      # ensure the endian precedence is exactly two elements long
-      raise ChronicPain, "More than two elements specified for endian precedence array" unless options[:endian_precedence].length == 2
-
-      # handler for dd/mm/yyyy
-      @little_endian_handler ||= Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
-
-      # handler for mm/dd/yyyy
-      @middle_endian_handler ||= Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy)
-
-      # ensure we have valid endian values
-      options[:endian_precedence].each do |e|
-        raise ChronicPain, "Unknown endian type: #{e.to_s}" unless instance_variable_defined?(endian_variable_name_for(e))
-      end
-
-      @definitions ||= {
-        :time => [
-          Handler.new([:repeater_time, :repeater_day_portion?], nil)
-        ],
-
-        :date => [
-          Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :repeater_time, :separator_slash_or_dash?, :time_zone, :scalar_year], :handle_rdn_rmn_sd_t_tz_sy),
-          Handler.new([:repeater_month_name, :scalar_day, :scalar_year], :handle_rmn_sd_sy),
-          Handler.new([:repeater_month_name, :ordinal_day, :scalar_year], :handle_rmn_od_sy),
-          Handler.new([:repeater_month_name, :scalar_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_sd_sy),
-          Handler.new([:repeater_month_name, :ordinal_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_od_sy),
-          Handler.new([:repeater_month_name, :scalar_day, :separator_at?, 'time?'], :handle_rmn_sd),
-          Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :scalar_day], :handle_rmn_sd_on),
-          Handler.new([:repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rmn_od),
-          Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :ordinal_day], :handle_rmn_od_on),
-          Handler.new([:repeater_month_name, :scalar_year], :handle_rmn_sy),
-          Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy),
-          @middle_endian_handler,
-          @little_endian_handler,
-          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
-          Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_year], :handle_sm_sy)
-        ],
-
-        # tonight at 7pm
-        :anchor => [
-          Handler.new([:grabber?, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
-          Handler.new([:grabber?, :repeater, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
-          Handler.new([:repeater, :grabber, :repeater], :handle_r_g_r)
-        ],
-
-        # 3 weeks from now, in 2 months
-        :arrow => [
-          Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
-          Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),
-          Handler.new([:scalar, :repeater, :pointer, 'anchor'], :handle_s_r_p_a)
-        ],
-
-        # 3rd week in march
-        :narrow => [
-          Handler.new([:ordinal, :repeater, :separator_in, :repeater], :handle_o_r_s_r),
-          Handler.new([:ordinal, :repeater, :grabber, :repeater], :handle_o_r_g_r)
-        ]
-      }
-
-      apply_endian_precedences(options[:endian_precedence])
-
-      @definitions
-    end
-
-    def tokens_to_span(tokens, options) #:nodoc:
-      # maybe it's a specific date
-
-      definitions = self.definitions(options)
-      definitions[:date].each do |handler|
-        if handler.match(tokens, definitions)
-          puts "-date" if Chronic.debug
-          good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return self.send(handler.handler_method, good_tokens, options)
-        end
-      end
-
-      # I guess it's not a specific date, maybe it's just an anchor
-
-      definitions[:anchor].each do |handler|
-        if handler.match(tokens, definitions)
-          puts "-anchor" if Chronic.debug
-          good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return self.send(handler.handler_method, good_tokens, options)
-        end
-      end
-
-      # not an anchor, perhaps it's an arrow
-
-      definitions[:arrow].each do |handler|
-        if handler.match(tokens, definitions)
-          puts "-arrow" if Chronic.debug
-          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) }
-          return self.send(handler.handler_method, good_tokens, options)
-        end
-      end
-
-      # not an arrow, let's hope it's a narrow
-
-      definitions[:narrow].each do |handler|
-        if handler.match(tokens, definitions)
-          puts "-narrow" if Chronic.debug
-          #good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return self.send(handler.handler_method, tokens, options)
-        end
-      end
-
-      # I guess you're out of luck!
-      puts "-none" if Chronic.debug
-      return nil
-    end
-
-    #--------------
-
-    def apply_endian_precedences(precedences)
-      date_defs = @definitions[:date]
-
-      # map the precedence array to indices on @definitions[:date]
-      indices = precedences.map { |e|
-        handler = instance_variable_get(endian_variable_name_for(e))
-        date_defs.index(handler)
-      }
-
-      # swap the handlers if we discover they are at odds with the desired preferences
-      swap(date_defs, indices.first, indices.last) if indices.first > indices.last
-    end
-
-    def endian_variable_name_for(e)
-      "@#{e.to_s}_endian_handler".to_sym
-    end
-
-    # exchange two elements in an array
-    def swap(arr, a, b); arr[a], arr[b] = arr[b], arr[a]; end
-
-    def day_or_time(day_start, time_tokens, options)
-      outer_span = Span.new(day_start, day_start + (24 * 60 * 60))
-
-      if !time_tokens.empty?
-        @now = outer_span.begin
-        get_anchor(dealias_and_disambiguate_times(time_tokens, options), options)
-      else
-        outer_span
-      end
-    end
-
-    #--------------
+  module Handlers
+    module_function
 
     def handle_m_d(month, day, time_tokens, options) #:nodoc:
-      month.start = @now
+      month.start = Chronic.now
       span = month.this(options[:context])
 
       day_start = Chronic.time_class.local(span.begin.year, span.begin.month, day)
@@ -202,7 +55,7 @@ module Chronic
     end
 
     def handle_rdn_rmn_sd_t_tz_sy(tokens, options) #:nodoc:
-      t = Chronic.time_class.parse(@text)
+      t = Chronic.time_class.parse(options[:text])
       Span.new(t, t + 1)
     end
 
@@ -325,7 +178,7 @@ module Chronic
       #   raise(ChronicPain, "Invalid repeater: #{repeater.class}")
       # end
 
-      span = Span.new(@now, @now + 1)
+      span = Span.new(Chronic.now, Chronic.now + 1)
 
       self.handle_srp(tokens, span, options)
     end
@@ -369,6 +222,17 @@ module Chronic
 
     # support methods
 
+    def day_or_time(day_start, time_tokens, options)
+      outer_span = Span.new(day_start, day_start + (24 * 60 * 60))
+
+      if !time_tokens.empty?
+        Chronic.now = outer_span.begin
+        get_anchor(dealias_and_disambiguate_times(time_tokens, options), options)
+      else
+        outer_span
+      end
+    end
+
     def get_anchor(tokens, options) #:nodoc:
       grabber = Grabber.new(:this)
       pointer = :future
@@ -382,7 +246,7 @@ module Chronic
       end
 
       head = repeaters.shift
-      head.start = @now
+      head.start = Chronic.now
 
       case grabber.type
         when :last

@@ -57,7 +57,6 @@ module Chronic
     #     this as the third day of the fourth month by altering the
     #     <tt>:endian_precedence</tt> to <tt>[:little, :middle]</tt>.
     def parse(text, specified_options = {})
-      @text = text
       options = DEFAULT_OPTIONS.merge specified_options
 
       # ensure the specified options are valid
@@ -67,6 +66,8 @@ module Chronic
 
       options[:now] ||= Chronic.time_class.now
       @now = options[:now]
+
+      options[:text] = text
 
       # tokenize words
       tokens = tokenize(text, options)
@@ -132,6 +133,71 @@ module Chronic
       end
     end
 
+    def definitions(options={}) #:nodoc:
+      options[:endian_precedence] ||= [:middle, :little]
+      # ensure the endian precedence is exactly two elements long
+      raise ChronicPain, "More than two elements specified for endian precedence array" unless options[:endian_precedence].length == 2
+
+      # handler for dd/mm/yyyy
+      @little_endian_handler ||= Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
+
+      # handler for mm/dd/yyyy
+      @middle_endian_handler ||= Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy)
+
+      # ensure we have valid endian values
+      options[:endian_precedence].each do |e|
+        raise ChronicPain, "Unknown endian type: #{e.to_s}" unless instance_variable_defined?(endian_variable_name_for(e))
+      end
+
+      @definitions ||= {
+        :time => [
+          Handler.new([:repeater_time, :repeater_day_portion?], nil)
+        ],
+
+        :date => [
+          Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :repeater_time, :separator_slash_or_dash?, :time_zone, :scalar_year], :handle_rdn_rmn_sd_t_tz_sy),
+          Handler.new([:repeater_month_name, :scalar_day, :scalar_year], :handle_rmn_sd_sy),
+          Handler.new([:repeater_month_name, :ordinal_day, :scalar_year], :handle_rmn_od_sy),
+          Handler.new([:repeater_month_name, :scalar_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_sd_sy),
+          Handler.new([:repeater_month_name, :ordinal_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_od_sy),
+          Handler.new([:repeater_month_name, :scalar_day, :separator_at?, 'time?'], :handle_rmn_sd),
+          Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :scalar_day], :handle_rmn_sd_on),
+          Handler.new([:repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rmn_od),
+          Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :ordinal_day], :handle_rmn_od_on),
+          Handler.new([:repeater_month_name, :scalar_year], :handle_rmn_sy),
+          Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy),
+          @middle_endian_handler,
+          @little_endian_handler,
+          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
+          Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_year], :handle_sm_sy)
+        ],
+
+        # tonight at 7pm
+        :anchor => [
+          Handler.new([:grabber?, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
+          Handler.new([:grabber?, :repeater, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
+          Handler.new([:repeater, :grabber, :repeater], :handle_r_g_r)
+        ],
+
+        # 3 weeks from now, in 2 months
+        :arrow => [
+          Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
+          Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),
+          Handler.new([:scalar, :repeater, :pointer, 'anchor'], :handle_s_r_p_a)
+        ],
+
+        # 3rd week in march
+        :narrow => [
+          Handler.new([:ordinal, :repeater, :separator_in, :repeater], :handle_o_r_s_r),
+          Handler.new([:ordinal, :repeater, :grabber, :repeater], :handle_o_r_g_r)
+        ]
+      }
+
+      apply_endian_precedences(options[:endian_precedence])
+
+      @definitions
+    end
+
     private
 
     def tokenize(text, options) #:nodoc:
@@ -142,6 +208,75 @@ module Chronic
       end
       tokens.select { |token| token.tagged? }
     end
+
+    def tokens_to_span(tokens, options) #:nodoc:
+      # maybe it's a specific date
+
+      definitions = self.definitions(options)
+      definitions[:date].each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-date" if Chronic.debug
+          good_tokens = tokens.select { |o| !o.get_tag Separator }
+          return Handlers.send(handler.handler_method, good_tokens, options)
+        end
+      end
+
+      # I guess it's not a specific date, maybe it's just an anchor
+
+      definitions[:anchor].each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-anchor" if Chronic.debug
+          good_tokens = tokens.select { |o| !o.get_tag Separator }
+          return Handlers.send(handler.handler_method, good_tokens, options)
+        end
+      end
+
+      # not an anchor, perhaps it's an arrow
+
+      definitions[:arrow].each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-arrow" if Chronic.debug
+          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) }
+          return Handlers.send(handler.handler_method, good_tokens, options)
+        end
+      end
+
+      # not an arrow, let's hope it's a narrow
+
+      definitions[:narrow].each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-narrow" if Chronic.debug
+          #good_tokens = tokens.select { |o| !o.get_tag Separator }
+          return Handlers.send(handler.handler_method, tokens, options)
+        end
+      end
+
+      # I guess you're out of luck!
+      puts "-none" if Chronic.debug
+      return nil
+    end
+
+    #--------------
+
+    def apply_endian_precedences(precedences)
+      date_defs = @definitions[:date]
+
+      # map the precedence array to indices on @definitions[:date]
+      indices = precedences.map { |e|
+        handler = instance_variable_get(endian_variable_name_for(e))
+        date_defs.index(handler)
+      }
+
+      # swap the handlers if we discover they are at odds with the desired preferences
+      swap(date_defs, indices.first, indices.last) if indices.first > indices.last
+    end
+
+    def endian_variable_name_for(e)
+      "@#{e.to_s}_endian_handler".to_sym
+    end
+
+    # exchange two elements in an array
+    def swap(arr, a, b); arr[a], arr[b] = arr[b], arr[a]; end
   end
 
   # Internal exception

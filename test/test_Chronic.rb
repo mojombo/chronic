@@ -21,7 +21,7 @@ class TestChronic < Test::Unit::TestCase
 
     assert_equal :morning, tokens[1].tags[0].type
 
-    tokens = Chronic.dealias_and_disambiguate_times(tokens, {})
+    tokens = Chronic::Handlers.dealias_and_disambiguate_times(tokens, {})
 
     assert_equal :am, tokens[1].tags[0].type
     assert_equal 2, tokens.size
@@ -34,7 +34,7 @@ class TestChronic < Test::Unit::TestCase
 
     assert_equal :morning, tokens[1].tags[0].type
 
-    tokens = Chronic.dealias_and_disambiguate_times(tokens, {})
+    tokens = Chronic::Handlers.dealias_and_disambiguate_times(tokens, {})
 
     assert_equal :morning, tokens[1].tags[0].type
     assert_equal 2, tokens.size
