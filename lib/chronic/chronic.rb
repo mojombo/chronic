@@ -207,9 +207,8 @@ module Chronic
     end
 
     def tokens_to_span(tokens, options) #:nodoc:
-      # maybe it's a specific date
+      definitions = definitions(options)
 
-      definitions = self.definitions(options)
       (definitions[:date] + definitions[:endian]).each do |handler|
         if handler.match(tokens, definitions)
           puts "-date" if Chronic.debug
@@ -218,8 +217,6 @@ module Chronic
         end
       end
 
-      # I guess it's not a specific date, maybe it's just an anchor
-
       definitions[:anchor].each do |handler|
         if handler.match(tokens, definitions)
           puts "-anchor" if Chronic.debug
@@ -227,8 +224,6 @@ module Chronic
           return Handlers.send(handler.handler_method, good_tokens, options)
         end
       end
-
-      # not an anchor, perhaps it's an arrow
 
       definitions[:arrow].each do |handler|
         if handler.match(tokens, definitions)
@@ -239,17 +234,14 @@ module Chronic
         end
       end
 
-      # not an arrow, let's hope it's a narrow
-
       definitions[:narrow].each do |handler|
         if handler.match(tokens, definitions)
           puts "-narrow" if Chronic.debug
-          #good_tokens = tokens.select { |o| !o.get_tag Separator }
+          good_tokens = tokens.select { |o| !o.get_tag Separator }
           return Handlers.send(handler.handler_method, tokens, options)
         end
       end
 
-      # I guess you're out of luck!
       puts "-none" if Chronic.debug
       return nil
     end
