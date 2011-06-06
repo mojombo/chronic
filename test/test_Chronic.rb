@@ -89,4 +89,16 @@ class TestChronic < Test::Unit::TestCase
     end
   end
 
+  def test_debug
+    require 'stringio'
+    $stdout = StringIO.new
+    Chronic.debug = true
+
+    Chronic.parse 'now'
+    assert $stdout.string.include?('this(grabber-this)')
+  ensure
+    $stdout = STDOUT
+    Chronic.debug = false
+  end
+
 end

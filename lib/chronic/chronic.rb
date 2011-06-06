@@ -76,9 +76,7 @@ module Chronic
       tokens = tokenize(text, options)
 
       if Chronic.debug
-        puts "+---------------------------------------------------"
-        puts "| " + tokens.to_s
-        puts "+---------------------------------------------------"
+        puts "+#{'-' * 51}\n| #{tokens}\n+#{'-' * 51}"
       end
 
       span = tokens_to_span(tokens, options)
