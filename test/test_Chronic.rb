@@ -51,6 +51,14 @@ class TestChronic < Test::Unit::TestCase
     assert_equal Time.local(2006, 11, 16), Chronic.guess(span)
   end
 
+  def test_now
+    Chronic.parse('now', :now => Time.local(2006, 01))
+    assert_equal Time.local(2006, 01), Chronic.now
+
+    Chronic.parse('now', :now => Time.local(2007, 01))
+    assert_equal Time.local(2007, 01), Chronic.now
+  end
+
   def test_endian_definitions
     # middle, little
     endians = [
