@@ -79,4 +79,14 @@ class TestChronic < Test::Unit::TestCase
     end
   end
 
+  def test_passing_options
+    assert_raises(Chronic::InvalidArgumentException) do
+      Chronic.parse('now', :invalid => :option)
+    end
+
+    assert_raises(Chronic::InvalidArgumentException) do
+      Chronic.parse('now', :context => :invalid_context)
+    end
+  end
+
 end

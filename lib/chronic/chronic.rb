@@ -60,9 +60,13 @@ module Chronic
       options = DEFAULT_OPTIONS.merge specified_options
 
       # ensure the specified options are valid
-      (specified_options.keys-DEFAULT_OPTIONS.keys).each {|key| raise(InvalidArgumentException, "#{key} is not a valid option key.")}
+      (specified_options.keys - DEFAULT_OPTIONS.keys).each do |key|
+        raise InvalidArgumentException, "#{key} is not a valid option key."
+      end
 
-      [:past, :future, :none].include?(options[:context]) || raise(InvalidArgumentException, "Invalid value ':#{options[:context]}' for :context specified. Valid values are :past and :future.")
+      unless [:past, :future, :none].include?(options[:context])
+        raise InvalidArgumentException, "Invalid context, :past/:future only"
+      end
 
       options[:now] ||= Chronic.time_class.now
       @now = options[:now]
