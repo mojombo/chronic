@@ -72,15 +72,15 @@ module Chronic
       text = pre_normalize(text)
 
       # tokenize words
-      @tokens = tokenize(text, options)
+      tokens = tokenize(text, options)
 
       if Chronic.debug
         puts "+---------------------------------------------------"
-        puts "| " + @tokens.to_s
+        puts "| " + tokens.to_s
         puts "+---------------------------------------------------"
       end
 
-      span = tokens_to_span(@tokens, options)
+      span = tokens_to_span(tokens, options)
 
       if options[:guess]
         guess span
