@@ -267,13 +267,11 @@ module Chronic
   end
 
   # Internal exception
-  class ChronicPain < Exception #:nodoc:
-
+  class ChronicPain < Exception
   end
 
   # This exception is raised if an invalid argument is provided to
   # any of Chronic's methods
   class InvalidArgumentException < Exception
-
   end
 end
