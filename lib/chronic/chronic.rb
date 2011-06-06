@@ -125,14 +125,6 @@ module Chronic
       Numerizer.numerize(text)
     end
 
-    def tokenize(text, options) #:nodoc:
-      tokens = text.split(' ').map { |word| Token.new(word) }
-      [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
-        tokens = tok.scan(tokens, options)
-      end
-      tokens.delete_if { |token| !token.tagged? }
-    end
-
     # Guess a specific time within the given span
     def guess(span) #:nodoc:
       return nil if span.nil?
@@ -141,6 +133,16 @@ module Chronic
       else
         span.begin
       end
+    end
+
+    private
+
+    def tokenize(text, options) #:nodoc:
+      tokens = text.split(' ').map { |word| Token.new(word) }
+      [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
+        tokens = tok.scan(tokens, options)
+      end
+      tokens.delete_if { |token| !token.tagged? }
     end
   end
 
