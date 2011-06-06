@@ -97,7 +97,7 @@ module Chronic
     #
     # @param [String] text The string to normalize
     # @return [String] A new string ready for Chronic to parse
-    def pre_normalize(text) #:nodoc:
+    def pre_normalize(text)
       normalized_text = text.to_s.downcase
       normalized_text.gsub!(/['"\.,]/, '')
       normalized_text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
