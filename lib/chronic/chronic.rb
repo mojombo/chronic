@@ -93,30 +93,30 @@ module Chronic
     # to numbers (three => 3), and converting ordinal words to numeric
     # ordinals (third => 3rd)
     def pre_normalize(text) #:nodoc:
-      normalized_text = text.to_s.downcase
-      normalized_text.gsub!(/['"\.,]/, '')
-      normalized_text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
-      normalized_text = numericize_numbers(normalized_text)
-      normalized_text.gsub!(/ \-(\d{4})\b/, ' tzminus\1')
-      normalized_text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
-      normalized_text.gsub!(/\b0(\d+:\d+\s*pm?\b)/, '\1')
-      normalized_text.gsub!(/\btoday\b/, 'this day')
-      normalized_text.gsub!(/\btomm?orr?ow\b/, 'next day')
-      normalized_text.gsub!(/\byesterday\b/, 'last day')
-      normalized_text.gsub!(/\bnoon\b/, '12:00')
-      normalized_text.gsub!(/\bmidnight\b/, '24:00')
-      normalized_text.gsub!(/\bbefore now\b/, 'past')
-      normalized_text.gsub!(/\bnow\b/, 'this second')
-      normalized_text.gsub!(/\b(ago|before)\b/, 'past')
-      normalized_text.gsub!(/\bthis past\b/, 'last')
-      normalized_text.gsub!(/\bthis last\b/, 'last')
-      normalized_text.gsub!(/\b(?:in|during) the (morning)\b/, '\1')
-      normalized_text.gsub!(/\b(?:in the|during the|at) (afternoon|evening|night)\b/, '\1')
-      normalized_text.gsub!(/\btonight\b/, 'this night')
-      normalized_text.gsub!(/\b\d+:?\d*[ap]\b/,'\0m')
-      normalized_text.gsub!(/(\d)([ap]m|oclock)\b/, '\1 \2')
-      normalized_text.gsub!(/\b(hence|after|from)\b/, 'future')
-      normalized_text
+      text = text.to_s.downcase
+      text.gsub!(/['"\.,]/, '')
+      text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
+      text = numericize_numbers(text)
+      text.gsub!(/ \-(\d{4})\b/, ' tzminus\1')
+      text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
+      text.gsub!(/\b0(\d+:\d+\s*pm?\b)/, '\1')
+      text.gsub!(/\btoday\b/, 'this day')
+      text.gsub!(/\btomm?orr?ow\b/, 'next day')
+      text.gsub!(/\byesterday\b/, 'last day')
+      text.gsub!(/\bnoon\b/, '12:00')
+      text.gsub!(/\bmidnight\b/, '24:00')
+      text.gsub!(/\bbefore now\b/, 'past')
+      text.gsub!(/\bnow\b/, 'this second')
+      text.gsub!(/\b(ago|before)\b/, 'past')
+      text.gsub!(/\bthis past\b/, 'last')
+      text.gsub!(/\bthis last\b/, 'last')
+      text.gsub!(/\b(?:in|during) the (morning)\b/, '\1')
+      text.gsub!(/\b(?:in the|during the|at) (afternoon|evening|night)\b/, '\1')
+      text.gsub!(/\btonight\b/, 'this night')
+      text.gsub!(/\b\d+:?\d*[ap]\b/,'\0m')
+      text.gsub!(/(\d)([ap]m|oclock)\b/, '\1 \2')
+      text.gsub!(/\b(hence|after|from)\b/, 'future')
+      text
     end
 
     # Convert number words to numbers (three => 3)
