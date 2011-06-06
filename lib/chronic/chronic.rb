@@ -68,10 +68,9 @@ module Chronic
         raise InvalidArgumentException, "Invalid context, :past/:future only"
       end
 
-      options[:now] ||= Chronic.time_class.now
-      @now = options[:now]
-
       options[:text] = text
+      options[:now] ||= Chronic.time_class.now
+      Chronic.now = options[:now]
 
       # tokenize words
       tokens = tokenize(text, options)
