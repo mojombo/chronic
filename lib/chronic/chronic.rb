@@ -11,10 +11,11 @@ module Chronic
 
   class << self
 
-    # Parses a string containing a natural language date or time. If the
-    # parser can find a date or time, either a Time or Chronic::Span will
-    # be returned (depending on the value of <tt>:guess</tt>). If no date
-    # or time can be found, +nil+ will be returned.
+    # Parses a string containing a natural language date or time
+    #
+    # If the parser can find a date or time, either a Time or Chronic::Span
+    # will be returned (depending on the value of `:guess`). If no
+    # date or time can be found, `nil` will be returned
     #
     # @option opts [Symbol] :context (:future)
     #   * If your string represents a birthday, you can set `:context` to
@@ -24,35 +25,35 @@ module Chronic
     # @option opts [Object] :now (Time.now)
     #   * By setting `:now` to a Time, all computations will be based off of
     #     that time instead of `Time.now`. If set to nil, Chronic will use
-    #     `Time.now`.
+    #     `Time.now`
     #
     # @option opts [Boolean] :guess (true)
     #   * By default, the parser will guess a single point in time for the
     #     given date or time. If you'd rather have the entire time span
     #     returned, set `:guess` to `false` and a {Chronic::Span} will
-    #     be returned.
+    #     be returned
     #
     # @option opts [Integer] :ambiguous_time_range (6)
     #   * If an Integer is given, ambiguous times (like 5:00) will be
     #     assumed to be within the range of that time in the AM to that time
-    #     in the PM. For example, if you set it to <tt>7</tt>, then the parser
+    #     in the PM. For example, if you set it to `7`, then the parser
     #     will look for the time between 7am and 7pm. In the case of 5:00, it
-    #     would assume that means 5:00pm. If <tt>:none</tt> is given, no
+    #     would assume that means 5:00pm. If `:none` is given, no
     #     assumption will be made, and the first matching instance of that
-    #     time will be used.
+    #     time will be used
     #
     # @option opts [Array] :endian_precedence ([:middle, :little])
     #   * By default, Chronic will parse "03/04/2011" as the fourth day
     #     of the third month. Alternatively you can tell Chronic to parse
     #     this as the third day of the fourth month by altering the
-    #     `:endian_precedence` to `[:little, :middle]`.
+    #     `:endian_precedence` to `[:little, :middle]`
     #
     # @option opts [Integer] :ambiguous_year_future_bias (50)
     #   * When parsing two digit years (ie 79) unlike Rubys Time class,
     #     Chronic will attempt to assume the full year using this figure.
     #     Chronic will look x amount of years into the future and past. If
     #     the two digit year is `now + x years` it's assumed to be the
-    #     future, `now - x years` is assumed to be the past.
+    #     future, `now - x years` is assumed to be the past
     #
     # @return [Time, Chronic::Span, nil]
     def parse(text, opts={})
@@ -88,9 +89,11 @@ module Chronic
       end
     end
 
-    # Clean up the specified input text by stripping unwanted characters,
-    # converting idioms to their canonical form, converting number words
-    # to numbers (three => 3), and converting ordinal words to numeric
+    # Clean up the specified text ready for parsing
+    #
+    # Clean up the string by stripping unwanted characters, converting
+    # idioms to their canonical form, converting number words to numbers
+    # (three => 3), and converting ordinal words to numeric
     # ordinals (third => 3rd)
     #
     # @example
