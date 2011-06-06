@@ -1,5 +1,5 @@
 module Chronic
-  class Scalar < Tag #:nodoc:
+  class Scalar < Tag
     DAY_PORTIONS = %w( am pm morning afternoon evening night )
 
     # Scan an Array of {Token}s and apply any necessary Scalar tags to
