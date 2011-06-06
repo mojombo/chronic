@@ -1,2 +1,3 @@
 -m markdown
 --main README.md
+--title "Chronic - Natural language date/time parsing"
