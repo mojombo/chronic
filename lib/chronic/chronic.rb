@@ -47,6 +47,12 @@ module Chronic
     #   `:endian_precedence` to `[:little, :middle]`.
     #
     # @option opts [Integer] :ambiguous_year_future_bias (50)
+    #   When parsing two digit years (ie 79) unlike Rubys Time class, Chronic
+    #   will attempt to assume the full year using this figure. Chronic will
+    #   look x amount of years into the future and past. If the two digit
+    #   year is `now + x years` it's assumed to be the future, `now - x
+    #   years` is assumed to be the past.
+    #
     # @return [Time, Chronic::Span, nil]
     def parse(text, opts={})
       @text = text
