@@ -1,11 +1,20 @@
 module Chronic
-  class Pointer < Tag #:nodoc:
+  class Pointer < Tag
+
+    # Scan an Array of {Token}s and apply any necessary Pointer tags to
+    # each token
+    #
+    # @param [Array<Token>] tokens Array of tokens to scan
+    # @param [Hash] options Options specified in {Chronic.parse}
+    # @return [Array] list of tokens
     def self.scan(tokens, options)
       tokens.each_index do |i|
         if t = scan_for_all(tokens[i]) then tokens[i].tag(t) end
       end
     end
 
+    # @param [Token] token
+    # @return [Pointer, nil]
     def self.scan_for_all(token)
       scan_for token, self,
       {
