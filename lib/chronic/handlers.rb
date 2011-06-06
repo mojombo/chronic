@@ -165,19 +165,6 @@ module Chronic
 
     def handle_s_r_p(tokens, options) #:nodoc:
       repeater = tokens[1].get_tag(Repeater)
-
-      # span =
-      # case true
-      # when [RepeaterYear, RepeaterSeason, RepeaterSeasonName, RepeaterMonth, RepeaterMonthName, RepeaterFortnight, RepeaterWeek].include?(repeater.class)
-      #   self.parse("this hour", :guess => false, :now => @now)
-      # when [RepeaterWeekend, RepeaterDay, RepeaterDayName, RepeaterDayPortion, RepeaterHour].include?(repeater.class)
-      #   self.parse("this minute", :guess => false, :now => @now)
-      # when [RepeaterMinute, RepeaterSecond].include?(repeater.class)
-      #   self.parse("this second", :guess => false, :now => @now)
-      # else
-      #   raise(ChronicPain, "Invalid repeater: #{repeater.class}")
-      # end
-
       span = Span.new(Chronic.now, Chronic.now + 1)
 
       self.handle_srp(tokens, span, options)
@@ -327,21 +314,6 @@ module Chronic
           t1.tag(RepeaterDayPortion.new(:pm))
         end
       end
-
-      # tokens.each_with_index do |t0, i|
-      #   t1 = tokens[i + 1]
-      #   if t1 && (t1tag = t1.get_tag(RepeaterDayPortion)) && t0.get_tag(RepeaterTime)
-      #     if [:morning].include?(t1tag.type)
-      #       puts '--morning->am' if Chronic.debug
-      #       t1.untag(RepeaterDayPortion)
-      #       t1.tag(RepeaterDayPortion.new(:am))
-      #     elsif [:afternoon, :evening, :night].include?(t1tag.type)
-      #       puts "--#{t1tag.type}->pm" if Chronic.debug
-      #       t1.untag(RepeaterDayPortion)
-      #       t1.tag(RepeaterDayPortion.new(:pm))
-      #     end
-      #   end
-      # end
 
       # handle ambiguous times if :ambiguous_time_range is specified
       if options[:ambiguous_time_range] != :none
