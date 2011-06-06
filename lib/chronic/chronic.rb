@@ -59,14 +59,17 @@ module Chronic
       options = DEFAULT_OPTIONS.merge opts
 
       # ensure the specified options are valid
-      (opts.keys-DEFAULT_OPTIONS.keys).each {|key| raise(InvalidArgumentException, "#{key} is not a valid option key.")}
+      (opts.keys - DEFAULT_OPTIONS.keys).each do |key|
+        raise InvalidArgumentException, "#{key} is not a valid option key."
+      end
 
-      [:past, :future, :none].include?(options[:context]) || raise(InvalidArgumentException, "Invalid value ':#{options[:context]}' for :context specified. Valid values are :past and :future.")
-
-      options[:now] ||= Chronic.time_class.now
-      @now = options[:now]
+      unless [:past, :future, :none].include?(options[:context])
+        raise InvalidArgumentException, "Invalid context, :past/:future only"
+      end
 
       options[:text] = text
+      options[:now] ||= Chronic.time_class.now
+      Chronic.now = options[:now]
 
       # tokenize words
       tokens = tokenize(text, options)
