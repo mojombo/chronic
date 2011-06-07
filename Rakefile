@@ -41,8 +41,8 @@ end
 desc "Build a gem from the gemspec"
 task :build => :gemspec do
   sh "mkdir -p pkg"
-  sh "gem build #{gemspec_file}"
-  sh "mv #{gem_file} pkg"
+  sh "gem build chronic.gemspec"
+  sh "mv chronic-#{version}.gem pkg"
 end
 
 task :default => :test
