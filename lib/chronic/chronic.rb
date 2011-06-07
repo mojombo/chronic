@@ -108,7 +108,7 @@ module Chronic
     #
     # @param [String] text The string to normalize
     # @return [String] A new string ready for Chronic to parse
-    def pre_normalize(text) #:nodoc:
+    def pre_normalize(text)
       text = text.to_s.downcase
       text.gsub!(/['"\.,]/, '')
       text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
@@ -235,7 +235,7 @@ module Chronic
       tokens.select { |token| token.tagged? }
     end
 
-    def tokens_to_span(tokens, options) #:nodoc:
+    def tokens_to_span(tokens, options)
       definitions = definitions(options)
 
       (definitions[:date] + definitions[:endian]).each do |handler|
