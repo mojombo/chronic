@@ -1,3 +1,10 @@
+# 0.4.2 / 2011-06-07
+
+* Fix MonthRepeater for fetching past month offsets when current day is
+  later than the last day of a past month (ie on 29th of March when parsing
+  `last month` Chronic would return March instead of February. Now Chronic
+  returns the last day of the past month)
+
 # 0.4.1 / 2011-06-05
 
 * Fix MiniDate ranges for parsing seasons (Thomas Walpole)

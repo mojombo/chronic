@@ -2,6 +2,8 @@ module Chronic
   class RepeaterMonth < Repeater #:nodoc:
     MONTH_SECONDS = 2_592_000 # 30 * 24 * 60 * 60
     YEAR_MONTHS = 12
+    MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    MONTH_DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
     def initialize(type)
       super
@@ -54,7 +56,11 @@ module Chronic
         new_year += 1
         new_month -= YEAR_MONTHS
       end
-      Time.construct(new_year, new_month, time.day, time.hour, time.min, time.sec)
+
+      days = month_days(new_year, new_month)
+      new_day = time.day > days ? days : time.day
+
+      Time.construct(new_year, new_month, new_day, time.hour, time.min, time.sec)
     end
 
     def width
@@ -63,6 +69,12 @@ module Chronic
 
     def to_s
       super << '-month'
+    end
+
+    private
+
+    def month_days(year, month)
+      Date.leap?(year) ? MONTH_DAYS_LEAP[month - 1] : MONTH_DAYS[month - 1]
     end
   end
 end

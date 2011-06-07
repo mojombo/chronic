@@ -23,6 +23,10 @@ class TestRepeaterMonth < Test::Unit::TestCase
 
     time = Chronic::RepeaterMonth.new(:month).offset_by(@now, 10, :past)
     assert_equal Time.local(2005, 10, 16, 14), time
+
+    time = Chronic::RepeaterMonth.new(:month).offset_by(Time.local(2010, 3, 29), 1, :past)
+    assert_equal 2, time.month
+    assert_equal 28, time.day
   end
 
   def test_offset
