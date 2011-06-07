@@ -8,13 +8,13 @@ module Chronic
     # @param [Hash] options Options specified in {Chronic.parse}
     # @return [Array] list of tokens
     def self.scan(tokens, options)
-      tokens.each_index do |i|
-        if t = scan_for_season_names(tokens[i]) then tokens[i].tag(t); next end
-        if t = scan_for_month_names(tokens[i]) then tokens[i].tag(t); next end
-        if t = scan_for_day_names(tokens[i]) then tokens[i].tag(t); next end
-        if t = scan_for_day_portions(tokens[i]) then tokens[i].tag(t); next end
-        if t = scan_for_times(tokens[i]) then tokens[i].tag(t); next end
-        if t = scan_for_units(tokens[i]) then tokens[i].tag(t); next end
+      tokens.each do |token|
+        if t = scan_for_season_names(token) then token.tag(t); next end
+        if t = scan_for_month_names(token) then token.tag(t); next end
+        if t = scan_for_day_names(token) then token.tag(t); next end
+        if t = scan_for_day_portions(token) then token.tag(t); next end
+        if t = scan_for_times(token) then token.tag(t); next end
+        if t = scan_for_units(token) then token.tag(t); next end
       end
     end
 

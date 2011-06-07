@@ -8,12 +8,12 @@ module Chronic
     # @param [Hash] options Options specified in {Chronic.parse}
     # @return [Array] list of tokens
     def self.scan(tokens, options)
-      tokens.each_index do |i|
-        if t = scan_for_commas(tokens[i]) then tokens[i].tag(t); next end
-        if t = scan_for_slash_or_dash(tokens[i]) then tokens[i].tag(t); next end
-        if t = scan_for_at(tokens[i]) then tokens[i].tag(t); next end
-        if t = scan_for_in(tokens[i]) then tokens[i].tag(t); next end
-        if t = scan_for_on(tokens[i]) then tokens[i].tag(t); next end
+      tokens.each do |token|
+        if t = scan_for_commas(token) then token.tag(t); next end
+        if t = scan_for_slash_or_dash(token) then token.tag(t); next end
+        if t = scan_for_at(token) then token.tag(t); next end
+        if t = scan_for_in(token) then token.tag(t); next end
+        if t = scan_for_on(token) then token.tag(t); next end
       end
     end
 
