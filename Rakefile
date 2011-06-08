@@ -39,7 +39,7 @@ task :release => :build do
 end
 
 desc "Build a gem from the gemspec"
-task :build => :gemspec do
+task :build do
   sh "mkdir -p pkg"
   sh "gem build chronic.gemspec"
   sh "mv chronic-#{version}.gem pkg"
