@@ -274,6 +274,12 @@ class TestParsing < Test::Unit::TestCase
     time = parse_now("13:45")
     assert_equal Time.local(2006, 8, 17, 13, 45), time
 
+    time = parse_now("1:01pm")
+    assert_equal Time.local(2006, 8, 16, 13, 01), time
+
+    time = parse_now("2:01pm")
+    assert_equal Time.local(2006, 8, 16, 14, 01), time
+
     time = parse_now("november")
     assert_equal Time.local(2006, 11, 16), time
   end

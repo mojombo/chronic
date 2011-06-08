@@ -37,7 +37,7 @@ module Chronic
           hours == 12 ? Tick.new(0 * 60 * 60, true) : Tick.new(hours * 60 * 60, true)
         when 3
           hours = t[0..0].to_i
-          ambiguous = hours > 1
+          ambiguous = hours > 0
           Tick.new((hours * 60 * 60) + (t[1..2].to_i * 60), ambiguous)
         when 4
           ambiguous = time =~ /:/ && t[0..0].to_i != 0 && t[0..1].to_i <= 12
