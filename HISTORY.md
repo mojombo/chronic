@@ -1,3 +1,8 @@
+# 0.4.3 / 2011-06-08
+
+* Fix issue with parsing 1:xxPM -- Ensure 1 is treated as ambiguous, not
+  just >1
+
 # 0.4.2 / 2011-06-07
 
 * Fix MonthRepeater for fetching past month offsets when current day is
