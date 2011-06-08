@@ -14,7 +14,7 @@ module Chronic
 
     # Tag this token with the specified tag
     #
-    # @param [Tag] new_tag A instance of {Tag} or one of its subclasses
+    # @param [Tag] new_tag An instance of {Tag} or one of its subclasses
     def tag(new_tag)
       @tags << new_tag
     end
