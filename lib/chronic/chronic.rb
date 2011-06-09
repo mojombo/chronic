@@ -17,6 +17,8 @@ module Chronic
     # will be returned (depending on the value of `:guess`). If no
     # date or time can be found, `nil` will be returned
     #
+    # @param [String] text The text to parse
+    #
     # @option opts [Symbol] :context (:future)
     #   * If your string represents a birthday, you can set `:context` to
     #     `:past` and if an ambiguous string is given, it will assume it is
