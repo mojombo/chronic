@@ -57,7 +57,6 @@ module Chronic
     #
     # @return [Time, Chronic::Span, nil]
     def parse(text, opts={})
-      @text = text
       options = DEFAULT_OPTIONS.merge opts
 
       # ensure the specified options are valid
