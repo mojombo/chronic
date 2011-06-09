@@ -102,7 +102,7 @@ module Chronic
     def handle_sd_rmn_sy(tokens, options) #:nodoc:
       new_tokens = [tokens[1], tokens[0], tokens[2]]
       time_tokens = tokens.last(tokens.size - 3)
-      self.handle_rmn_sd_sy(new_tokens + time_tokens, options)
+      handle_rmn_sd_sy(new_tokens + time_tokens, options)
     end
 
     # Handle scalar-month/scalar-day/scalar-year (endian middle)
@@ -125,14 +125,14 @@ module Chronic
     def handle_sd_sm_sy(tokens, options) #:nodoc:
       new_tokens = [tokens[1], tokens[0], tokens[2]]
       time_tokens = tokens.last(tokens.size - 3)
-      self.handle_sm_sd_sy(new_tokens + time_tokens, options)
+      handle_sm_sd_sy(new_tokens + time_tokens, options)
     end
 
     # Handle scalar-year/scalar-month/scalar-day
     def handle_sy_sm_sd(tokens, options) #:nodoc:
       new_tokens = [tokens[1], tokens[2], tokens[0]]
       time_tokens = tokens.last(tokens.size - 3)
-      self.handle_sm_sd_sy(new_tokens + time_tokens, options)
+      handle_sm_sd_sy(new_tokens + time_tokens, options)
     end
 
     # Handle scalar-month/scalar-year
@@ -160,13 +160,13 @@ module Chronic
     # Handle repeaters
     def handle_r(tokens, options) #:nodoc:
       dd_tokens = dealias_and_disambiguate_times(tokens, options)
-      self.get_anchor(dd_tokens, options)
+      get_anchor(dd_tokens, options)
     end
 
     # Handle repeater/grabber/repeater
     def handle_r_g_r(tokens, options) #:nodoc:
       new_tokens = [tokens[1], tokens[0], tokens[2]]
-      self.handle_r(new_tokens, options)
+      handle_r(new_tokens, options)
     end
 
     # arrows
@@ -185,19 +185,19 @@ module Chronic
       repeater = tokens[1].get_tag(Repeater)
       span = Span.new(Chronic.now, Chronic.now + 1)
 
-      self.handle_srp(tokens, span, options)
+      handle_srp(tokens, span, options)
     end
 
     # Handle pointer/scalar/repeater
     def handle_p_s_r(tokens, options) #:nodoc:
       new_tokens = [tokens[1], tokens[2], tokens[0]]
-      self.handle_s_r_p(new_tokens, options)
+      handle_s_r_p(new_tokens, options)
     end
 
     # Handle scalar/repeater/pointer/anchor
     def handle_s_r_p_a(tokens, options) #:nodoc:
       anchor_span = get_anchor(tokens[3..tokens.size - 1], options)
-      self.handle_srp(tokens, anchor_span, options)
+      handle_srp(tokens, anchor_span, options)
     end
 
     # narrows
@@ -247,7 +247,7 @@ module Chronic
       grabber = Grabber.new(:this)
       pointer = :future
 
-      repeaters = self.get_repeaters(tokens)
+      repeaters = get_repeaters(tokens)
       repeaters.size.times { tokens.pop }
 
       if tokens.first && tokens.first.get_tag(Grabber)
@@ -398,7 +398,7 @@ module Chronic
     end
 
     def ==(other)
-      self.pattern == other.pattern
+      @pattern == other.pattern
     end
   end
 
