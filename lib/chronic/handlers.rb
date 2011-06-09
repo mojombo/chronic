@@ -358,18 +358,33 @@ module Chronic
 
   end
 
-  class Handler #:nodoc:
-    attr_accessor :pattern, :handler_method
+  class Handler
+    # @return [Array] A list of patterns
+    attr_accessor :pattern
 
+    # @return [Symbol] The method which handles this list of patterns.
+    #   This method should exist inside the {Handlers} module
+    attr_accessor :handler_method
+
+    # @param [Array]  pattern A list of patterns to match tokens against
+    # @param [Symbol] handler_method The method to be invoked when patterns
+    #   are matched. This method should exist inside the {Handlers} module
     def initialize(pattern, handler_method)
       @pattern = pattern
       @handler_method = handler_method
     end
 
+    # @param [#to_s]  The snake_case name representing a Chronic constant
+    # @return [Class] The class represented by `name`
+    # @raise [NameError] Raises if this constant could not be found
     def constantize(name)
       Chronic.const_get name.to_s.gsub(/(^|_)(.)/) { $2.upcase }
     end
 
+    # @param [Array] tokens
+    # @param [Hash]  definitions
+    # @return [Boolean]
+    # @see Chronic.tokens_to_span
     def match(tokens, definitions)
       token_index = 0
       @pattern.each do |element|
@@ -397,6 +412,8 @@ module Chronic
       return true
     end
 
+    # @param [Handler]  The handler to compare
+    # @return [Boolean] True if these handlers match
     def ==(other)
       @pattern == other.pattern
     end
