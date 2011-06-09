@@ -4,7 +4,6 @@ module Chronic
 
     def initialize(type)
       super
-      @current_year_start = nil
     end
 
     def next(pointer)

@@ -4,7 +4,6 @@ module Chronic
 
     def initialize(type)
       super
-      @current_fortnight_start = nil
     end
 
     def next(pointer)

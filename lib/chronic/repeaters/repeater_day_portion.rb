@@ -11,7 +11,6 @@ module Chronic
 
     def initialize(type)
       super
-      @current_span = nil
 
       if type.kind_of? Integer
         @range = (@type * 60 * 60)..((@type + 12) * 60 * 60)

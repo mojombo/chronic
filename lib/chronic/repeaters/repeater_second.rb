@@ -4,7 +4,6 @@ module Chronic
 
     def initialize(type)
       super
-      @second_start = nil
     end
 
     def next(pointer = :future)

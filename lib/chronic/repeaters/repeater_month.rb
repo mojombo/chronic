@@ -7,7 +7,6 @@ module Chronic
 
     def initialize(type)
       super
-      @current_month_start = nil
     end
 
     def next(pointer)

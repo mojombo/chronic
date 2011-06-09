@@ -46,7 +46,6 @@ module Chronic
 
     def initialize(type)
       super
-      @next_season_start = nil
     end
 
     def next(pointer)
