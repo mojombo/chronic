@@ -3,7 +3,6 @@ LICENSE
 Manifest.txt
 README.md
 Rakefile
-benchmark/benchmark.rb
 chronic.gemspec
 lib/chronic.rb
 lib/chronic/chronic.rb
