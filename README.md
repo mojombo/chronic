@@ -133,8 +133,9 @@ Specific Times (many of the above with an added time)
 
 Chronic allows you to set which Time class to use when constructing times. By
 default, the built in Ruby time class creates times in your system's local
-time zone. You can set this to something like ActiveSupport's TimeZone class
-to get full time zone support.
+time zone. You can set this to something like ActiveSupport's
+[TimeZone](http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html)
+class to get full time zone support.
 
     >> Time.zone = "UTC"
     >> Chronic.time_class = Time.zone
