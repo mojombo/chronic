@@ -44,13 +44,8 @@ module Chronic
 
     def offset(span, amount, pointer)
       direction = pointer == :future ? 1 : -1
-
-      sb = span.begin
-      new_begin = Time.construct(sb.year + (amount * direction), sb.month, sb.day, sb.hour, sb.min, sb.sec)
-
-      se = span.end
-      new_end = Time.construct(se.year + (amount * direction), se.month, se.day, se.hour, se.min, se.sec)
-
+      new_begin = build_offset_time(span.begin, amount, direction)
+      new_end   = build_offset_time(span.end, amount, direction)
       Span.new(new_begin, new_end)
     end
 
@@ -60,6 +55,23 @@ module Chronic
 
     def to_s
       super << '-year'
+    end
+
+    private
+
+    def build_offset_time(time, amount, direction)
+      year = time.year + (amount * direction)
+      days = month_days(year, time.month)
+      day = time.day > days ? days : time.day
+      Time.construct(year, time.month, day, time.hour, time.min, time.sec)
+    end
+
+    def month_days(year, month)
+      if Date.leap?(year)
+        RepeaterMonth::MONTH_DAYS_LEAP[month - 1]
+      else
+        RepeaterMonth::MONTH_DAYS[month - 1]
+      end
     end
   end
 end

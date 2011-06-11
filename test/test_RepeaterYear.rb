@@ -57,6 +57,13 @@ class TestRepeaterYear < Test::Unit::TestCase
 
     assert_equal Time.local(1996, 8, 16, 14), offset_span.begin
     assert_equal Time.local(1996, 8, 16, 14, 0, 1), offset_span.end
+
+    now = Time.local(2008, 2, 29)
+    span = Chronic::Span.new(now, now + 1)
+    offset_span = Chronic::RepeaterYear.new(:year).offset(span, 1, :past)
+
+    assert_equal Time.local(2007, 2, 28), offset_span.begin
+    assert_equal Time.local(2007, 2, 28, 0, 0, 1), offset_span.end
   end
 
 end
