@@ -1,3 +1,10 @@
+# 0.4.4
+
+* Fix RepeaterYear for fetching past year offsets when the current day is
+  later than the last day of the same month in a past year (leap years) ie
+  on 29th/feb (leap year) `last year` should (and now does) return 28th/feb
+  instead of 1st/march
+
 # 0.4.3 / 2011-06-08
 
 * Fix issue with parsing 1:xxPM -- Ensure 1 is treated as ambiguous, not
