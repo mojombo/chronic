@@ -28,7 +28,7 @@ require 'date'
 #
 # @author Tom Preston-Werner, Lee Jarvis
 module Chronic
-  VERSION = "0.4.3"
+  VERSION = "0.4.4"
 
   class << self
 
