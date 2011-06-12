@@ -4,6 +4,7 @@
   later than the last day of the same month in a past year (leap years) ie
   on 29th/feb (leap year) `last year` should (and now does) return 28th/feb
   instead of 1st/march
+* Opt in for gem testing http://test.rubygems.org/
 
 # 0.4.3 / 2011-06-08
 
