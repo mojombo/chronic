@@ -258,8 +258,7 @@ module Chronic
       definitions[:arrow].each do |handler|
         if handler.match(tokens, definitions)
           puts "-arrow" if Chronic.debug
-          tags = [SeparatorAt, SeparatorSlashOrDash, SeparatorComma]
-          good_tokens = tokens.reject { |o| tags.any? { |t| o.get_tag(t) } }
+          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) }
           return Handlers.send(handler.handler_method, good_tokens, options)
         end
       end
