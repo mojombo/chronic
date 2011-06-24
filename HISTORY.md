@@ -1,3 +1,7 @@
+# TBA
+
+* Fix `Time.construct` leap year checking. Instead use `Date.leap?(year)`
+
 # 0.4.4
 
 * Fix RepeaterYear for fetching past year offsets when the current day is

@@ -118,10 +118,9 @@ class Time
     day <= 56 || raise("day must be no more than 56 (makes month resolution easier)")
     if day > 28
       # no month ever has fewer than 28 days, so only do this if necessary
-      leap_year = (year % 4 == 0) && !(year % 100 == 0)
       leap_year_month_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
       common_year_month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-      days_this_month = leap_year ? leap_year_month_days[month - 1] : common_year_month_days[month - 1]
+      days_this_month = Date.leap?(year) ? leap_year_month_days[month - 1] : common_year_month_days[month - 1]
       if day > days_this_month
         month += day / days_this_month
         day = day % days_this_month

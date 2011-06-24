@@ -31,7 +31,7 @@ class TestTime < Test::Unit::TestCase
     assert_equal Time.local(2006, 2, 1), Time.construct(2006, 1, 32)
     assert_equal Time.local(2006, 3, 5), Time.construct(2006, 2, 33)
     assert_equal Time.local(2004, 3, 4), Time.construct(2004, 2, 33)
-    assert_equal Time.local(2000, 3, 5), Time.construct(2000, 2, 33)
+    assert_equal Time.local(2000, 3, 4), Time.construct(2000, 2, 33)
 
     assert_nothing_raised do
       Time.construct(2006, 1, 56)
