@@ -2,7 +2,7 @@
 
 * Fix `Time.construct` leap year checking. Instead use `Date.leap?(year)`
 
-# 0.4.4
+# 0.4.4 / 2011-06-12
 
 * Fix RepeaterYear for fetching past year offsets when the current day is
   later than the last day of the same month in a past year (leap years) ie
