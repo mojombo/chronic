@@ -119,7 +119,7 @@ module Chronic
 
     # returns the width (in seconds or months) of this repeatable.
     def width
-      raise("Repeatable#width must be overridden in subclasses")
+      raise("Repeater#width must be overridden in subclasses")
     end
 
     # returns the next occurance of this repeatable.
