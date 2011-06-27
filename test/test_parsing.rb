@@ -11,7 +11,7 @@ class TestParsing < Test::Unit::TestCase
   def test_parse_m_d
   end
 
-  def test_parse_rmn_sd
+  def test_handle_rmn_sd
     time = parse_now("aug 3")
     assert_equal Time.local(2006, 8, 3, 12), time
 
@@ -40,7 +40,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 5, 28, 17, 32, 19), time
   end
 
-  def test_parse_rmn_sd_on
+  def test_handle_rmn_sd_on
     time = parse_now("5pm on may 28")
     assert_equal Time.local(2007, 5, 28, 17), time
 
@@ -51,7 +51,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2007, 5, 28, 05), time
   end
 
-  def test_parse_rmn_od
+  def test_handle_rmn_od
     time = parse_now("may 27th")
     assert_equal Time.local(2007, 5, 27, 12), time
 
@@ -68,7 +68,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2007, 5, 27, 5), time
   end
 
-  def test_parse_od_rmn
+  def test_handle_od_rmn
     time = parse_now("22nd February")
     assert_equal Time.local(2007, 2, 22, 12), time
 
@@ -79,7 +79,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 12, 11, 8), time
   end
 
-  def test_parse_rmn_od_on
+  def test_handle_rmn_od_on
     time = parse_now("5:00 pm may 27th", :context => :past)
     assert_equal Time.local(2006, 5, 27, 17), time
 
@@ -93,7 +93,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2007, 5, 27, 5), time
   end
 
-  def test_parse_rmn_sy
+  def test_handle_rmn_sy
     time = parse_now("may 97")
     assert_equal Time.local(1997, 5, 16, 12), time
 
@@ -104,12 +104,12 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2032, 5, 16, 12, 0, 0), time
   end
 
-  def test_parse_rdn_rmn_sd_t_tz_sy
+  def test_handle_rdn_rmn_sd_t_tz_sy
     time = parse_now("Mon Apr 02 17:00:00 PDT 2007")
     assert_equal 1175558400, time.to_i
   end
 
-  def test_parse_rmn_sd_sy
+  def test_handle_rmn_sd_sy
     time = parse_now("November 18, 2010")
     assert_equal Time.local(2010, 11, 18, 12), time
 
@@ -144,7 +144,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2032, 5, 27, 12, 0, 0), time
   end
 
-  def test_parse_rmn_od_sy
+  def test_handle_rmn_od_sy
     time = parse_now("may 1st 01")
     assert_equal Time.local(2001, 5, 1, 12), time
 
@@ -179,7 +179,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(1979, 3, 30, 4, 30), time
   end
 
-  def test_parse_od_rmn_sy
+  def test_handle_od_rmn_sy
     time = parse_now("22nd February 2012")
     assert_equal Time.local(2012, 2, 22, 12), time
 
@@ -187,7 +187,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(1979, 12, 11, 12), time
   end
 
-  def test_parse_sd_rmn_sy
+  def test_handle_sd_rmn_sy
     time = parse_now("3 jan 2010")
     assert_equal Time.local(2010, 1, 3, 12), time
 
@@ -198,7 +198,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 10, 27, 19, 30), time
   end
 
-  def test_parse_sm_sd_sy
+  def test_handle_sm_sd_sy
     time = parse_now("5/27/1979")
     assert_equal Time.local(1979, 5, 27, 12), time
 
@@ -206,7 +206,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(1979, 5, 27, 4), time
   end
 
-  def test_parse_sd_sm_sy
+  def test_handle_sd_sm_sy
     time = parse_now("27/5/1979")
     assert_equal Time.local(1979, 5, 27, 12), time
 
@@ -214,7 +214,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(1979, 5, 27, 7), time
   end
 
-  def test_parse_sy_sm_sd
+  def test_handle_sy_sm_sd
     time = parse_now("2000-1-1")
     assert_equal Time.local(2000, 1, 1, 12), time
 
@@ -240,7 +240,7 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(1902, 8, 20, 12, 0, 0), time
   end
 
-  def test_parse_sm_sy
+  def test_handle_sm_sy
     time = parse_now("05/06")
     assert_equal Time.local(2006, 5, 16, 12), time
 
@@ -251,28 +251,28 @@ class TestParsing < Test::Unit::TestCase
     assert_equal nil, time
   end
 
-  def test_parse_r
+  def test_handle_r
   end
 
-  def test_parse_r_g_r
+  def test_handle_r_g_r
   end
 
-  def test_parse_srp
+  def test_handle_srp
   end
 
-  def test_parse_s_r_p
+  def test_handle_s_r_p
   end
 
-  def test_parse_p_s_r
+  def test_handle_p_s_r
   end
 
-  def test_parse_s_r_p_a
+  def test_handle_s_r_p_a
   end
 
-  def test_parse_orr
+  def test_handle_orr
   end
 
-  def test_parse_o_r_s_r
+  def test_handle_o_r_s_r
     time = parse_now("3rd wednesday in november")
     assert_equal Time.local(2006, 11, 15, 12), time
 
@@ -283,7 +283,7 @@ class TestParsing < Test::Unit::TestCase
     # assert_equal Time.local(2007, 1, 20, 12), time
   end
 
-  def test_parse_o_r_g_r
+  def test_handle_o_r_g_r
     time = parse_now("3rd month next year", :guess => false)
     assert_equal Time.local(2007, 3), time.begin
 
@@ -300,6 +300,8 @@ class TestParsing < Test::Unit::TestCase
     time = parse_now("4th day last week")
     assert_equal Time.local(2006, 8, 9, 12), time
   end
+
+  # end of testing handlers
 
   def test_parse_guess_r
     time = parse_now("friday")
