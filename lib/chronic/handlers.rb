@@ -103,6 +103,22 @@ module Chronic
       end
     end
 
+    # Handle oridinal-day/repeater-month-name/scalar-year
+    def handle_od_rmn_sy(tokens, options) #:nodoc:
+      day = tokens[0].get_tag(OrdinalDay).type
+      month = tokens[1].get_tag(RepeaterMonthName).index
+      year = tokens[2].get_tag(ScalarYear).type
+
+      time_tokens = tokens.last(tokens.size - 3)
+
+      begin
+        day_start = Chronic.time_class.local(year, month, day)
+        day_or_time(day_start, time_tokens, options)
+      rescue ArgumentError
+        nil
+      end
+    end
+
     # Handle scalar-day/repeater-month-name/scalar-year
     def handle_sd_rmn_sy(tokens, options) #:nodoc:
       new_tokens = [tokens[1], tokens[0], tokens[2]]
