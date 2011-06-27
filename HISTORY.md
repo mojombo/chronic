@@ -1,5 +1,9 @@
 # TBA
 
+* Re-factored tests. Now rather than having a test_parsing method for testing
+  all handlers, break them down independent of handler method. For example
+  with handler `handle_sm_sd_sy` the subsequent test would be
+  `test_parse_sm_sd_sy`
 * Added support for parsing ordinal-dates/month-names/year, ie:
   `2nd of May 1995`
 * Added support for parsing ordinal-dates and month names, ie:
