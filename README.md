@@ -102,6 +102,8 @@ Complex
 Specific Dates
 
 * January 5
+* 22nd of june
+* 5th may 2017
 * February twenty first
 * dec 25
 * may 27th
@@ -125,6 +127,7 @@ Specific Dates
 Specific Times (many of the above with an added time)
 
 * January 5 at 7pm
+* 22nd of june at 8am
 * 1979-05-27 05:00:00
 * etc
 
