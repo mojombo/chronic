@@ -1,3 +1,6 @@
+.gemtest
+.gitignore
+.yardopts
 HISTORY.md
 LICENSE
 Manifest.txt
@@ -47,6 +50,7 @@ test/test_RepeaterHour.rb
 test/test_RepeaterMinute.rb
 test/test_RepeaterMonth.rb
 test/test_RepeaterMonthName.rb
+test/test_RepeaterSeason.rb
 test/test_RepeaterTime.rb
 test/test_RepeaterWeek.rb
 test/test_RepeaterWeekday.rb
