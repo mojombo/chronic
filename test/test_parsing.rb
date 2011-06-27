@@ -244,6 +244,18 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(1902, 8, 20, 12, 0, 0), time
   end
 
+  # handle_od_rmn
+  def test_parse_od_rmn
+    time = parse_now("22nd February")
+    assert_equal Time.local(2007, 2, 22, 12), time
+
+    time = parse_now("31st of may at 6:30pm")
+    assert_equal Time.local(2007, 5, 31, 18, 30), time
+
+    time = parse_now("11th december 8am")
+    assert_equal Time.local(2006, 12, 11, 8), time
+  end
+
   def test_parse_two_digit_years
     time = parse_now("may 97")
     assert_equal Time.local(1997, 5, 16, 12), time

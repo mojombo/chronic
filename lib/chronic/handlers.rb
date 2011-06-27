@@ -31,6 +31,11 @@ module Chronic
       handle_m_d(tokens[0].get_tag(RepeaterMonthName), tokens[1].get_tag(OrdinalDay).type, tokens[2..tokens.size], options)
     end
 
+    # Handle ordinal-day/repeater-month-name
+    def handle_od_rmn(tokens, options) #:nodoc:
+      handle_m_d(tokens[1].get_tag(RepeaterMonthName), tokens[0].get_tag(OrdinalDay).type, tokens[2..tokens.size], options)
+    end
+
     # Handle repeater-month-name/ordinal-day with separator-on
     def handle_rmn_od_on(tokens, options) #:nodoc:
       if tokens.size > 3

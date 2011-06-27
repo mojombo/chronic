@@ -1,5 +1,7 @@
 # TBA
 
+* Added support for parsing ordinal-dates and month names, ie:
+  `22nd of February at 6:30pm`
 * Fix `Time.construct` leap year checking. Instead use `Date.leap?(year)`
 
 # 0.4.4
