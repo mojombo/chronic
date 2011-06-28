@@ -111,7 +111,8 @@ module Chronic
     # @return [String] A new string ready for Chronic to parse
     def pre_normalize(text)
       text = text.to_s.downcase
-      text.gsub!(/['"\.,]/, '')
+      text.gsub!(/['"\.]/, '')
+      text.gsub!(/,/,' ')
       text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
       text = numericize_numbers(text)
       text.gsub!(/ \-(\d{4})\b/, ' tzminus\1')
