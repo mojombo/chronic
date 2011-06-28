@@ -9,8 +9,6 @@ module Chronic
     end
 
     def this(pointer = :future)
-      # super
-
       direction = pointer == :future ? 1 : -1
 
       today = Time.construct(@now.year, @now.month, @now.day)
