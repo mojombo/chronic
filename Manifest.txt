@@ -33,6 +33,7 @@ lib/chronic/repeaters/repeater_weekday.rb
 lib/chronic/repeaters/repeater_weekend.rb
 lib/chronic/repeaters/repeater_year.rb
 lib/chronic/scalar.rb
+lib/chronic/season.rb
 lib/chronic/separator.rb
 lib/chronic/span.rb
 lib/chronic/tag.rb
