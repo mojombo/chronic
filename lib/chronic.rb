@@ -77,6 +77,7 @@ require 'chronic/ordinal'
 require 'chronic/separator'
 require 'chronic/time_zone'
 require 'chronic/numerizer'
+require 'chronic/season'
 
 require 'chronic/repeater'
 require 'chronic/repeaters/repeater_year'
