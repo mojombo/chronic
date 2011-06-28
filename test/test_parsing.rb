@@ -112,6 +112,9 @@ class TestParsing < Test::Unit::TestCase
   def test_handle_rmn_sd_sy
     time = parse_now("November 18, 2010")
     assert_equal Time.local(2010, 11, 18, 12), time
+    
+    time = parse_now("Jan 1,2010")
+    assert_equal Time.local(2010, 1, 1, 12), time
 
     time = parse_now("February 14, 2004")
     assert_equal Time.local(2004, 2, 14, 12), time
