@@ -1,5 +1,6 @@
 # TBA
 
+* Replace commas with spaces instead of removing the char (Thomas Walpole)
 * Added tests for RepeaterSeason
 * Re-factored tests. Now rather than having a test_parsing method for testing
   all handlers, break them down independent of handler method. For example
