@@ -98,6 +98,8 @@ Complex
 * 3rd month next year
 * 3rd thursday this september
 * 4th day last week
+* fourteenth of june 2010 at eleven o'clock in the evening
+* may seventh '97 at three in the morning
 
 Specific Dates
 
