@@ -8,9 +8,6 @@ class TestParsing < Test::Unit::TestCase
     @time_2006_08_16_14_00_00 = TIME_2006_08_16_14_00_00
   end
 
-  def test_parse_m_d
-  end
-
   def test_handle_rmn_sd
     time = parse_now("aug 3")
     assert_equal Time.local(2006, 8, 3, 12), time
