@@ -231,7 +231,7 @@ module Chronic
       text = pre_normalize(text)
       tokens = text.split(' ').map { |word| Token.new(word) }
       [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
-        tokens = tok.scan(tokens, options)
+        tok.scan(tokens, options)
       end
       tokens.select { |token| token.tagged? }
     end
