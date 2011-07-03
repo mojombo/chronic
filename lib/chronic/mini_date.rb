@@ -26,7 +26,7 @@ module Chronic
     end
 
     def equals?(other)
-      @month == other.month and day == other.day
+      @month == other.month and @day == other.day
     end
   end
 end
