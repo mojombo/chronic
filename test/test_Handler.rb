@@ -101,9 +101,4 @@ class TestHandler < Test::Unit::TestCase
     assert handler.match(tokens, Chronic.definitions)
   end
 
-  def test_constantize
-    handler = Chronic::Handler.new([], :handler)
-    assert_equal Chronic::RepeaterTime, handler.constantize(:repeater_time)
-  end
-
 end

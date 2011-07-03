@@ -16,13 +16,6 @@ module Chronic
       @handler_method = handler_method
     end
 
-    # @param [#to_s]  The snake_case name representing a Chronic constant
-    # @return [Class] The class represented by `name`
-    # @raise [NameError] Raises if this constant could not be found
-    def constantize(name)
-      Chronic.const_get name.to_s.gsub(/(^|_)(.)/) { $2.upcase }
-    end
-
     # @param [Array] tokens
     # @param [Hash]  definitions
     # @return [Boolean]
@@ -35,24 +28,35 @@ module Chronic
         optional = name[-1, 1] == '?'
         name = name.chop if optional
 
-        if element.instance_of? Symbol
-          klass = constantize(name)
-          match = tokens[token_index] && !tokens[token_index].tags.select { |o| o.kind_of?(klass) }.empty?
-
-          return false if !match && !optional
-          (token_index += 1; next) if match
-          next if !match && optional
-        elsif element.instance_of? String
+        case element
+        when Symbol
+          if tags_match?(name, tokens, token_index)
+            token_index += 1
+            next
+          else
+            if optional
+              next
+            else
+              return false
+            end
+          end
+        when String
           return true if optional && token_index == tokens.size
-          sub_handlers = definitions[name.intern] || raise(ChronicPain, "Invalid subset #{name} specified")
+
+          if definitions.key?(name.to_sym)
+            sub_handlers = definitions[name.to_sym]
+          else
+            raise ChronicPain, "Invalid subset #{name} specified"
+          end
+
           sub_handlers.each do |sub_handler|
             return true if sub_handler.match(tokens[token_index..tokens.size], definitions)
           end
-          return false
         else
           raise ChronicPain, "Invalid match type: #{element.class}"
         end
       end
+
       return false if token_index != tokens.size
       return true
     end
@@ -61,6 +65,16 @@ module Chronic
     # @return [Boolean] True if these handlers match
     def ==(other)
       @pattern == other.pattern
+    end
+
+    private
+
+    def tags_match?(name, tokens, token_index)
+      klass = Chronic.const_get(name.to_s.gsub(/(?:^|_)(.)/) { $1.upcase })
+
+      if tokens[token_index]
+        !tokens[token_index].tags.select { |o| o.kind_of?(klass) }.empty?
+      end
     end
 
   end
