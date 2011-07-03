@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), *%w[helper])
+require 'helper'
 
 class TestMiniDate < Test::Unit::TestCase
   def test_valid_month

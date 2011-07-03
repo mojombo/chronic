@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), *%w[helper])
+require 'helper'
 
 class TestRepeaterHour < Test::Unit::TestCase
 

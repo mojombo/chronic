@@ -1,4 +1,4 @@
-require File.join(File.dirname(__FILE__), *%w[helper])
+require 'helper'
 
 class TestParsing < Test::Unit::TestCase
   # Wed Aug 16 14:00:00 UTC 2006
