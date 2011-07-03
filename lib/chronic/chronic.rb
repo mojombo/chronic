@@ -151,7 +151,8 @@ module Chronic
     # @param [Span] span
     # @return [Time]
     def guess(span)
-      return nil if span.nil?
+      return unless span
+
       if span.width > 1
         span.begin + (span.width / 2)
       else
