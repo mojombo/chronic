@@ -61,6 +61,11 @@ module Chronic
       return true
     end
 
+    def invoke(type, tokens, options)
+      puts "-#{type}" if Chronic.debug
+      Handlers.send(@handler_method, tokens, options)
+    end
+
     # @param [Handler]  The handler to compare
     # @return [Boolean] True if these handlers match
     def ==(other)
