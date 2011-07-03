@@ -2,8 +2,8 @@ require 'helper'
 
 class TestMiniDate < Test::Unit::TestCase
   def test_valid_month
-    assert_raise(Chronic::InvalidArgumentException){ Chronic::MiniDate.new(0,12) }
-    assert_raise(Chronic::InvalidArgumentException){ Chronic::MiniDate.new(13,1) }
+    assert_raise(ArgumentError){ Chronic::MiniDate.new(0,12) }
+    assert_raise(ArgumentError){ Chronic::MiniDate.new(13,1) }
   end
   
   def test_is_between
