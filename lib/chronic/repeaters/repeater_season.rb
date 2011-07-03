@@ -63,7 +63,7 @@ module Chronic
     private
 
     def find_next_season_span(direction, next_season)
-      if !@next_season_start or !@next_season_end
+      unless @next_season_start or @next_season_end
         @next_season_start = Time.construct(@now.year, @now.month, @now.day)
         @next_season_end = Time.construct(@now.year, @now.month, @now.day)
       end
