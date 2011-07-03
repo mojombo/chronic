@@ -6,42 +6,64 @@ module Chronic
     def handle_m_d(month, day, time_tokens, options)
       month.start = Chronic.now
       span = month.this(options[:context])
-      day_start = Chronic.time_class.local(span.begin.year, span.begin.month, day)
+      year, month = span.begin.year, span.begin.month
+      day_start = Chronic.time_class.local(year, month, day)
 
       day_or_time(day_start, time_tokens, options)
     end
 
     # Handle repeater-month-name/scalar-day
     def handle_rmn_sd(tokens, options)
-      handle_m_d(tokens[0].get_tag(RepeaterMonthName), tokens[1].get_tag(ScalarDay).type, tokens[2..tokens.size], options)
+      month = tokens[0].get_tag(RepeaterMonthName)
+      day = tokens[1].get_tag(ScalarDay).type
+
+      handle_m_d(month, day, tokens[2..tokens.size], options)
     end
 
     # Handle repeater-month-name/scalar-day with separator-on
     def handle_rmn_sd_on(tokens, options)
       if tokens.size > 3
-        handle_m_d(tokens[2].get_tag(RepeaterMonthName), tokens[3].get_tag(ScalarDay).type, tokens[0..1], options)
+        month = tokens[2].get_tag(RepeaterMonthName)
+        day = tokens[3].get_tag(ScalarDay).type
+        token_range = 0..1
       else
-        handle_m_d(tokens[1].get_tag(RepeaterMonthName), tokens[2].get_tag(ScalarDay).type, tokens[0..0], options)
+        month = tokens[1].get_tag(RepeaterMonthName)
+        day = tokens[2].get_tag(ScalarDay).type
+        token_range = 0..0
       end
+
+      handle_m_d(month, day, tokens[token_range], options)
     end
 
     # Handle repeater-month-name/ordinal-day
     def handle_rmn_od(tokens, options)
-      handle_m_d(tokens[0].get_tag(RepeaterMonthName), tokens[1].get_tag(OrdinalDay).type, tokens[2..tokens.size], options)
+      month = tokens[0].get_tag(RepeaterMonthName)
+      day = tokens[1].get_tag(OrdinalDay).type
+
+      handle_m_d(month, day, tokens[2..tokens.size], options)
     end
 
     # Handle ordinal-day/repeater-month-name
     def handle_od_rmn(tokens, options)
-      handle_m_d(tokens[1].get_tag(RepeaterMonthName), tokens[0].get_tag(OrdinalDay).type, tokens[2..tokens.size], options)
+      month = tokens[1].get_tag(RepeaterMonthName)
+      day = tokens[0].get_tag(OrdinalDay).type
+
+      handle_m_d(month, day, tokens[2..tokens.size], options)
     end
 
     # Handle repeater-month-name/ordinal-day with separator-on
     def handle_rmn_od_on(tokens, options)
       if tokens.size > 3
-        handle_m_d(tokens[2].get_tag(RepeaterMonthName), tokens[3].get_tag(OrdinalDay).type, tokens[0..1], options)
+        month = tokens[2].get_tag(RepeaterMonthName)
+        day = tokens[3].get_tag(OrdinalDay).type
+        token_range = 0..1
       else
-        handle_m_d(tokens[1].get_tag(RepeaterMonthName), tokens[2].get_tag(OrdinalDay).type, tokens[0..0], options)
+        month = tokens[1].get_tag(RepeaterMonthName)
+        day = tokens[2].get_tag(OrdinalDay).type
+        token_range = 0..0
       end
+
+      handle_m_d(month, day, tokens[token_range], options)
     end
 
     # Handle repeater-month-name/scalar-year
@@ -58,7 +80,8 @@ module Chronic
       end
 
       begin
-        Span.new(Chronic.time_class.local(year, month), Chronic.time_class.local(next_month_year, next_month_month))
+        end_time = Chronic.time_class.local(next_month_year, next_month_month)
+        Span.new(Chronic.time_class.local(year, month), end_time)
       rescue ArgumentError
         nil
       end
@@ -172,7 +195,8 @@ module Chronic
       end
 
       begin
-        Span.new(Chronic.time_class.local(year, month), Chronic.time_class.local(next_month_year, next_month_month))
+        end_time = Chronic.time_class.local(next_month_year, next_month_month)
+        Span.new(Chronic.time_class.local(year, month), end_time)
       rescue ArgumentError
         nil
       end
