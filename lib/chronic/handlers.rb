@@ -64,8 +64,14 @@ module Chronic
       end
     end
 
-    # Handle generic timestamp
+    # Handle generic timestamp (ruby 1.8)
     def handle_rdn_rmn_sd_t_tz_sy(tokens, options)
+      t = Chronic.time_class.parse(options[:text])
+      Span.new(t, t + 1)
+    end
+
+    # Handle generic timestamp (ruby 1.9)
+    def handle_sy_sm_sd_t_tz(tokens, options)
       t = Chronic.time_class.parse(options[:text])
       Span.new(t, t + 1)
     end

@@ -1,3 +1,7 @@
+# HEAD
+
+* Add support for handling generic timestamp for Ruby 1.9+
+
 # 0.5.0 / 2011-07-01
 
 * Replace commas with spaces instead of removing the char (Thomas Walpole)
