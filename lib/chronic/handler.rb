@@ -2,11 +2,11 @@ module Chronic
   class Handler
 
     # @return [Array] A list of patterns
-    attr_accessor :pattern
+    attr_reader :pattern
 
     # @return [Symbol] The method which handles this list of patterns.
     #   This method should exist inside the {Handlers} module
-    attr_accessor :handler_method
+    attr_reader :handler_method
 
     # @param [Array]  pattern A list of patterns to match tokens against
     # @param [Symbol] handler_method The method to be invoked when patterns
