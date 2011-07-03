@@ -35,6 +35,8 @@ module Chronic
         end
         nil
       end
+
     end
+
   end
 end

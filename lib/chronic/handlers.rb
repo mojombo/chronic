@@ -6,7 +6,6 @@ module Chronic
     def handle_m_d(month, day, time_tokens, options) #:nodoc:
       month.start = Chronic.now
       span = month.this(options[:context])
-
       day_start = Chronic.time_class.local(span.begin.year, span.begin.month, day)
 
       day_or_time(day_start, time_tokens, options)
@@ -76,7 +75,6 @@ module Chronic
       month = tokens[0].get_tag(RepeaterMonthName).index
       day = tokens[1].get_tag(ScalarDay).type
       year = tokens[2].get_tag(ScalarYear).type
-
       time_tokens = tokens.last(tokens.size - 3)
 
       begin
@@ -92,7 +90,6 @@ module Chronic
       month = tokens[0].get_tag(RepeaterMonthName).index
       day = tokens[1].get_tag(OrdinalDay).type
       year = tokens[2].get_tag(ScalarYear).type
-
       time_tokens = tokens.last(tokens.size - 3)
 
       begin
@@ -108,7 +105,6 @@ module Chronic
       day = tokens[0].get_tag(OrdinalDay).type
       month = tokens[1].get_tag(RepeaterMonthName).index
       year = tokens[2].get_tag(ScalarYear).type
-
       time_tokens = tokens.last(tokens.size - 3)
 
       begin
@@ -229,13 +225,16 @@ module Chronic
       repeater.start = outer_span.begin - 1
       ordinal = tokens[0].get_tag(Ordinal).type
       span = nil
+
       ordinal.times do
         span = repeater.next(:future)
+
         if span.begin > outer_span.end
           span = nil
           break
         end
       end
+
       span
     end
 
@@ -272,25 +271,25 @@ module Chronic
       repeaters.size.times { tokens.pop }
 
       if tokens.first && tokens.first.get_tag(Grabber)
-        grabber = tokens.first.get_tag(Grabber)
-        tokens.pop
+        grabber = tokens.shift.get_tag(Grabber)
       end
 
       head = repeaters.shift
       head.start = Chronic.now
 
       case grabber.type
-        when :last
-          outer_span = head.next(:past)
-        when :this
-          if options[:context] != :past and repeaters.size > 0
-            outer_span = head.this(:none)
-          else
-            outer_span = head.this(options[:context])
-          end
-        when :next
-          outer_span = head.next(:future)
-        else raise(ChronicPain, "Invalid grabber")
+      when :last
+        outer_span = head.next(:past)
+      when :this
+        if options[:context] != :past and repeaters.size > 0
+          outer_span = head.this(:none)
+        else
+          outer_span = head.this(options[:context])
+        end
+      when :next
+        outer_span = head.next(:future)
+      else
+        raise ChronicPain, "Invalid grabber"
       end
 
       puts "--#{outer_span}" if Chronic.debug
@@ -298,13 +297,7 @@ module Chronic
     end
 
     def get_repeaters(tokens) #:nodoc:
-      repeaters = []
-      tokens.each do |token|
-        if t = token.get_tag(Repeater)
-          repeaters << t
-        end
-      end
-      repeaters.sort.reverse
+      tokens.map { |token| token.get_tag(Repeater) }.compact.sort.reverse
     end
 
     # Recursively finds repeaters within other repeaters.
@@ -314,12 +307,12 @@ module Chronic
       puts "--#{span}" if Chronic.debug
       return span if tags.empty?
 
-      head, *rest = tags
-      head.start = pointer == :future ? span.begin : span.end
+      head = tags.shift
+      head.start = (pointer == :future ? span.begin : span.end)
       h = head.this(:none)
 
       if span.cover?(h.begin) || span.cover?(h.end)
-        find_within(rest, h, pointer)
+        find_within(tags, h, pointer)
       end
     end
 
@@ -344,15 +337,16 @@ module Chronic
         end
       end
 
-      if (day_portion_index && time_index)
+      if day_portion_index && time_index
         t1 = tokens[day_portion_index]
         t1tag = t1.get_tag(RepeaterDayPortion)
 
-        if [:morning].include?(t1tag.type)
+        case t1tag.type
+        when :morning
           puts '--morning->am' if Chronic.debug
           t1.untag(RepeaterDayPortion)
           t1.tag(RepeaterDayPortion.new(:am))
-        elsif [:afternoon, :evening, :night].include?(t1tag.type)
+        when :afternoon, :evening, :night
           puts "--#{t1tag.type}->pm" if Chronic.debug
           t1.untag(RepeaterDayPortion)
           t1.tag(RepeaterDayPortion.new(:pm))
@@ -361,17 +355,21 @@ module Chronic
 
       # handle ambiguous times if :ambiguous_time_range is specified
       if options[:ambiguous_time_range] != :none
-        ttokens = []
-        tokens.each_with_index do |t0, i|
-          ttokens << t0
-          t1 = tokens[i + 1]
-          if t0.get_tag(RepeaterTime) && t0.get_tag(RepeaterTime).type.ambiguous? && (!t1 || !t1.get_tag(RepeaterDayPortion))
+        ambiguous_tokens = []
+
+        tokens.each_with_index do |token, i|
+          ambiguous_tokens << token
+          next_token = tokens[i + 1]
+
+          if token.get_tag(RepeaterTime) && token.get_tag(RepeaterTime).type.ambiguous? && (!next_token || !next_token.get_tag(RepeaterDayPortion))
             distoken = Token.new('disambiguator')
+
             distoken.tag(RepeaterDayPortion.new(options[:ambiguous_time_range]))
-            ttokens << distoken
+            ambiguous_tokens << distoken
           end
         end
-        tokens = ttokens
+
+        tokens = ambiguous_tokens
       end
 
       tokens
@@ -408,13 +406,16 @@ module Chronic
     # @see Chronic.tokens_to_span
     def match(tokens, definitions)
       token_index = 0
+
       @pattern.each do |element|
         name = element.to_s
         optional = name[-1, 1] == '?'
         name = name.chop if optional
+
         if element.instance_of? Symbol
           klass = constantize(name)
           match = tokens[token_index] && !tokens[token_index].tags.select { |o| o.kind_of?(klass) }.empty?
+
           return false if !match && !optional
           (token_index += 1; next) if match
           next if !match && optional
@@ -426,7 +427,7 @@ module Chronic
           end
           return false
         else
-          raise(ChronicPain, "Invalid match type: #{element.class}")
+          raise ChronicPain, "Invalid match type: #{element.class}"
         end
       end
       return false if token_index != tokens.size
