@@ -11,10 +11,10 @@ module Chronic
     def this(pointer = :future)
       direction = pointer == :future ? 1 : -1
 
-      today = Time.construct(@now.year, @now.month, @now.day)
+      today = Chronic.construct(@now.year, @now.month, @now.day)
       goal_ssn_start = today + direction * num_seconds_til_start(@type, direction)
       goal_ssn_end = today + direction * num_seconds_til_end(@type, direction)
-      curr_ssn = find_current_season(@now.to_minidate)
+      curr_ssn = find_current_season(MiniDate.from_time(@now))
       case pointer
       when :past
         this_ssn_start = goal_ssn_start

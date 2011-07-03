@@ -21,7 +21,7 @@ module Chronic
       direction = pointer == :future ? 1 : -1
 
       if !@current_weekday_start
-        @current_weekday_start = Time.construct(@now.year, @now.month, @now.day)
+        @current_weekday_start = Chronic.construct(@now.year, @now.month, @now.day)
         @current_weekday_start += direction * DAY_SECONDS
 
         until is_weekday?(@current_weekday_start.wday)

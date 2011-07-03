@@ -24,14 +24,14 @@ module Chronic
 
       case pointer
       when :future
-        day_begin = Time.construct(@now.year, @now.month, @now.day, @now.hour)
-        day_end = Time.construct(@now.year, @now.month, @now.day) + DAY_SECONDS
+        day_begin = Chronic.construct(@now.year, @now.month, @now.day, @now.hour)
+        day_end = Chronic.construct(@now.year, @now.month, @now.day) + DAY_SECONDS
       when :past
-        day_begin = Time.construct(@now.year, @now.month, @now.day)
-        day_end = Time.construct(@now.year, @now.month, @now.day, @now.hour)
+        day_begin = Chronic.construct(@now.year, @now.month, @now.day)
+        day_end = Chronic.construct(@now.year, @now.month, @now.day, @now.hour)
       when :none
-        day_begin = Time.construct(@now.year, @now.month, @now.day)
-        day_end = Time.construct(@now.year, @now.month, @now.day) + DAY_SECONDS
+        day_begin = Chronic.construct(@now.year, @now.month, @now.day)
+        day_end = Chronic.construct(@now.year, @now.month, @now.day) + DAY_SECONDS
       end
 
       Span.new(day_begin, day_end)
