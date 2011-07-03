@@ -71,8 +71,7 @@ module Chronic
       end
 
       options[:text] = text
-      options[:now] ||= Chronic.time_class.now
-      Chronic.now = options[:now]
+      Chronic.now = options[:now] || Chronic.time_class.now
 
       # tokenize words
       tokens = tokenize(text, options)
@@ -83,10 +82,8 @@ module Chronic
 
       span = tokens_to_span(tokens, options)
 
-      if options[:guess]
-        guess span
-      else
-        span
+      if span
+        options[:guess] ? guess(span) : span
       end
     end
 
@@ -151,8 +148,6 @@ module Chronic
     # @param [Span] span
     # @return [Time]
     def guess(span)
-      return unless span
-
       if span.width > 1
         span.begin + (span.width / 2)
       else
