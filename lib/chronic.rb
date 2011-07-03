@@ -65,6 +65,7 @@ module Chronic
 end
 
 require 'chronic/chronic'
+require 'chronic/handler'
 require 'chronic/handlers'
 require 'chronic/mini_date'
 require 'chronic/tag'
