@@ -3,7 +3,7 @@ module Chronic
     module_function
 
     # Handle month/day
-    def handle_m_d(month, day, time_tokens, options) #:nodoc:
+    def handle_m_d(month, day, time_tokens, options)
       month.start = Chronic.now
       span = month.this(options[:context])
       day_start = Chronic.time_class.local(span.begin.year, span.begin.month, day)
@@ -12,12 +12,12 @@ module Chronic
     end
 
     # Handle repeater-month-name/scalar-day
-    def handle_rmn_sd(tokens, options) #:nodoc:
+    def handle_rmn_sd(tokens, options)
       handle_m_d(tokens[0].get_tag(RepeaterMonthName), tokens[1].get_tag(ScalarDay).type, tokens[2..tokens.size], options)
     end
 
     # Handle repeater-month-name/scalar-day with separator-on
-    def handle_rmn_sd_on(tokens, options) #:nodoc:
+    def handle_rmn_sd_on(tokens, options)
       if tokens.size > 3
         handle_m_d(tokens[2].get_tag(RepeaterMonthName), tokens[3].get_tag(ScalarDay).type, tokens[0..1], options)
       else
@@ -26,17 +26,17 @@ module Chronic
     end
 
     # Handle repeater-month-name/ordinal-day
-    def handle_rmn_od(tokens, options) #:nodoc:
+    def handle_rmn_od(tokens, options)
       handle_m_d(tokens[0].get_tag(RepeaterMonthName), tokens[1].get_tag(OrdinalDay).type, tokens[2..tokens.size], options)
     end
 
     # Handle ordinal-day/repeater-month-name
-    def handle_od_rmn(tokens, options) #:nodoc:
+    def handle_od_rmn(tokens, options)
       handle_m_d(tokens[1].get_tag(RepeaterMonthName), tokens[0].get_tag(OrdinalDay).type, tokens[2..tokens.size], options)
     end
 
     # Handle repeater-month-name/ordinal-day with separator-on
-    def handle_rmn_od_on(tokens, options) #:nodoc:
+    def handle_rmn_od_on(tokens, options)
       if tokens.size > 3
         handle_m_d(tokens[2].get_tag(RepeaterMonthName), tokens[3].get_tag(OrdinalDay).type, tokens[0..1], options)
       else
@@ -45,7 +45,7 @@ module Chronic
     end
 
     # Handle repeater-month-name/scalar-year
-    def handle_rmn_sy(tokens, options) #:nodoc:
+    def handle_rmn_sy(tokens, options)
       month = tokens[0].get_tag(RepeaterMonthName).index
       year = tokens[1].get_tag(ScalarYear).type
 
@@ -65,13 +65,13 @@ module Chronic
     end
 
     # Handle generic timestamp
-    def handle_rdn_rmn_sd_t_tz_sy(tokens, options) #:nodoc:
+    def handle_rdn_rmn_sd_t_tz_sy(tokens, options)
       t = Chronic.time_class.parse(options[:text])
       Span.new(t, t + 1)
     end
 
     # Handle repeater-month-name/scalar-day/scalar-year
-    def handle_rmn_sd_sy(tokens, options) #:nodoc:
+    def handle_rmn_sd_sy(tokens, options)
       month = tokens[0].get_tag(RepeaterMonthName).index
       day = tokens[1].get_tag(ScalarDay).type
       year = tokens[2].get_tag(ScalarYear).type
@@ -86,7 +86,7 @@ module Chronic
     end
 
     # Handle repeater-month-name/ordinal-day/scalar-year
-    def handle_rmn_od_sy(tokens, options) #:nodoc:
+    def handle_rmn_od_sy(tokens, options)
       month = tokens[0].get_tag(RepeaterMonthName).index
       day = tokens[1].get_tag(OrdinalDay).type
       year = tokens[2].get_tag(ScalarYear).type
@@ -101,7 +101,7 @@ module Chronic
     end
 
     # Handle oridinal-day/repeater-month-name/scalar-year
-    def handle_od_rmn_sy(tokens, options) #:nodoc:
+    def handle_od_rmn_sy(tokens, options)
       day = tokens[0].get_tag(OrdinalDay).type
       month = tokens[1].get_tag(RepeaterMonthName).index
       year = tokens[2].get_tag(ScalarYear).type
@@ -116,14 +116,14 @@ module Chronic
     end
 
     # Handle scalar-day/repeater-month-name/scalar-year
-    def handle_sd_rmn_sy(tokens, options) #:nodoc:
+    def handle_sd_rmn_sy(tokens, options)
       new_tokens = [tokens[1], tokens[0], tokens[2]]
       time_tokens = tokens.last(tokens.size - 3)
       handle_rmn_sd_sy(new_tokens + time_tokens, options)
     end
 
     # Handle scalar-month/scalar-day/scalar-year (endian middle)
-    def handle_sm_sd_sy(tokens, options) #:nodoc:
+    def handle_sm_sd_sy(tokens, options)
       month = tokens[0].get_tag(ScalarMonth).type
       day = tokens[1].get_tag(ScalarDay).type
       year = tokens[2].get_tag(ScalarYear).type
@@ -131,7 +131,7 @@ module Chronic
       time_tokens = tokens.last(tokens.size - 3)
 
       begin
-        day_start = Chronic.time_class.local(year, month, day) #:nodoc:
+        day_start = Chronic.time_class.local(year, month, day)
         day_or_time(day_start, time_tokens, options)
       rescue ArgumentError
         nil
@@ -139,21 +139,21 @@ module Chronic
     end
 
     # Handle scalar-day/scalar-month/scalar-year (endian little)
-    def handle_sd_sm_sy(tokens, options) #:nodoc:
+    def handle_sd_sm_sy(tokens, options)
       new_tokens = [tokens[1], tokens[0], tokens[2]]
       time_tokens = tokens.last(tokens.size - 3)
       handle_sm_sd_sy(new_tokens + time_tokens, options)
     end
 
     # Handle scalar-year/scalar-month/scalar-day
-    def handle_sy_sm_sd(tokens, options) #:nodoc:
+    def handle_sy_sm_sd(tokens, options)
       new_tokens = [tokens[1], tokens[2], tokens[0]]
       time_tokens = tokens.last(tokens.size - 3)
       handle_sm_sd_sy(new_tokens + time_tokens, options)
     end
 
     # Handle scalar-month/scalar-year
-    def handle_sm_sy(tokens, options) #:nodoc:
+    def handle_sm_sy(tokens, options)
       month = tokens[0].get_tag(ScalarMonth).type
       year = tokens[1].get_tag(ScalarYear).type
 
@@ -175,13 +175,13 @@ module Chronic
     # anchors
 
     # Handle repeaters
-    def handle_r(tokens, options) #:nodoc:
+    def handle_r(tokens, options)
       dd_tokens = dealias_and_disambiguate_times(tokens, options)
       get_anchor(dd_tokens, options)
     end
 
     # Handle repeater/grabber/repeater
-    def handle_r_g_r(tokens, options) #:nodoc:
+    def handle_r_g_r(tokens, options)
       new_tokens = [tokens[1], tokens[0], tokens[2]]
       handle_r(new_tokens, options)
     end
@@ -189,7 +189,7 @@ module Chronic
     # arrows
 
     # Handle scalar/repeater/pointer helper
-    def handle_srp(tokens, span, options) #:nodoc:
+    def handle_srp(tokens, span, options)
       distance = tokens[0].get_tag(Scalar).type
       repeater = tokens[1].get_tag(Repeater)
       pointer = tokens[2].get_tag(Pointer).type
@@ -198,7 +198,7 @@ module Chronic
     end
 
     # Handle scalar/repeater/pointer
-    def handle_s_r_p(tokens, options) #:nodoc:
+    def handle_s_r_p(tokens, options)
       repeater = tokens[1].get_tag(Repeater)
       span = Span.new(Chronic.now, Chronic.now + 1)
 
@@ -206,13 +206,13 @@ module Chronic
     end
 
     # Handle pointer/scalar/repeater
-    def handle_p_s_r(tokens, options) #:nodoc:
+    def handle_p_s_r(tokens, options)
       new_tokens = [tokens[1], tokens[2], tokens[0]]
       handle_s_r_p(new_tokens, options)
     end
 
     # Handle scalar/repeater/pointer/anchor
-    def handle_s_r_p_a(tokens, options) #:nodoc:
+    def handle_s_r_p_a(tokens, options)
       anchor_span = get_anchor(tokens[3..tokens.size - 1], options)
       handle_srp(tokens, anchor_span, options)
     end
@@ -220,7 +220,7 @@ module Chronic
     # narrows
 
     # Handle oridinal repeaters
-    def handle_orr(tokens, outer_span, options) #:nodoc:
+    def handle_orr(tokens, outer_span, options)
       repeater = tokens[1].get_tag(Repeater)
       repeater.start = outer_span.begin - 1
       ordinal = tokens[0].get_tag(Ordinal).type
@@ -239,13 +239,13 @@ module Chronic
     end
 
     # Handle ordinal/repeater/separator/repeater
-    def handle_o_r_s_r(tokens, options) #:nodoc:
+    def handle_o_r_s_r(tokens, options)
       outer_span = get_anchor([tokens[3]], options)
       handle_orr(tokens[0..1], outer_span, options)
     end
 
     # Handle ordinal/repeater/grabber/repeater
-    def handle_o_r_g_r(tokens, options) #:nodoc:
+    def handle_o_r_g_r(tokens, options)
       outer_span = get_anchor(tokens[2..3], options)
       handle_orr(tokens[0..1], outer_span, options)
     end
@@ -263,7 +263,7 @@ module Chronic
       end
     end
 
-    def get_anchor(tokens, options) #:nodoc:
+    def get_anchor(tokens, options)
       grabber = Grabber.new(:this)
       pointer = :future
 
@@ -296,14 +296,14 @@ module Chronic
       find_within(repeaters, outer_span, pointer)
     end
 
-    def get_repeaters(tokens) #:nodoc:
+    def get_repeaters(tokens)
       tokens.map { |token| token.get_tag(Repeater) }.compact.sort.reverse
     end
 
     # Recursively finds repeaters within other repeaters.
     # Returns a Span representing the innermost time span
     # or nil if no repeater union could be found
-    def find_within(tags, span, pointer) #:nodoc:
+    def find_within(tags, span, pointer)
       puts "--#{span}" if Chronic.debug
       return span if tags.empty?
 
@@ -316,7 +316,7 @@ module Chronic
       end
     end
 
-    def dealias_and_disambiguate_times(tokens, options) #:nodoc:
+    def dealias_and_disambiguate_times(tokens, options)
       # handle aliases of am/pm
       # 5:00 in the morning -> 5:00 am
       # 7:00 in the evening -> 7:00 pm
