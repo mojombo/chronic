@@ -19,8 +19,7 @@ module Chronic
       scan_for token, self,
       {
         /\bpast\b/ => :past,
-        /\bfuture\b/ => :future,
-        /\bin\b/ => :future
+        /\b(?:future|in)\b/ => :future,
       }
     end
 

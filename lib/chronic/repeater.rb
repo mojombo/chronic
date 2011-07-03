@@ -56,12 +56,9 @@ module Chronic
       scan_for token, RepeaterDayName,
       {
         /^m[ou]n(day)?$/ => :monday,
-        /^t(ue|eu|oo|u|)s(day)?$/ => :tuesday,
-        /^tue$/ => :tuesday,
-        /^we(dnes|nds|nns)day$/ => :wednesday,
-        /^wed$/ => :wednesday,
-        /^th(urs|ers)day$/ => :thursday,
-        /^thu(rs)?$/ => :thursday,
+        /^t(ue|eu|oo|u|)s?(day)?$/ => :tuesday,
+        /^we(d|dnes|nds|nns)(day)?$/ => :wednesday,
+        /^th(urs|ers)(day)?$/ => :thursday,
         /^fr[iy](day)?$/ => :friday,
         /^sat(t?[ue]rday)?$/ => :saturday,
         /^su[nm](day)?$/ => :sunday
