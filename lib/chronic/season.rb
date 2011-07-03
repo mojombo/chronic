@@ -17,9 +17,9 @@ module Chronic
     # @param [Integer] pointer The direction (-1 for past, 1 for future)
     # @return [Symbol] The new season name
     def self.find_next_season(season, pointer)
-      lookup = {:spring => 0, :summer => 1, :autumn => 2, :winter => 3}
-      next_season_num = (lookup[season] + 1 * pointer) % 4
-      lookup.invert[next_season_num]
+      lookup = [:spring, :summer, :autumn, :winter]
+      next_season_num = (lookup.index(season) + 1 * pointer) % 4
+      lookup[next_season_num]
     end
 
     # @param [Symbol] season The season name
