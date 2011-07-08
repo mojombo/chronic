@@ -16,7 +16,7 @@ module Chronic
       super
 
       direction = pointer == :future ? 1 : -1
-      next_season = Season.find_next_season(find_current_season(@now.to_minidate), direction)
+      next_season = Season.find_next_season(find_current_season(MiniDate.from_time(@now)), direction)
 
       find_next_season_span(direction, next_season)
     end
@@ -26,8 +26,8 @@ module Chronic
 
       direction = pointer == :future ? 1 : -1
 
-      today = Time.construct(@now.year, @now.month, @now.day)
-      this_ssn = find_current_season(@now.to_minidate)
+      today = Chronic.construct(@now.year, @now.month, @now.day)
+      this_ssn = find_current_season(MiniDate.from_time(@now))
       case pointer
       when :past
         this_ssn_start = today + direction * num_seconds_til_start(this_ssn, direction)
@@ -64,8 +64,8 @@ module Chronic
 
     def find_next_season_span(direction, next_season)
       unless @next_season_start or @next_season_end
-        @next_season_start = Time.construct(@now.year, @now.month, @now.day)
-        @next_season_end = Time.construct(@now.year, @now.month, @now.day)
+        @next_season_start = Chronic.construct(@now.year, @now.month, @now.day)
+        @next_season_end = Chronic.construct(@now.year, @now.month, @now.day)
       end
 
       @next_season_start += direction * num_seconds_til_start(next_season, direction)
@@ -81,10 +81,10 @@ module Chronic
     end
 
     def num_seconds_til(goal, direction)
-      start = Time.construct(@now.year, @now.month, @now.day)
+      start = Chronic.construct(@now.year, @now.month, @now.day)
       seconds = 0
 
-      until (start + direction * seconds).to_minidate.equals?(goal)
+      until MiniDate.from_time(start + direction * seconds).equals?(goal)
         seconds += RepeaterDay::DAY_SECONDS
       end
 
@@ -101,8 +101,8 @@ module Chronic
 
     def construct_season(start, finish)
       Span.new(
-        Time.construct(start.year, start.month, start.day),
-        Time.construct(finish.year, finish.month, finish.day)
+        Chronic.construct(start.year, start.month, start.day),
+        Chronic.construct(finish.year, finish.month, finish.day)
       )
     end
   end

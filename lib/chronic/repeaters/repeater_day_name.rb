@@ -24,7 +24,7 @@ module Chronic
         @current_date += direction * 7
       end
       next_date = @current_date.succ
-      Span.new(Time.construct(@current_date.year, @current_date.month, @current_date.day), Time.construct(next_date.year, next_date.month, next_date.day))
+      Span.new(Chronic.construct(@current_date.year, @current_date.month, @current_date.day), Chronic.construct(next_date.year, next_date.month, next_date.day))
     end
 
     def this(pointer = :future)

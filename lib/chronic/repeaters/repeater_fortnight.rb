@@ -38,7 +38,7 @@ module Chronic
 
       case pointer
       when :future
-        this_fortnight_start = Time.construct(@now.year, @now.month, @now.day, @now.hour) + RepeaterHour::HOUR_SECONDS
+        this_fortnight_start = Chronic.construct(@now.year, @now.month, @now.day, @now.hour) + RepeaterHour::HOUR_SECONDS
         sunday_repeater = RepeaterDayName.new(:sunday)
         sunday_repeater.start = @now
         sunday_repeater.this(:future)
@@ -46,7 +46,7 @@ module Chronic
         this_fortnight_end = this_sunday_span.begin
         Span.new(this_fortnight_start, this_fortnight_end)
       when :past
-        this_fortnight_end = Time.construct(@now.year, @now.month, @now.day, @now.hour)
+        this_fortnight_end = Chronic.construct(@now.year, @now.month, @now.day, @now.hour)
         sunday_repeater = RepeaterDayName.new(:sunday)
         sunday_repeater.start = @now
         last_sunday_span = sunday_repeater.next(:past)

@@ -12,16 +12,16 @@ module Chronic
       if !@current_year_start
         case pointer
         when :future
-          @current_year_start = Time.construct(@now.year + 1)
+          @current_year_start = Chronic.construct(@now.year + 1)
         when :past
-          @current_year_start = Time.construct(@now.year - 1)
+          @current_year_start = Chronic.construct(@now.year - 1)
         end
       else
         diff = pointer == :future ? 1 : -1
-        @current_year_start = Time.construct(@current_year_start.year + diff)
+        @current_year_start = Chronic.construct(@current_year_start.year + diff)
       end
 
-      Span.new(@current_year_start, Time.construct(@current_year_start.year + 1))
+      Span.new(@current_year_start, Chronic.construct(@current_year_start.year + 1))
     end
 
     def this(pointer = :future)
@@ -29,14 +29,14 @@ module Chronic
 
       case pointer
       when :future
-        this_year_start = Time.construct(@now.year, @now.month, @now.day) + RepeaterDay::DAY_SECONDS
-        this_year_end = Time.construct(@now.year + 1, 1, 1)
+        this_year_start = Chronic.construct(@now.year, @now.month, @now.day) + RepeaterDay::DAY_SECONDS
+        this_year_end = Chronic.construct(@now.year + 1, 1, 1)
       when :past
-        this_year_start = Time.construct(@now.year, 1, 1)
-        this_year_end = Time.construct(@now.year, @now.month, @now.day)
+        this_year_start = Chronic.construct(@now.year, 1, 1)
+        this_year_end = Chronic.construct(@now.year, @now.month, @now.day)
       when :none
-        this_year_start = Time.construct(@now.year, 1, 1)
-        this_year_end = Time.construct(@now.year + 1, 1, 1)
+        this_year_start = Chronic.construct(@now.year, 1, 1)
+        this_year_end = Chronic.construct(@now.year + 1, 1, 1)
       end
 
       Span.new(this_year_start, this_year_end)
@@ -63,7 +63,7 @@ module Chronic
       year = time.year + (amount * direction)
       days = month_days(year, time.month)
       day = time.day > days ? days : time.day
-      Time.construct(year, time.month, day, time.hour, time.min, time.sec)
+      Chronic.construct(year, time.month, day, time.hour, time.min, time.sec)
     end
 
     def month_days(year, month)

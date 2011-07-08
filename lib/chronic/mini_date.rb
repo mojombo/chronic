@@ -2,6 +2,10 @@ module Chronic
   class MiniDate
     attr_accessor :month, :day
 
+    def self.from_time(time)
+      new(time.month, time.day)
+    end
+
     def initialize(month, day)
       unless (1..12).include?(month)
         raise ArgumentError, "1..12 are valid months"

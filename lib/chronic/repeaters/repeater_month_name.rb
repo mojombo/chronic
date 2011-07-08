@@ -27,30 +27,30 @@ module Chronic
         case pointer
         when :future
           if @now.month < index
-            @current_month_begin = Time.construct(@now.year, index)
+            @current_month_begin = Chronic.construct(@now.year, index)
           elsif @now.month > index
-            @current_month_begin = Time.construct(@now.year + 1, index)
+            @current_month_begin = Chronic.construct(@now.year + 1, index)
           end
         when :none
           if @now.month <= index
-            @current_month_begin = Time.construct(@now.year, index)
+            @current_month_begin = Chronic.construct(@now.year, index)
           elsif @now.month > index
-            @current_month_begin = Time.construct(@now.year + 1, index)
+            @current_month_begin = Chronic.construct(@now.year + 1, index)
           end
         when :past
           if @now.month >= index
-            @current_month_begin = Time.construct(@now.year, index)
+            @current_month_begin = Chronic.construct(@now.year, index)
           elsif @now.month < index
-            @current_month_begin = Time.construct(@now.year - 1, index)
+            @current_month_begin = Chronic.construct(@now.year - 1, index)
           end
         end
         @current_month_begin || raise("Current month should be set by now")
       else
         case pointer
         when :future
-          @current_month_begin = Time.construct(@current_month_begin.year + 1, @current_month_begin.month)
+          @current_month_begin = Chronic.construct(@current_month_begin.year + 1, @current_month_begin.month)
         when :past
-          @current_month_begin = Time.construct(@current_month_begin.year - 1, @current_month_begin.month)
+          @current_month_begin = Chronic.construct(@current_month_begin.year - 1, @current_month_begin.month)
         end
       end
 
@@ -65,7 +65,7 @@ module Chronic
         next_month_month = cur_month_month + 1
       end
 
-      Span.new(@current_month_begin, Time.construct(next_month_year, next_month_month))
+      Span.new(@current_month_begin, Chronic.construct(next_month_year, next_month_month))
     end
 
     def this(pointer = :future)
