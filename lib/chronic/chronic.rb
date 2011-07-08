@@ -63,11 +63,11 @@ module Chronic
 
       # ensure the specified options are valid
       (opts.keys - DEFAULT_OPTIONS.keys).each do |key|
-        raise InvalidArgumentException, "#{key} is not a valid option key."
+        raise ArgumentError, "#{key} is not a valid option key."
       end
 
       unless [:past, :future, :none].include?(options[:context])
-        raise InvalidArgumentException, "Invalid context, :past/:future only"
+        raise ArgumentError, "Invalid context, :past/:future only"
       end
 
       options[:text] = text
@@ -217,7 +217,7 @@ module Chronic
       when :middle
         @definitions[:endian] = endians
       else
-        raise InvalidArgumentException, "Unknown endian option '#{endian}'"
+        raise ArgumentError, "Unknown endian option '#{endian}'"
       end
 
       @definitions
@@ -265,10 +265,5 @@ module Chronic
 
   # Internal exception
   class ChronicPain < Exception
-  end
-
-  # This exception is raised if an invalid argument is provided to
-  # any of Chronic's methods
-  class InvalidArgumentException < Exception
   end
 end

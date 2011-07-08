@@ -74,17 +74,17 @@ class TestChronic < Test::Unit::TestCase
     defs = Chronic.definitions(:endian_precedence => [:little, :middle])
     assert_equal endians.reverse, defs[:endian]
 
-    assert_raises(Chronic::InvalidArgumentException) do
+    assert_raises(ArgumentError) do
       Chronic.definitions(:endian_precedence => :invalid)
     end
   end
 
   def test_passing_options
-    assert_raises(Chronic::InvalidArgumentException) do
+    assert_raises(ArgumentError) do
       Chronic.parse('now', :invalid => :option)
     end
 
-    assert_raises(Chronic::InvalidArgumentException) do
+    assert_raises(ArgumentError) do
       Chronic.parse('now', :context => :invalid_context)
     end
   end

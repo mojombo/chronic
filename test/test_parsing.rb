@@ -779,11 +779,11 @@ class TestParsing < Test::Unit::TestCase
   end
 
   def test_argument_validation
-    assert_raise(Chronic::InvalidArgumentException) do
+    assert_raise(ArgumentError) do
       time = Chronic.parse("may 27", :foo => :bar)
     end
 
-    assert_raise(Chronic::InvalidArgumentException) do
+    assert_raise(ArgumentError) do
       time = Chronic.parse("may 27", :context => :bar)
     end
   end
