@@ -111,7 +111,7 @@ module Chronic
       text.gsub!(/['"\.]/, '')
       text.gsub!(/,/, ' ')
       text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
-      text = numericize_numbers(text)
+      text = Numerizer.numerize(text)
       text.gsub!(/ \-(\d{4})\b/, ' tzminus\1')
       text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
       text.gsub!(/\b0(\d+:\d+\s*pm?\b)/, '\1')
@@ -138,6 +138,7 @@ module Chronic
     # @param [String] text The string to convert
     # @return [String] A new string with words converted to numbers
     def numericize_numbers(text)
+      warn "Chronic.construct will be deprecated in version 0.7.0. Please use Chronic::Numerizer.numerize instead"
       Numerizer.numerize(text)
     end
 

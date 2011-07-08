@@ -1,9 +1,12 @@
 # HEAD
 
-* Remove `Chronic::InvalidArgumentException` and instead use
+* All deprecated methods are marked for removal in Chronic 0.7.0
+* Deprecated `Chronic.numericize_numbers` instead use
+  `Chronic::Numerizer.numerize`
+* Deprecated `Chronic::InvalidArgumentException` and instead use
   `ArgumentError`
-* Remove `Time.construct` and use `Chronic.construct` in place of this
-* Remove `Time#to_minidate`, instead use `Chronic::MiniDate.from_time(time)`
+* Deprecated `Time.construct` and use `Chronic.construct` in place of this
+* Deprecated `Time#to_minidate`, instead use `Chronic::MiniDate.from_time(time)`
 * Add support for handling generic timestamp for Ruby 1.9+
 
 # 0.5.0 / 2011-07-01
