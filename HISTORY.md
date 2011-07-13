@@ -1,5 +1,7 @@
 # HEAD
 
+* Attempting to parse strings with days past the last day of a month will
+  now return nil. ex: `Chronic.parse("30th February") #=> nil`
 * All deprecated methods are marked for removal in Chronic 0.7.0
 * Deprecated `Chronic.numericize_numbers` instead use
   `Chronic::Numerizer.numerize`

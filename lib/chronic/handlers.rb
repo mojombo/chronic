@@ -17,6 +17,8 @@ module Chronic
       month = tokens[0].get_tag(RepeaterMonthName)
       day = tokens[1].get_tag(ScalarDay).type
 
+      return if month_overflow?(Chronic.now.year, month.index, day)
+
       handle_m_d(month, day, tokens[2..tokens.size], options)
     end
 
@@ -32,6 +34,8 @@ module Chronic
         token_range = 0..0
       end
 
+      return if month_overflow?(Chronic.now.year, month.index, day)
+
       handle_m_d(month, day, tokens[token_range], options)
     end
 
@@ -40,6 +44,8 @@ module Chronic
       month = tokens[0].get_tag(RepeaterMonthName)
       day = tokens[1].get_tag(OrdinalDay).type
 
+      return if month_overflow?(Chronic.now.year, month.index, day)
+
       handle_m_d(month, day, tokens[2..tokens.size], options)
     end
 
@@ -47,6 +53,8 @@ module Chronic
     def handle_od_rmn(tokens, options)
       month = tokens[1].get_tag(RepeaterMonthName)
       day = tokens[0].get_tag(OrdinalDay).type
+
+      return if month_overflow?(Chronic.now.year, month.index, day)
 
       handle_m_d(month, day, tokens[2..tokens.size], options)
     end
@@ -62,6 +70,8 @@ module Chronic
         day = tokens[2].get_tag(OrdinalDay).type
         token_range = 0..0
       end
+
+      return if month_overflow?(Chronic.now.year, month.index, day)
 
       handle_m_d(month, day, tokens[token_range], options)
     end
@@ -106,6 +116,8 @@ module Chronic
       year = tokens[2].get_tag(ScalarYear).type
       time_tokens = tokens.last(tokens.size - 3)
 
+      return if month_overflow?(year, month, day)
+
       begin
         day_start = Chronic.time_class.local(year, month, day)
         day_or_time(day_start, time_tokens, options)
@@ -121,6 +133,8 @@ module Chronic
       year = tokens[2].get_tag(ScalarYear).type
       time_tokens = tokens.last(tokens.size - 3)
 
+      return if month_overflow?(year, month, day)
+
       begin
         day_start = Chronic.time_class.local(year, month, day)
         day_or_time(day_start, time_tokens, options)
@@ -135,6 +149,8 @@ module Chronic
       month = tokens[1].get_tag(RepeaterMonthName).index
       year = tokens[2].get_tag(ScalarYear).type
       time_tokens = tokens.last(tokens.size - 3)
+
+      return if month_overflow?(year, month, day)
 
       begin
         day_start = Chronic.time_class.local(year, month, day)
@@ -156,8 +172,9 @@ module Chronic
       month = tokens[0].get_tag(ScalarMonth).type
       day = tokens[1].get_tag(ScalarDay).type
       year = tokens[2].get_tag(ScalarYear).type
-
       time_tokens = tokens.last(tokens.size - 3)
+
+      return if month_overflow?(year, month, day)
 
       begin
         day_start = Chronic.time_class.local(year, month, day)
@@ -328,6 +345,14 @@ module Chronic
 
     def get_repeaters(tokens)
       tokens.map { |token| token.get_tag(Repeater) }.compact.sort.reverse
+    end
+
+    def month_overflow?(year, month, day)
+      if Date.leap?(year)
+        day > RepeaterMonth::MONTH_DAYS_LEAP[month - 1]
+      else
+        day > RepeaterMonth::MONTH_DAYS[month - 1]
+      end
     end
 
     # Recursively finds repeaters within other repeaters.

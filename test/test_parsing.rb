@@ -209,6 +209,10 @@ class TestParsing < Test::Unit::TestCase
 
     time = parse_now("5/27/1979 4am")
     assert_equal Time.local(1979, 5, 27, 4), time
+
+    # month day overflows
+    time = parse_now("30/2/2000")
+    assert_nil time
   end
 
   def test_handle_sd_sm_sy
