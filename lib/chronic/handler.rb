@@ -62,7 +62,11 @@ module Chronic
     end
 
     def invoke(type, tokens, options)
-      puts "-#{type}" if Chronic.debug
+      if Chronic.debug
+        puts "-#{type}"
+        puts "Handler: #{@handler_method}"
+      end
+
       Handlers.send(@handler_method, tokens, options)
     end
 
