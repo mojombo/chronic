@@ -1,4 +1,4 @@
-# HEAD
+# 0.6.0 / 2011-07-19
 
 * Attempting to parse strings with days past the last day of a month will
   now return nil. ex: `Chronic.parse("30th February") #=> nil`
