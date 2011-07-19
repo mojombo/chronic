@@ -138,7 +138,7 @@ module Chronic
     # @param [String] text The string to convert
     # @return [String] A new string with words converted to numbers
     def numericize_numbers(text)
-      warn "Chronic.construct will be deprecated in version 0.7.0. Please use Chronic::Numerizer.numerize instead"
+      warn "Chronic.numericize_numbers will be deprecated in version 0.7.0. Please use Chronic::Numerizer.numerize instead"
       Numerizer.numerize(text)
     end
 
