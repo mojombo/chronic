@@ -286,33 +286,28 @@ module Chronic
 
       (definitions[:date] + definitions[:endian]).each do |handler|
         if handler.match(tokens, definitions)
-          puts "-date" if Chronic.debug
           good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return Handlers.send(handler.handler_method, good_tokens, options)
+          return handler.invoke(:date, good_tokens, options)
         end
       end
 
       definitions[:anchor].each do |handler|
         if handler.match(tokens, definitions)
-          puts "-anchor" if Chronic.debug
           good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return Handlers.send(handler.handler_method, good_tokens, options)
+          return handler.invoke(:anchor, good_tokens, options)
         end
       end
 
       definitions[:arrow].each do |handler|
         if handler.match(tokens, definitions)
-          puts "-arrow" if Chronic.debug
           good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) }
-          return Handlers.send(handler.handler_method, good_tokens, options)
+          return handler.invoke(:arrow, good_tokens, options)
         end
       end
 
       definitions[:narrow].each do |handler|
         if handler.match(tokens, definitions)
-          puts "-narrow" if Chronic.debug
-          good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return Handlers.send(handler.handler_method, tokens, options)
+          return handler.invoke(:narrow, tokens, options)
         end
       end
 
