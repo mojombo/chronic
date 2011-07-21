@@ -284,23 +284,35 @@ module Chronic
     def tokens_to_span(tokens, options)
       definitions = definitions(options)
 
-      definitions.each do |type, handlers|
-        handlers.each do |handler|
-          next unless handler.match(tokens, definitions)
+      (definitions[:date] + definitions[:endian]).each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-date" if Chronic.debug
+          good_tokens = tokens.select { |o| !o.get_tag Separator }
+          return Handlers.send(handler.handler_method, good_tokens, options)
+        end
+      end
 
-          good_tokens = case type
-          when :date, :endian, :anchor
-            tokens.reject { |o| o.get_tag Separator }
-          when :arrow
-            tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) }
-          else
-            tokens
-          end
+      definitions[:anchor].each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-anchor" if Chronic.debug
+          good_tokens = tokens.select { |o| !o.get_tag Separator }
+          return Handlers.send(handler.handler_method, good_tokens, options)
+        end
+      end
 
-          if handler.handler_method
-            return handler.invoke(type, good_tokens, options)
-          end
+      definitions[:arrow].each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-arrow" if Chronic.debug
+          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) }
+          return Handlers.send(handler.handler_method, good_tokens, options)
+        end
+      end
 
+      definitions[:narrow].each do |handler|
+        if handler.match(tokens, definitions)
+          puts "-narrow" if Chronic.debug
+          good_tokens = tokens.select { |o| !o.get_tag Separator }
+          return Handlers.send(handler.handler_method, tokens, options)
         end
       end
 
