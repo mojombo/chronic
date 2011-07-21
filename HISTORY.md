@@ -1,3 +1,7 @@
+# 0.6.1 / 2011-07-21
+
+* Ensure Handler definitions are executed in the correct order
+
 # 0.6.0 / 2011-07-19
 
 * Attempting to parse strings with days past the last day of a month will
