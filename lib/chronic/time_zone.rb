@@ -19,7 +19,7 @@ module Chronic
       scan_for token, self,
       {
         /[PMCE][DS]T|UTC/i => :tz,
-        /(tzminus)?\d{4}/ => :tz
+        /(tzminus)?\d{2}:?\d{2}/ => :tz
       }
     end
 
