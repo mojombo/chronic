@@ -18,7 +18,7 @@ module Chronic
     def self.scan_for_all(token)
       scan_for token, self,
       {
-        /[PMCE][DS]T/i => :tz,
+        /[PMCE][DS]T|UTC/i => :tz,
         /(tzminus)?\d{4}/ => :tz
       }
     end
