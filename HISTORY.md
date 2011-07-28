@@ -1,6 +1,7 @@
 # 0.6.2 / 2011-07-28
 
 * Ensure specific endian handlers are prioritised over normal date handlers
+* Recognize UTC as timezone and accept HH::MM timezone offset (Jason Dusek)
 
 # 0.6.1 / 2011-07-21
 
