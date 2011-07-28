@@ -284,7 +284,7 @@ module Chronic
     def tokens_to_span(tokens, options)
       definitions = definitions(options)
 
-      (definitions[:date] + definitions[:endian]).each do |handler|
+      (definitions[:endian] + definitions[:date]).each do |handler|
         if handler.match(tokens, definitions)
           good_tokens = tokens.select { |o| !o.get_tag Separator }
           return handler.invoke(:date, good_tokens, options)
