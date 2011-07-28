@@ -1,3 +1,7 @@
+# 0.6.2 / 2011-07-28
+
+* Ensure specific endian handlers are prioritised over normal date handlers
+
 # 0.6.1 / 2011-07-21
 
 * Ensure Handler definitions are executed in the correct order
