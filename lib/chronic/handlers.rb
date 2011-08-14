@@ -198,16 +198,15 @@ module Chronic
       handle_sm_sd_sy(new_tokens + time_tokens, options)
     end
 
-    # Handle scalar-day/scalar-month
-    def handle_sd_sm(tokens, options)
-      day = tokens[1].get_tag(ScalarDay).type
+    # Handle scalar-day/scalar-month AND scalar-month/scalar-day
+    def handle_sm_sd(tokens, options)
       month = tokens[0].get_tag(ScalarMonth).type
+      day = tokens[1].get_tag(ScalarDay).type
+      year = Chronic.now.year
 
       if Array(options[:endian_precedence]).first == :little
         day, month = month, day
       end
-
-      year = Chronic.now.year
 
       return if month_overflow?(year, month, day)
 
