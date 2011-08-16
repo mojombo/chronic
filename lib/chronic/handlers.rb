@@ -339,7 +339,11 @@ module Chronic
         raise ChronicPain, "Invalid grabber"
       end
 
-      puts "--#{outer_span}" if Chronic.debug
+      if Chronic.debug
+        puts "Handler-class: #{head.class}"
+        puts "--#{outer_span}"
+      end
+
       find_within(repeaters, outer_span, pointer)
     end
 
