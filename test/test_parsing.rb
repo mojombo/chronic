@@ -678,12 +678,6 @@ class TestParsing < Test::Unit::TestCase
     time = parse_now("3 years from now")
     assert_equal Time.local(2009, 8, 16, 14, 0, 0), time
 
-    # time = parse_now("3 years and a month from now")
-    # assert_equal Time.local(2009, 9, 16, 14, 0, 0), time
-    # 
-    # time = parse_now("6 months and a week hence")
-    # assert_equal Time.local(2007, 2, 16, 14), time
-
     time = parse_now("3 fortnights hence")
     assert_equal Time.local(2006, 9, 27, 14), time
 
