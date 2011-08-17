@@ -614,6 +614,26 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 8, 8, 12), time
   end
 
+  def test_parse_guess_s_r_p_mixed_units
+    time = parse_now("1 week and a day from now")
+    assert_equal Time.local(2006, 8, 24, 14, 0, 0), time
+
+    time = parse_now("2 weeks and a day from now")
+    assert_equal Time.local(2006, 8, 31, 14, 0, 0), time
+    
+    time = parse_now("1 week and a day ago")
+    assert_equal Time.local(2006, 8, 8, 14, 0, 0), time
+
+    time = parse_now("1 week and 3 days ago")
+    assert_equal Time.local(2006, 8, 6, 14, 0, 0), time
+    
+    time = parse_now("2 weeks and 2 days from now")
+    assert_equal Time.local(2006, 9, 1, 14, 0, 0), time
+
+    time = parse_now('midday 2 weeks and a day after next tuesday')
+    assert_equal Time.local(2006, 9, 6, 12, 0, 0), time
+  end
+
   def test_parse_guess_s_r_p
     # past
 
@@ -658,23 +678,11 @@ class TestParsing < Test::Unit::TestCase
     time = parse_now("3 years from now")
     assert_equal Time.local(2009, 8, 16, 14, 0, 0), time
 
-    # time = parse_now("3 years and a month from now")
-    # assert_equal Time.local(2009, 9, 16, 14, 0, 0), time
-    # 
-    # time = parse_now("6 months and a week hence")
-    # assert_equal Time.local(2007, 2, 16, 14), time
-
     time = parse_now("3 fortnights hence")
     assert_equal Time.local(2006, 9, 27, 14), time
 
     time = parse_now("1 week from now")
     assert_equal Time.local(2006, 8, 23, 14, 0, 0), time
-    
-    time = parse_now("1 week and a day from now")
-    assert_equal Time.local(2006, 8, 24, 14, 0, 0), time
-
-    time = parse_now("2 weeks and a day from now")
-    assert_equal Time.local(2006, 8, 31, 14, 0, 0), time
     
     time = parse_now("1 weekend from now")
     assert_equal Time.local(2006, 8, 19), time
