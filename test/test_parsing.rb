@@ -629,6 +629,9 @@ class TestParsing < Test::Unit::TestCase
     
     time = parse_now("2 weeks and 2 days from now")
     assert_equal Time.local(2006, 9, 1, 14, 0, 0), time
+
+    time = parse_now('midday 2 weeks and a day after next tuesday')
+    assert_equal Time.local(2006, 9, 6, 12, 0, 0), time
   end
 
   def test_parse_guess_s_r_p
