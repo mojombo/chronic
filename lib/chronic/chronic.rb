@@ -112,6 +112,8 @@ module Chronic
       text.gsub!(/,/, ' ')
       text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
       text = Numerizer.numerize(text)
+      text.gsub!(/(.*)(\d) weeks* and a day(.*)/) { "#{$1} #{($2.to_i * 7)+1} days #{$3}"}
+      text.gsub!(/(.*)(\d) weeks* and (\d) days* (.*)/) { "#{$1} #{$2.to_i * 7 + $3.to_i} days #{$4}"}
       text.gsub!(/ \-(\d{4})\b/, ' tzminus\1')
       text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
       text.gsub!(/\b0(\d+:\d+\s*pm?\b)/, '\1')
