@@ -29,7 +29,7 @@ module Chronic
 
       case pointer
       when :future
-        this_year_start = Chronic.construct(@now.year, @now.month, @now.day) + RepeaterDay::DAY_SECONDS
+        this_year_start = Chronic.construct(@now.year, @now.month, @now.day + 1)
         this_year_end = Chronic.construct(@now.year + 1, 1, 1)
       when :past
         this_year_start = Chronic.construct(@now.year, 1, 1)

@@ -33,7 +33,7 @@ module Chronic
       case t.size
       when 1..2
         hours = t.to_i
-        hours == 12 ? Tick.new(0 * 60 * 60, true) : Tick.new(hours * 60 * 60, true)
+        Tick.new((hours == 12 ? 0 : hours) * 60 * 60, true)
       when 3
         hours = t[0..0].to_i
         ambiguous = hours > 0
