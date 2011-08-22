@@ -417,11 +417,11 @@ class TestParsing < Test::Unit::TestCase
   def test_parse_guess_gr
     # year
 
-    time = parse_now("this year")
-    assert_equal Time.local(2006, 10, 24, 12, 30), time
+    time = parse_now("this year", :guess => false)
+    assert_equal Time.local(2006, 8, 17), time.begin
 
-    time = parse_now("this year", :context => :past)
-    assert_equal Time.local(2006, 4, 24, 12, 30), time
+    time = parse_now("this year", :context => :past, :guess => false)
+    assert_equal Time.local(2006, 1, 1), time.begin
 
     # month
 

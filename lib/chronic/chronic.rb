@@ -188,8 +188,8 @@ module Chronic
 
         # tonight at 7pm
         :anchor => [
-          Handler.new([:grabber?, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
-          Handler.new([:grabber?, :repeater, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
+          Handler.new([:grabber?, :repeater, :separator_at?, :repeater?, :repeater?, :time_zone?], :handle_r),
+          Handler.new([:grabber?, :repeater, :repeater, :separator_at?, :repeater?, :repeater?, :time_zone?], :handle_r),
           Handler.new([:repeater, :grabber, :repeater], :handle_r_g_r)
         ],
 
