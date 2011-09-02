@@ -59,6 +59,16 @@ module Chronic
       handle_m_d(month, day, tokens[2..tokens.size], options)
     end
 
+    # Handle scalar-day/repeater-month-name
+    def handle_sd_rmn(tokens, options)
+      month = tokens[1].get_tag(RepeaterMonthName)
+      day = tokens[0].get_tag(ScalarDay).type
+
+      return if month_overflow?(Chronic.now.year, month.index, day)
+
+      handle_m_d(month, day, tokens[2..tokens.size], options)
+    end
+
     # Handle repeater-month-name/ordinal-day with separator-on
     def handle_rmn_od_on(tokens, options)
       if tokens.size > 3
