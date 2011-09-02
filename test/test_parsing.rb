@@ -76,6 +76,17 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2006, 12, 11, 8), time
   end
 
+  def test_handle_sd_rmn
+    time = parse_now("22 February")
+    assert_equal Time.local(2007, 2, 22, 12), time
+
+    time = parse_now("31 of may at 6:30pm")
+    assert_equal Time.local(2007, 5, 31, 18, 30), time
+
+    time = parse_now("11 december 8am")
+    assert_equal Time.local(2006, 12, 11, 8), time
+  end
+
   def test_handle_rmn_od_on
     time = parse_now("5:00 pm may 27th", :context => :past)
     assert_equal Time.local(2006, 5, 27, 17), time

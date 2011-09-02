@@ -1,3 +1,7 @@
+# HEAD
+
+* Add the ability to handle scalar-day/repeater-month-name as well as ordinals
+
 # 0.6.3 / 2011-08-01
 
 * Ensure 'thu' is parsed as Thursday for 1.8.7 generic timestamp
