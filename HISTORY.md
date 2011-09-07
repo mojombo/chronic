@@ -1,5 +1,6 @@
 # HEAD
 
+* Add support for handling '2009 May 22nd'
 * Add the ability to handle scalar-day/repeater-month-name as well as ordinals
 
 # 0.6.3 / 2011-08-01
