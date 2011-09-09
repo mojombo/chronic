@@ -873,7 +873,7 @@ class TestParsing < Test::Unit::TestCase
     t2 = Chronic.parse("now")
     assert_not_equal t1, t2
   end
-  
+
   def test_noon
     t1 = Chronic.parse('2011-01-01 at noon', :ambiguous_time_range => :none)
     assert_equal Time.local(2011, 1, 1, 12, 0), t1

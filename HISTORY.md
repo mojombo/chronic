@@ -1,5 +1,7 @@
-# HEAD
+# 0.6.4 / 2011-08-08
 
+* Fixed bug where 'noon' was parsed as 00:00 rather than 12:00
+  with :ambiguous_time_range => :none (Vladimir Chernis)
 * Add support for handling '2009 May 22nd'
 * Add the ability to handle scalar-day/repeater-month-name as well as ordinals
 
