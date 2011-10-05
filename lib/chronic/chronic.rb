@@ -114,7 +114,7 @@ module Chronic
       text = Numerizer.numerize(text)
       text.gsub!(/ \-(\d{4})\b/, ' tzminus\1')
       text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
-      text.gsub!(/\b0(\d+:\d+\s*pm?\b)/, '\1')
+      text.gsub!(/(?:^|\s)0(\d+:\d+\s*pm?\b)/, '\1')
       text.gsub!(/\btoday\b/, 'this day')
       text.gsub!(/\btomm?orr?ow\b/, 'next day')
       text.gsub!(/\byesterday\b/, 'last day')

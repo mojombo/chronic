@@ -238,6 +238,9 @@ class TestParsing < Test::Unit::TestCase
     time = parse_now("7/12/11", :endian_precedence => :little)
     assert_equal Time.local(2011, 12, 7, 12), time
 
+    time = parse_now("9/19/2011 6:05:57 PM")
+    assert_equal Time.local(2011, 9, 19, 18, 05, 57), time
+
     # month day overflows
     time = parse_now("30/2/2000")
     assert_nil time

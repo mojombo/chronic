@@ -1,3 +1,7 @@
+# HEAD
+
+* Fix bug when parsing strings prefixed with PM
+
 # 0.6.4 / 2011-08-08
 
 * Fixed bug where 'noon' was parsed as 00:00 rather than 12:00
