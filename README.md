@@ -162,14 +162,13 @@ If you'd like to hack on Chronic, start by forking the repo on GitHub:
 
 https://github.com/mojombo/chronic
 
-To get all of the dependencies, install the gem first. The best way to get
-your changes merged back into core is as follows:
+The best way to get your changes merged back into core is as follows:
 
 1. Clone down your fork
 1. Create a thoughtfully named topic branch to contain your change
 1. Hack away
 1. Add tests and make sure everything still passes by running `rake`
-1. Ensure your tests pass in multiple timezones
+1. Ensure your tests pass in multiple timezones. ie `TZ=utc rake` `TZ=BST rake`
 1. If you are adding new functionality, document it in the README
 1. Do not change the version number, we will do that on our end
 1. If necessary, rebase your commits into logical chunks, without errors
