@@ -882,6 +882,16 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(2011, 1, 1, 12, 0), t1
   end
 
+  def test_handle_rdn_rmn_sd
+    time = parse_now("Thu Aug 10")
+    assert_equal Time.local(2006, 8, 10, 12), time
+  end
+
+  def test_handle_rdn_rmn_od
+    time = parse_now("Thu Aug 10th")
+    assert_equal Time.local(2006, 8, 10, 12), time
+  end
+
   private
   def parse_now(string, options={})
     Chronic.parse(string, {:now => TIME_2006_08_16_14_00_00 }.merge(options))
