@@ -1,5 +1,6 @@
 # HEAD
 
+* Added handler support for day_name month_name (@imme5150)
 * Fix bug when parsing strings prefixed with PM
 
 # 0.6.4 / 2011-08-08
