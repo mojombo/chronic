@@ -315,6 +315,14 @@ class TestParsing < Test::Unit::TestCase
 
     time = parse_now("5th tuesday in february")
     assert_equal nil, time
+
+    %W(jan feb march april may june july aug sep oct nov dec).each_with_index do |month, index|
+      time = parse_now("5th tuesday in #{month}")
+
+      if time then
+        assert_equal time.month, index+1
+      end
+    end
   end
 
   def test_handle_o_r_s_r
