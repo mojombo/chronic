@@ -252,7 +252,7 @@ module Chronic
       year = Chronic.now.year
 
       return if month_overflow?(year, month.index, day)
-      
+
       begin
         start_time = Chronic.time_class.local(year, month.index, day)
         end_time = Chronic.time_class.local(year, month.index, day + 1)
@@ -269,7 +269,7 @@ module Chronic
       year = Chronic.now.year
 
       return if month_overflow?(year, month.index, day)
-      
+
       begin
         start_time = Chronic.time_class.local(year, month.index, day)
         end_time = Chronic.time_class.local(year, month.index, day + 1)
@@ -336,7 +336,7 @@ module Chronic
       ordinal.times do
         span = repeater.next(:future)
 
-        if span.begin > outer_span.end
+        if span.begin >= outer_span.end
           span = nil
           break
         end

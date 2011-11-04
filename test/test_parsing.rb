@@ -310,6 +310,11 @@ class TestParsing < Test::Unit::TestCase
   end
 
   def test_handle_orr
+    time = parse_now("5th tuesday in january")
+    assert_equal Time.local(2007, 01, 30, 12), time
+
+    time = parse_now("5th tuesday in february")
+    assert_equal nil, time
   end
 
   def test_handle_o_r_s_r

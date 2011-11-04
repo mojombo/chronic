@@ -1,5 +1,6 @@
 # HEAD
 
+* Fix bug when parsing ordinal repeaters (#73)
 * Added handler support for day_name month_name (@imme5150)
 * Fix bug when parsing strings prefixed with PM
 
