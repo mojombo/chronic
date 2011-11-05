@@ -1,4 +1,4 @@
-# HEAD
+# 0.6.5 / 2011-11-04
 
 * Fix bug when parsing ordinal repeaters (#73)
 * Added handler support for day_name month_name (@imme5150)
