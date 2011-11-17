@@ -58,7 +58,7 @@ module Chronic
         /^m[ou]n(day)?$/ => :monday,
         /^t(ue|eu|oo|u|)s?(day)?$/ => :tuesday,
         /^we(d|dnes|nds|nns)(day)?$/ => :wednesday,
-        /^th(u(?:rs)?|ers)(day)?$/ => :thursday,
+        /^th(u|ur|urs|ers)(day)?$/ => :thursday,
         /^fr[iy](day)?$/ => :friday,
         /^sat(t?[ue]rday)?$/ => :saturday,
         /^su[nm](day)?$/ => :sunday
