@@ -539,6 +539,34 @@ class TestParsing < Test::Unit::TestCase
     time = parse_now("last wed")
     assert_equal Time.local(2006, 8, 9, 12), time
 
+    monday = Time.local(2006, 8, 21, 12)
+    assert_equal monday, parse_now("mon")
+    assert_equal monday, parse_now("mun")
+
+    tuesday = Time.local(2006, 8, 22, 12)
+    assert_equal tuesday, parse_now("tue")
+    assert_equal tuesday, parse_now("tus")
+
+    wednesday = Time.local(2006, 8, 23, 12)
+    assert_equal wednesday, parse_now("wed")
+    assert_equal wednesday, parse_now("wenns")
+
+    thursday = Time.local(2006, 8, 17, 12)
+    assert_equal thursday, parse_now("thu")
+    assert_equal thursday, parse_now("thur")
+
+    friday = Time.local(2006, 8, 18, 12)
+    assert_equal friday, parse_now("fri")
+    assert_equal friday, parse_now("fry")
+
+    saturday = Time.local(2006, 8, 19, 12)
+    assert_equal saturday, parse_now("sat")
+    assert_equal saturday, parse_now("satterday")
+
+    sunday = Time.local(2006, 8, 20, 12)
+    assert_equal sunday, parse_now("sun")
+    assert_equal sunday, parse_now("sum")
+
     # day portion
 
     time = parse_now("this morning")
