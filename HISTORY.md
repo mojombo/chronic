@@ -1,4 +1,4 @@
-HEAD
+# 0.6.6 / 2011-11-23
 
 * `Chronic.parse('thur')` no longer returns `nil` (@harold)
 
