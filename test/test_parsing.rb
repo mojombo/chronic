@@ -926,11 +926,37 @@ class TestParsing < Test::Unit::TestCase
   def test_handle_rdn_rmn_sd
     time = parse_now("Thu Aug 10")
     assert_equal Time.local(2006, 8, 10, 12), time
+
+    time = parse_now("Thursday July 31")
+    assert_equal Time.local(2006, 7, 31, 12), time
+
+    time = parse_now("Thursday December 31")
+    assert_equal Time.local(2006, 12, 31, 12), time
+  end
+
+  def test_handle_rdn_rmn_sd_sy
+    time = parse_now("Thu Aug 10 2006")
+    assert_equal Time.local(2006, 8, 10, 12), time
+
+    time = parse_now("Thursday July 31 2006")
+    assert_equal Time.local(2006, 7, 31, 12), time
+
+    time = parse_now("Thursday December 31 2006")
+    assert_equal Time.local(2006, 12, 31, 12), time
+
+    time = parse_now("Thursday December 30 2006")
+    assert_equal Time.local(2006, 12, 30, 12), time
   end
 
   def test_handle_rdn_rmn_od
     time = parse_now("Thu Aug 10th")
     assert_equal Time.local(2006, 8, 10, 12), time
+
+    time = parse_now("Thursday July 31st")
+    assert_equal Time.local(2006, 7, 31, 12), time
+
+    time = parse_now("Thursday December 31st")
+    assert_equal Time.local(2006, 12, 31, 12), time
   end
 
   private

@@ -255,7 +255,7 @@ module Chronic
 
       begin
         start_time = Chronic.time_class.local(year, month.index, day)
-        end_time = Chronic.time_class.local(year, month.index, day + 1)
+        end_time = time_with_rollover(year, month.index, day + 1)
         Span.new(start_time, end_time)
       rescue ArgumentError
         nil
@@ -272,7 +272,24 @@ module Chronic
 
       begin
         start_time = Chronic.time_class.local(year, month.index, day)
-        end_time = Chronic.time_class.local(year, month.index, day + 1)
+        end_time = time_with_rollover(year, month.index, day + 1)
+        Span.new(start_time, end_time)
+      rescue ArgumentError
+        nil
+      end
+    end
+
+    # Handle RepeaterDayName RepeaterMonthName ScalarDay ScalarYear
+    def handle_rdn_rmn_sd_sy(tokens, options)
+      month = tokens[1].get_tag(RepeaterMonthName)
+      day = tokens[2].get_tag(ScalarDay).type
+      year = tokens[3].get_tag(ScalarYear).type
+
+      return if month_overflow?(year, month.index, day)
+
+      begin
+        start_time = Chronic.time_class.local(year, month.index, day)
+        end_time = time_with_rollover(year, month.index, day + 1)
         Span.new(start_time, end_time)
       rescue ArgumentError
         nil
@@ -433,6 +450,20 @@ module Chronic
       if span.cover?(h.begin) || span.cover?(h.end)
         find_within(tags, h, pointer)
       end
+    end
+
+    def time_with_rollover(year, month, day)
+      date_parts =
+        if month_overflow?(year, month, day)
+          if month == 12
+            [year + 1, 1, 1]
+          else
+            [year, month + 1, 1]
+          end
+        else
+          [year, month, day]
+        end
+      Chronic.time_class.local(*date_parts)
     end
 
     def dealias_and_disambiguate_times(tokens, options)
