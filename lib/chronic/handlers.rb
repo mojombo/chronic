@@ -279,6 +279,23 @@ module Chronic
       end
     end
 
+    # Handle RepeaterDayName RepeaterMonthName ScalarDay ScalarYear
+    def handle_rdn_rmn_sd_sy(tokens, options)
+      month = tokens[1].get_tag(RepeaterMonthName)
+      day = tokens[2].get_tag(ScalarDay).type
+      year = tokens[3].get_tag(ScalarYear).type
+
+      return if month_overflow?(year, month.index, day)
+
+      begin
+        start_time = Chronic.time_class.local(year, month.index, day)
+        end_time = Chronic.time_class.local(year, month.index, day + 1)
+        Span.new(start_time, end_time)
+      rescue ArgumentError
+        nil
+      end
+    end
+
     # anchors
 
     # Handle repeaters
