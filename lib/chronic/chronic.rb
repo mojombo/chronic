@@ -1,5 +1,6 @@
 module Chronic
 
+  # Returns a Hash of default configuration options.
   DEFAULT_OPTIONS = {
     :context => :future,
     :now => nil,
@@ -11,53 +12,43 @@ module Chronic
 
   class << self
 
-    # Parses a string containing a natural language date or time
+    # Parses a string containing a natural language date or time.
     #
     # If the parser can find a date or time, either a Time or Chronic::Span
     # will be returned (depending on the value of `:guess`). If no
-    # date or time can be found, `nil` will be returned
+    # date or time can be found, `nil` will be returned.
     #
-    # @param [String] text The text to parse
+    # text - The String text to parse.
+    # opts - An optional Hash of configuration options:
+    #        :context - If your string represents a birthday, you can set
+    #                   this value to :past and if an ambiguous string is
+    #                   given, it will assume it is in the past.
+    #        :now - Time, all computations will be based off of time
+    #               instead of Time.now.
+    #        :guess - By default the parser will guess a single point in time
+    #                 for the given date or time. If you'd rather have the
+    #                 entire time span returned, set this to false
+    #                 and a Chronic::Span will be returned.
+    #        :ambiguous_time_range - If an Integer is given, ambiguous times
+    #                  (like 5:00) will be assumed to be within the range of
+    #                  that time in the AM to that time in the PM. For
+    #                  example, if you set it to `7`, then the parser will
+    #                  look for the time between 7am and 7pm. In the case of
+    #                  5:00, it would assume that means 5:00pm. If `:none`
+    #                  is given, no assumption will be made, and the first
+    #                  matching instance of that time will be used.
+    #        :endian_precedence - By default, Chronic will parse "03/04/2011"
+    #                 as the fourth day of the third month. Alternatively you
+    #                 can tell Chronic to parse this as the third day of the
+    #                 fourth month by setting this to [:little, :middle].
+    #        :ambiguous_year_future_bias - When parsing two digit years
+    #                 (ie 79) unlike Rubys Time class, Chronic will attempt
+    #                 to assume the full year using this figure. Chronic will
+    #                 look x amount of years into the future and past. If the
+    #                 two digit year is `now + x years` it's assumed to be the
+    #                 future, `now - x years` is assumed to be the past.
     #
-    # @option opts [Symbol] :context (:future)
-    #   * If your string represents a birthday, you can set `:context` to
-    #     `:past` and if an ambiguous string is given, it will assume it is
-    #     in the past. Specify `:future` or omit to set a future context.
-    #
-    # @option opts [Object] :now (Time.now)
-    #   * By setting `:now` to a Time, all computations will be based off of
-    #     that time instead of `Time.now`. If set to nil, Chronic will use
-    #     `Time.now`
-    #
-    # @option opts [Boolean] :guess (true)
-    #   * By default, the parser will guess a single point in time for the
-    #     given date or time. If you'd rather have the entire time span
-    #     returned, set `:guess` to `false` and a {Chronic::Span} will
-    #     be returned
-    #
-    # @option opts [Integer] :ambiguous_time_range (6)
-    #   * If an Integer is given, ambiguous times (like 5:00) will be
-    #     assumed to be within the range of that time in the AM to that time
-    #     in the PM. For example, if you set it to `7`, then the parser
-    #     will look for the time between 7am and 7pm. In the case of 5:00, it
-    #     would assume that means 5:00pm. If `:none` is given, no
-    #     assumption will be made, and the first matching instance of that
-    #     time will be used
-    #
-    # @option opts [Array] :endian_precedence ([:middle, :little])
-    #   * By default, Chronic will parse "03/04/2011" as the fourth day
-    #     of the third month. Alternatively you can tell Chronic to parse
-    #     this as the third day of the fourth month by altering the
-    #     `:endian_precedence` to `[:little, :middle]`
-    #
-    # @option opts [Integer] :ambiguous_year_future_bias (50)
-    #   * When parsing two digit years (ie 79) unlike Rubys Time class,
-    #     Chronic will attempt to assume the full year using this figure.
-    #     Chronic will look x amount of years into the future and past. If
-    #     the two digit year is `now + x years` it's assumed to be the
-    #     future, `now - x years` is assumed to be the past
-    #
-    # @return [Time, Chronic::Span, nil]
+    # Returns a new Time object, or Chronic::Span if :guess option is false.
     def parse(text, opts={})
       options = DEFAULT_OPTIONS.merge opts
 
@@ -87,14 +78,17 @@ module Chronic
       end
     end
 
-    # Clean up the specified text ready for parsing
+    # Clean up the specified text ready for parsing.
     #
     # Clean up the string by stripping unwanted characters, converting
     # idioms to their canonical form, converting number words to numbers
     # (three => 3), and converting ordinal words to numeric
     # ordinals (third => 3rd)
     #
-    # @example
+    # text - The String text to normalize.
+    #
+    # Examples:
+    #
     #   Chronic.pre_normalize('first day in May')
     #     #=> "1st day in may"
     #
@@ -104,8 +98,7 @@ module Chronic
     #   Chronic.pre_normalize('one hundred and thirty six days from now')
     #     #=> "136 days future this second"
     #
-    # @param [String] text The string to normalize
-    # @return [String] A new string ready for Chronic to parse
+    # Returns a new String ready for Chronic to parse.
     def pre_normalize(text)
       text = text.to_s.downcase
       text.gsub!(/['"\.]/, '')
@@ -132,20 +125,21 @@ module Chronic
       text
     end
 
-    # Convert number words to numbers (three => 3, fourth => 4th)
+    # Convert number words to numbers (three => 3, fourth => 4th).
     #
-    # @see Numerizer.numerize
-    # @param [String] text The string to convert
-    # @return [String] A new string with words converted to numbers
+    # text - The String to convert.
+    #
+    # Returns a new String with words converted to numbers.
     def numericize_numbers(text)
       warn "Chronic.numericize_numbers will be deprecated in version 0.7.0. Please use Chronic::Numerizer.numerize instead"
       Numerizer.numerize(text)
     end
 
-    # Guess a specific time within the given span
+    # Guess a specific time within the given span.
     #
-    # @param [Span] span
-    # @return [Time]
+    # span - The Chronic::Span object to calcuate a guess from.
+    #
+    # Returns a new Time object.
     def guess(span)
       if span.width > 1
         span.begin + (span.width / 2)
@@ -154,11 +148,13 @@ module Chronic
       end
     end
 
-    # List of {Handler} definitions. See {parse} for a list of options this
-    # method accepts
+    # List of Handler definitions. See #parse for a list of options this
+    # method accepts.
     #
-    # @see parse
-    # @return [Hash] A Hash of Handler definitions
+    # options - An optional Hash of configuration options:
+    #           :endian_precedence -
+    #
+    # Returns A Hash of Handler definitions.
     def definitions(options={})
       options[:endian_precedence] ||= [:middle, :little]
 
@@ -229,9 +225,17 @@ module Chronic
       @definitions
     end
 
-    # Construct a time Object
+    # Construct a new time object determining possible month overflows
+    # and leap years.
     #
-    # @return [Time]
+    # year   - Integer year.
+    # month  - Integer month.
+    # day    - Integer day.
+    # hour   - Integer hour.
+    # minute - Integer minute.
+    # second - Integer second.
+    #
+    # Returns a new Time object constructed from these params.
     def construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
       if second >= 60
         minute += second / 60
