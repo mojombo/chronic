@@ -1,3 +1,8 @@
+# 0.6.7 / 2012-01-31
+
+* Handle day, month names with scalar day and year (Joe Fiorini)
+* Ensure 31st parses correctly with day names (Joe Fiorini)
+
 # 0.6.6 / 2011-11-23
 
 * `Chronic.parse('thur')` no longer returns `nil` (@harold)
