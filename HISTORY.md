@@ -1,3 +1,7 @@
+# HEAD
+
+* Support month/day and day/month parsing (#59).
+
 # 0.6.7 / 2012-01-31
 
 * Handle day, month names with scalar day and year (Joe Fiorini)
