@@ -224,6 +224,27 @@ module Chronic
       handle_sm_sd_sy(new_tokens + time_tokens, options)
     end
 
+    # Handle scalar-day/scalar-month AND scalar-month/scalar-day
+    def handle_sm_sd(tokens, options)
+      month = tokens[0].get_tag(ScalarMonth).type
+      day = tokens[1].get_tag(ScalarDay).type
+      year = Chronic.now.year
+
+      if Array(options[:endian_precedence]).first == :little
+        day, month = month, day
+      end
+
+      return if month_overflow?(year, month, day)
+
+      begin
+        start_time = Chronic.time_class.local(year, month, day)
+        end_time = Chronic.time_class.local(year, month, day + 1)
+        Span.new(start_time, end_time)
+      rescue ArgumentError
+        nil
+      end
+    end
+
     # Handle scalar-month/scalar-year
     def handle_sm_sy(tokens, options)
       month = tokens[0].get_tag(ScalarMonth).type
@@ -434,6 +455,8 @@ module Chronic
       else
         day > RepeaterMonth::MONTH_DAYS[month - 1]
       end
+    rescue ArgumentError
+      false
     end
 
     # Recursively finds repeaters within other repeaters.

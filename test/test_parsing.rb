@@ -280,16 +280,27 @@ class TestParsing < Test::Unit::TestCase
     assert_equal Time.local(1902, 8, 20, 12, 0, 0), time
   end
 
-  def test_handle_sm_sy
+  def test_handle_sm_sd
     time = parse_now("05/06")
-    assert_equal Time.local(2006, 5, 16, 12), time
+    assert_equal Time.local(2006, 5, 6, 12), time
 
-    time = parse_now("12/06")
-    assert_equal Time.local(2006, 12, 16, 12), time
+    time = parse_now("05/06", :endian_precedence => [:little, :medium])
+    assert_equal Time.local(2006, 6, 5, 12), time
 
-    time = parse_now("13/06")
-    assert_equal nil, time
+    time = parse_now("13/01")
+    assert_nil time
   end
+
+  # def test_handle_sm_sy
+  #   time = parse_now("05/06")
+  #   assert_equal Time.local(2006, 5, 16, 12), time
+  #
+  #   time = parse_now("12/06")
+  #   assert_equal Time.local(2006, 12, 16, 12), time
+  #
+  #   time = parse_now("13/06")
+  #   assert_equal nil, time
+  # end
 
   def test_handle_r
   end
