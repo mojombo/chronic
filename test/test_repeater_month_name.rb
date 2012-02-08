@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestRepeaterMonthName < Test::Unit::TestCase
+class TestRepeaterMonthName < TestCase
 
   def setup
     # Wed Aug 16 14:00:00 2006

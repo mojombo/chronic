@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestDaylightSavings < Test::Unit::TestCase
+class TestDaylightSavings < TestCase
 
   def setup
     @begin_daylight_savings = Time.local(2008, 3, 9, 5, 0, 0, 0)

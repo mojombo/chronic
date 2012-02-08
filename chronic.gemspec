@@ -14,4 +14,7 @@ Gem::Specification.new do |s|
   s.extra_rdoc_files = %w[README.md HISTORY.md LICENSE]
   s.files = `git ls-files`.split("\n")
   s.test_files = `git ls-files -- test`.split("\n")
+
+  s.add_development_dependency 'rake'
+  s.add_development_dependency 'minitest'
 end

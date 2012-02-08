@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestRepeaterMinute < Test::Unit::TestCase
+class TestRepeaterMinute < TestCase
 
   def setup
     @now = Time.local(2008, 6, 25, 7, 15, 30, 0)

@@ -1,6 +1,6 @@
 require 'helper'
 
-class ParseNumbersTest < Test::Unit::TestCase
+class ParseNumbersTest < TestCase
 
   def test_straight_parsing
     strings = {

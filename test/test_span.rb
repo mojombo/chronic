@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestSpan < Test::Unit::TestCase
+class TestSpan < TestCase
 
   def setup
     # Wed Aug 16 14:00:00 UTC 2006

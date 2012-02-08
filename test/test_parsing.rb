@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestParsing < Test::Unit::TestCase
+class TestParsing < TestCase
   # Wed Aug 16 14:00:00 UTC 2006
   TIME_2006_08_16_14_00_00 = Time.local(2006, 8, 16, 14, 0, 0, 0)
 
@@ -866,11 +866,11 @@ class TestParsing < Test::Unit::TestCase
   end
 
   def test_argument_validation
-    assert_raise(ArgumentError) do
+    assert_raises(ArgumentError) do
       time = Chronic.parse("may 27", :foo => :bar)
     end
 
-    assert_raise(ArgumentError) do
+    assert_raises(ArgumentError) do
       time = Chronic.parse("may 27", :context => :bar)
     end
   end
@@ -926,7 +926,7 @@ class TestParsing < Test::Unit::TestCase
     t1 = Chronic.parse("now")
     sleep 0.1
     t2 = Chronic.parse("now")
-    assert_not_equal t1, t2
+    refute_equal t1, t2
   end
 
   def test_noon

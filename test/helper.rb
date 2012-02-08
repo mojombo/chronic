@@ -3,4 +3,10 @@ unless defined? Chronic
   require 'chronic'
 end
 
-require 'test/unit'
+require 'minitest/autorun'
+
+class TestCase < MiniTest::Unit::TestCase
+  def self.test(name, &block)
+    define_method("test_#{name.gsub(/\W/, '_')}", &block) if block
+  end
+end

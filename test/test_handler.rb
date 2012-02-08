@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestHandler < Test::Unit::TestCase
+class TestHandler < TestCase
 
   def setup
     # Wed Aug 16 14:00:00 UTC 2006

@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestRepeaterWeekday < Test::Unit::TestCase
+class TestRepeaterWeekday < TestCase
 
   def setup
     @now = Time.local(2007, 6, 11, 14, 0, 0, 0) # Mon

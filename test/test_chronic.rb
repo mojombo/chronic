@@ -1,6 +1,6 @@
 require 'helper'
 
-class TestChronic < Test::Unit::TestCase
+class TestChronic < TestCase
 
   def setup
     # Wed Aug 16 14:00:00 UTC 2006
@@ -135,11 +135,7 @@ class TestChronic < Test::Unit::TestCase
     assert_equal Time.local(2004, 3, 4), Chronic.construct(2004, 2, 33)
     assert_equal Time.local(2000, 3, 4), Chronic.construct(2000, 2, 33)
 
-    assert_nothing_raised do
-      Chronic.construct(2006, 1, 56)
-    end
-
-    assert_raise(RuntimeError) do
+    assert_raises(RuntimeError) do
       Chronic.construct(2006, 1, 57)
     end
   end
