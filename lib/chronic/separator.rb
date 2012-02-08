@@ -1,12 +1,13 @@
 module Chronic
   class Separator < Tag
 
-    # Scan an Array of {Token}s and apply any necessary Separator tags to
-    # each token
+    # Scan an Array of Token objects and apply any necessary Separator
+    # tags to each token.
     #
-    # @param [Array<Token>] tokens Array of tokens to scan
-    # @param [Hash] options Options specified in {Chronic.parse}
-    # @return [Array] list of tokens
+    # tokens - An Array of tokens to scan.
+    # options - The Hash of options specified in Chronic::parse.
+    #
+    # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
         if t = scan_for_commas(token) then token.tag(t); next end
@@ -17,14 +18,16 @@ module Chronic
       end
     end
 
-    # @param [Token] token
-    # @return [SeparatorComma, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeparatorComma object.
     def self.scan_for_commas(token)
       scan_for token, SeparatorComma, { /^,$/ => :comma }
     end
 
-    # @param [Token] token
-    # @return [SeparatorSlashOrDash, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeparatorSlashOrDash object.
     def self.scan_for_slash_or_dash(token)
       scan_for token, SeparatorSlashOrDash,
       {
@@ -33,20 +36,23 @@ module Chronic
       }
     end
 
-    # @param [Token] token
-    # @return [SeparatorAt, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeparatorAt object.
     def self.scan_for_at(token)
       scan_for token, SeparatorAt, { /^(at|@)$/ => :at }
     end
 
-    # @param [Token] token
-    # @return [SeparatorIn, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeparatorIn object.
     def self.scan_for_in(token)
       scan_for token, SeparatorIn, { /^in$/ => :in }
     end
 
-    # @param [Token] token
-    # @return [SeparatorOn, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeparatorOn object.
     def self.scan_for_on(token)
       scan_for token, SeparatorOn, { /^on$/ => :on }
     end

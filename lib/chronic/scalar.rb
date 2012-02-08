@@ -2,12 +2,13 @@ module Chronic
   class Scalar < Tag
     DAY_PORTIONS = %w( am pm morning afternoon evening night )
 
-    # Scan an Array of {Token}s and apply any necessary Scalar tags to
-    # each token
+    # Scan an Array of Token objects and apply any necessary Scalar
+    # tags to each token.
     #
-    # @param [Array<Token>] tokens Array of tokens to scan
-    # @param [Hash] options Options specified in {Chronic.parse}
-    # @return [Array] list of tokens
+    # tokens - An Array of tokens to scan.
+    # options - The Hash of options specified in Chronic::parse.
+    #
+    # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each_index do |i|
         if t = scan_for_scalars(tokens[i], tokens[i + 1]) then tokens[i].tag(t) end
@@ -17,9 +18,10 @@ module Chronic
       end
     end
 
-    # @param [Token] token
-    # @param [Token] post_token
-    # @return [Scalar, nil]
+    # token - The Token object we want to scan.
+    # post_token - The next Token object.
+    #
+    # Returns a new Scalar object.
     def self.scan_for_scalars(token, post_token)
       if token.word =~ /^\d*$/
         unless post_token && DAY_PORTIONS.include?(post_token.word)
@@ -28,9 +30,10 @@ module Chronic
       end
     end
 
-    # @param [Token] token
-    # @param [Token] post_token
-    # @return [ScalarDay, nil]
+    # token - The Token object we want to scan.
+    # post_token - The next Token object.
+    #
+    # Returns a new Scalar object.
     def self.scan_for_days(token, post_token)
       if token.word =~ /^\d\d?$/
         toi = token.word.to_i
@@ -40,9 +43,10 @@ module Chronic
       end
     end
 
-    # @param [Token] token
-    # @param [Token] post_token
-    # @return [ScalarMonth, nil]
+    # token - The Token object we want to scan.
+    # post_token - The next Token object.
+    #
+    # Returns a new Scalar object.
     def self.scan_for_months(token, post_token)
       if token.word =~ /^\d\d?$/
         toi = token.word.to_i
@@ -52,10 +56,11 @@ module Chronic
       end
     end
 
-    # @param [Token] token
-    # @param [Token] post_token
-    # @param [Hash] options Options specified in {Chronic.parse}
-    # @return [ScalarYear, nil]
+    # token - The Token object we want to scan.
+    # post_token - The next Token object.
+    # options - The Hash of options specified in Chronic::parse.
+    #
+    # Returns a new Scalar object.
     def self.scan_for_years(token, post_token, options)
       if token.word =~ /^([1-9]\d)?\d\d?$/
         unless post_token && DAY_PORTIONS.include?(post_token.word)
@@ -65,16 +70,18 @@ module Chronic
       end
     end
 
-    # Build a year from a 2 digit suffix
+    # Build a year from a 2 digit suffix.
     #
-    # @example
+    # year - The two digit Integer year to build from.
+    # bias - The Integer amount of future years to bias.
+    #
+    # Examples:
+    #
     #   make_year(96, 50) #=> 1996
     #   make_year(79, 20) #=> 2079
     #   make_year(00, 50) #=> 2000
     #
-    # @param [Integer] year The two digit year to build from
-    # @param [Integer] bias The amount of future years to bias
-    # @return [Integer] The 4 digit year
+    # Returns The Integer 4 digit year.
     def self.make_year(year, bias)
       return year if year.to_s.size > 2
       start_year = Chronic.time_class.now.year - bias

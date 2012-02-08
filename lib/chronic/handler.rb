@@ -1,25 +1,22 @@
 module Chronic
   class Handler
 
-    # @return [Array] A list of patterns
     attr_reader :pattern
 
-    # @return [Symbol] The method which handles this list of patterns.
-    #   This method should exist inside the {Handlers} module
     attr_reader :handler_method
 
-    # @param [Array]  pattern A list of patterns to match tokens against
-    # @param [Symbol] handler_method The method to be invoked when patterns
-    #   are matched. This method should exist inside the {Handlers} module
+    # pattern        - An Array of patterns to match tokens against.
+    # handler_method - A Symbole representing the method to be invoked
+    #   when patterns are matched.
     def initialize(pattern, handler_method)
       @pattern = pattern
       @handler_method = handler_method
     end
 
-    # @param [Array] tokens
-    # @param [Hash]  definitions
-    # @return [Boolean]
-    # @see Chronic.tokens_to_span
+    # tokens - An Array of tokens to process.
+    # definitions - A Hash of definitions to check against.
+    #
+    # Returns true if a match is found.
     def match(tokens, definitions)
       token_index = 0
 
@@ -70,8 +67,9 @@ module Chronic
       Handlers.send(@handler_method, tokens, options)
     end
 
-    # @param [Handler]  The handler to compare
-    # @return [Boolean] True if these handlers match
+    # other - The other Handler object to compare.
+    #
+    # Returns true if these Handlers match.
     def ==(other)
       @pattern == other.pattern
     end

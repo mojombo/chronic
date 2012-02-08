@@ -1,20 +1,22 @@
 module Chronic
   class TimeZone < Tag
 
-    # Scan an Array of {Token}s and apply any necessary TimeZone tags to
-    # each token
+    # Scan an Array of Token objects and apply any necessary TimeZone
+    # tags to each token.
     #
-    # @param [Array<Token>] tokens Array of tokens to scan
-    # @param [Hash] options Options specified in {Chronic.parse}
-    # @return [Array] list of tokens
+    # tokens - An Array of tokens to scan.
+    # options - The Hash of options specified in Chronic::parse.
+    #
+    # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
         if t = scan_for_all(token) then token.tag(t); next end
       end
     end
 
-    # @param [Token] token
-    # @return [TimeZone, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new Pointer object.
     def self.scan_for_all(token)
       scan_for token, self,
       {

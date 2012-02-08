@@ -1,12 +1,13 @@
 module Chronic
   class Repeater < Tag
 
-    # Scan an Array of {Token}s and apply any necessary Repeater tags to
-    # each token
+    # Scan an Array of Token objects and apply any necessary Repeater
+    # tags to each token.
     #
-    # @param [Array<Token>] tokens Array of tokens to scan
-    # @param [Hash] options Options specified in {Chronic.parse}
-    # @return [Array] list of tokens
+    # tokens - An Array of tokens to scan.
+    # options - The Hash of options specified in Chronic::parse.
+    #
+    # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
         if t = scan_for_season_names(token) then token.tag(t); next end
@@ -18,8 +19,9 @@ module Chronic
       end
     end
 
-    # @param [Token] token
-    # @return [RepeaterSeasonName, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new Repeater object.
     def self.scan_for_season_names(token)
       scan_for token, RepeaterSeasonName,
       {
@@ -30,8 +32,9 @@ module Chronic
       }
     end
 
-    # @param [Token] token
-    # @return [RepeaterMonthName, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new Repeater object.
     def self.scan_for_month_names(token)
       scan_for token, RepeaterMonthName,
       {
@@ -50,8 +53,9 @@ module Chronic
       }
     end
 
-    # @param [Token] token
-    # @return [RepeaterDayName, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new Repeater object.
     def self.scan_for_day_names(token)
       scan_for token, RepeaterDayName,
       {
@@ -65,8 +69,9 @@ module Chronic
       }
     end
 
-    # @param [Token] token
-    # @return [RepeaterDayPortion, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new Repeater object.
     def self.scan_for_day_portions(token)
       scan_for token, RepeaterDayPortion,
       {
@@ -79,14 +84,16 @@ module Chronic
       }
     end
 
-    # @param [Token] token
-    # @return [RepeaterTime, nil]
+    # token - The Token object we want to scan.
+    #
+    # Returns a new Repeater object.
     def self.scan_for_times(token)
       scan_for token, RepeaterTime, /^\d{1,2}(:?\d{2})?([\.:]?\d{2})?$/
     end
 
-    # @param [Token] token
-    # @return [Repeater] A new instance of a subclass of Repeater
+    # token - The Token object we want to scan.
+    #
+    # Returns a new Repeater object.
     def self.scan_for_units(token)
       {
         /^years?$/ => :year,
