@@ -1,5 +1,6 @@
 # HEAD
 
+* Ensure periods are interpreted as colons (#81).
 * Support month/day and day/month parsing (#59).
 
 # 0.6.7 / 2012-01-31
