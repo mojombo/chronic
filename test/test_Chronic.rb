@@ -7,6 +7,10 @@ class TestChronic < Test::Unit::TestCase
     @now = Time.local(2006, 8, 16, 14, 0, 0, 0)
   end
 
+  def test_pre_normalize
+    assert_equal Chronic.pre_normalize('12:55 pm'), Chronic.pre_normalize('12.55 pm')
+  end
+
   def test_pre_normalize_numerized_string
     string = 'two and a half years'
     assert_equal Chronic::Numerizer.numerize(string), Chronic.pre_normalize(string)

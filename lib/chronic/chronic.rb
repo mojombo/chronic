@@ -101,7 +101,8 @@ module Chronic
     # Returns a new String ready for Chronic to parse.
     def pre_normalize(text)
       text = text.to_s.downcase
-      text.gsub!(/['"\.]/, '')
+      text.gsub!(/\./, ':')
+      text.gsub!(/['"]/, '')
       text.gsub!(/,/, ' ')
       text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
       text = Numerizer.numerize(text)
