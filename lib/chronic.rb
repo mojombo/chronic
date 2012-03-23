@@ -80,6 +80,7 @@ require 'chronic/separator'
 require 'chronic/time_zone'
 require 'chronic/numerizer'
 require 'chronic/season'
+require 'chronic/quarter'
 
 require 'chronic/repeater'
 require 'chronic/repeaters/repeater_year'
@@ -98,6 +99,8 @@ require 'chronic/repeaters/repeater_hour'
 require 'chronic/repeaters/repeater_minute'
 require 'chronic/repeaters/repeater_second'
 require 'chronic/repeaters/repeater_time'
+require 'chronic/repeaters/repeater_quarter'
+require 'chronic/repeaters/repeater_quarter_name'
 
 class Time
   def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)

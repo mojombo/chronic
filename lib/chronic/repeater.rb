@@ -98,6 +98,7 @@ module Chronic
       {
         /^years?$/ => :year,
         /^seasons?$/ => :season,
+        /^quarters?$/ => :quarter,
         /^months?$/ => :month,
         /^fortnights?$/ => :fortnight,
         /^weeks?$/ => :week,
