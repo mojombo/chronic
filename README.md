@@ -81,7 +81,8 @@ Simple
 * last week tuesday
 * tomorrow at 6:45pm
 * afternoon yesterday
-* thursday last week
+* thursday last 
+* next quarter
 
 Complex
 

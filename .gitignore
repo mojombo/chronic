@@ -4,3 +4,4 @@ rdoc
 .yardoc
 doc
 tags
+.DS_STORE
