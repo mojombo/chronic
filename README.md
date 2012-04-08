@@ -46,6 +46,10 @@ You can parse strings containing a natural language date using the
 
     Chronic.parse('may 27th', :guess => false)
       #=> Sun May 27 00:00:00 PDT 2007..Mon May 28 00:00:00 PDT 2007
+      
+    Chronic.parse('6/4/2012', :endian_precedence => :little)
+      #=> Fri Apr 06 00:00:00 PDT 2012
+      
 
 See `Chronic.parse` for detailed usage instructions.
 
