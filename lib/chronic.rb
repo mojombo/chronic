@@ -100,7 +100,7 @@ module Chronic
   
 end
 
-require 'lib/chronic/chronic'
+require 'chronic/chronic'
 
 class Time
   
