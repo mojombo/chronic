@@ -63,43 +63,47 @@ module Chronic
 
   self.debug = false
   self.time_class = Time
+  
+  autoload :Handler, 'chronic/handler'
+  autoload :Handlers, 'chronic/handlers'
+  autoload :MiniDate, 'chronic/mini_date'
+  autoload :Tag, 'chronic/tag'
+  autoload :Span, 'chronic/span'
+  autoload :Token, 'chronic/token'
+  autoload :Grabber, 'chronic/grabber'
+  autoload :Pointer, 'chronic/pointer'
+  autoload :Scalar, 'chronic/scalar'
+  autoload :Ordinal, 'chronic/ordinal'
+  autoload :OrdinalDay, 'chronic/ordinal'
+  autoload :Separator, 'chronic/separator'
+  autoload :TimeZone, 'chronic/time_zone'
+  autoload :Numerizer, 'chronic/numerizer'
+  autoload :Season, 'chronic/season'
+  
+  autoload :Repeater, 'chronic/repeater'
+  autoload :RepeaterYear, 'chronic/repeaters/repeater_year'
+  autoload :RepeaterSeason, 'chronic/repeaters/repeater_season'
+  autoload :RepeaterSeasonName, 'chronic/repeaters/repeater_season_name'
+  autoload :RepeaterMonth, 'chronic/repeaters/repeater_month'
+  autoload :RepeaterMonthName, 'chronic/repeaters/repeater_month_name'
+  autoload :RepeaterFortnight, 'chronic/repeaters/repeater_fortnight'
+  autoload :RepeaterWeek, 'chronic/repeaters/repeater_week'
+  autoload :RepeaterWeekend, 'chronic/repeaters/repeater_weekend'
+  autoload :RepeaterWeekday, 'chronic/repeaters/repeater_weekday'
+  autoload :RepeaterDay, 'chronic/repeaters/repeater_day'
+  autoload :RepeaterDayName, 'chronic/repeaters/repeater_day_name'
+  autoload :RepeaterDayPortion, 'chronic/repeaters/repeater_day_portion'
+  autoload :RepeaterHour, 'chronic/repeaters/repeater_hour'
+  autoload :RepeaterMinute, 'chronic/repeaters/repeater_minute'
+  autoload :RepeaterSecond, 'chronic/repeaters/repeater_second'
+  autoload :RepeaterTime, 'chronic/repeaters/repeater_time'
+  
 end
 
 require 'chronic/chronic'
-require 'chronic/handler'
-require 'chronic/handlers'
-require 'chronic/mini_date'
-require 'chronic/tag'
-require 'chronic/span'
-require 'chronic/token'
-require 'chronic/grabber'
-require 'chronic/pointer'
-require 'chronic/scalar'
-require 'chronic/ordinal'
-require 'chronic/separator'
-require 'chronic/time_zone'
-require 'chronic/numerizer'
-require 'chronic/season'
-
-require 'chronic/repeater'
-require 'chronic/repeaters/repeater_year'
-require 'chronic/repeaters/repeater_season'
-require 'chronic/repeaters/repeater_season_name'
-require 'chronic/repeaters/repeater_month'
-require 'chronic/repeaters/repeater_month_name'
-require 'chronic/repeaters/repeater_fortnight'
-require 'chronic/repeaters/repeater_week'
-require 'chronic/repeaters/repeater_weekend'
-require 'chronic/repeaters/repeater_weekday'
-require 'chronic/repeaters/repeater_day'
-require 'chronic/repeaters/repeater_day_name'
-require 'chronic/repeaters/repeater_day_portion'
-require 'chronic/repeaters/repeater_hour'
-require 'chronic/repeaters/repeater_minute'
-require 'chronic/repeaters/repeater_second'
-require 'chronic/repeaters/repeater_time'
 
 class Time
+  
   def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
     warn "Time.construct will be deprecated in version 0.7.0. Please use Chronic.construct instead"
     Chronic.construct(year, month, day, hour, minute, second)
@@ -109,4 +113,5 @@ class Time
     warn "Time.to_minidate will be deprecated in version 0.7.0. Please use Chronic::MiniDate.from_time(time) instead"
     Chronic::MiniDate.from_time(self)
   end
+  
 end
