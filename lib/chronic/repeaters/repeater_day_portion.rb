@@ -25,8 +25,6 @@ module Chronic
     def next(pointer)
       super
 
-      full_day = 60 * 60 * 24
-
       if !@current_span
         now_seconds = @now - Chronic.construct(@now.year, @now.month, @now.day)
         if now_seconds < @range.begin
@@ -34,32 +32,38 @@ module Chronic
           when :future
             range_start = Chronic.construct(@now.year, @now.month, @now.day) + @range.begin
           when :past
-            range_start = Chronic.construct(@now.year, @now.month, @now.day) - full_day + @range.begin
+            range_start = Chronic.construct(@now.year, @now.month, @now.day - 1) + @range.begin
           end
         elsif now_seconds > @range.end
           case pointer
           when :future
-            range_start = Chronic.construct(@now.year, @now.month, @now.day) + full_day + @range.begin
+            range_start = Chronic.construct(@now.year, @now.month, @now.day + 1) + @range.begin
           when :past
             range_start = Chronic.construct(@now.year, @now.month, @now.day) + @range.begin
           end
         else
           case pointer
           when :future
-            range_start = Chronic.construct(@now.year, @now.month, @now.day) + full_day + @range.begin
+            range_start = Chronic.construct(@now.year, @now.month, @now.day + 1) + @range.begin
           when :past
-            range_start = Chronic.construct(@now.year, @now.month, @now.day) - full_day + @range.begin
+            range_start = Chronic.construct(@now.year, @now.month, @now.day - 1) + @range.begin
           end
         end
-
-        @current_span = Span.new(range_start, range_start + (@range.end - @range.begin))
+        offset = (@range.end - @range.begin)
+        range_end = construct_date_from_reference_and_offset(range_start, offset)
+        @current_span = Span.new(range_start, range_end)
       else
+        days_to_shift_window =
         case pointer
         when :future
-          @current_span += full_day
+          1
         when :past
-          @current_span -= full_day
+          -1
         end
+
+        new_begin = Chronic.construct(@current_span.begin.year, @current_span.begin.month, @current_span.begin.day + days_to_shift_window, @current_span.begin.hour, @current_span.begin.min, @current_span.begin.sec)
+        new_end = Chronic.construct(@current_span.end.year, @current_span.end.month, @current_span.end.day + days_to_shift_window, @current_span.end.hour, @current_span.end.min, @current_span.end.sec)
+        @current_span = Span.new(new_begin, new_end)
       end
     end
 
@@ -67,7 +71,8 @@ module Chronic
       super
 
       range_start = Chronic.construct(@now.year, @now.month, @now.day) + @range.begin
-      @current_span = Span.new(range_start, range_start + (@range.end - @range.begin))
+      range_end = construct_date_from_reference_and_offset(range_start)
+      @current_span = Span.new(range_start, range_end)
     end
 
     def offset(span, amount, pointer)
@@ -89,6 +94,15 @@ module Chronic
 
     def to_s
       super << '-dayportion-' << @type.to_s
+    end
+
+    private
+    def construct_date_from_reference_and_offset(reference, offset = nil)
+      elapsed_seconds_for_range = offset || (@range.end - @range.begin)
+      second_hand = ((elapsed_seconds_for_range - (12 * 60))) % 60
+      minute_hand = (elapsed_seconds_for_range - second_hand) / (60) % 60
+      hour_hand = (elapsed_seconds_for_range - minute_hand - second_hand) / (60 * 60) + reference.hour % 24
+      Chronic.construct(reference.year, reference.month, reference.day, hour_hand, minute_hand, second_hand)
     end
   end
 end
