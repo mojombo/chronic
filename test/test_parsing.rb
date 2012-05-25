@@ -586,12 +586,32 @@ class TestParsing < TestCase
     time = parse_now("tonight")
     assert_equal Time.local(2006, 8, 16, 22), time
 
+    # hour
+
+    time = parse_now("next hr")
+    assert_equal Time.local(2006, 8, 16, 15, 30, 0), time
+
+    time = parse_now("next hrs")
+    assert_equal Time.local(2006, 8, 16, 15, 30, 0), time
+    
     # minute
+
+    time = parse_now("next min")
+    assert_equal Time.local(2006, 8, 16, 14, 1, 30), time
+
+    time = parse_now("next mins")
+    assert_equal Time.local(2006, 8, 16, 14, 1, 30), time
 
     time = parse_now("next minute")
     assert_equal Time.local(2006, 8, 16, 14, 1, 30), time
 
     # second
+
+    time = parse_now("next sec")
+    assert_equal Time.local(2006, 8, 16, 14, 0, 1), time
+
+    time = parse_now("next secs")
+    assert_equal Time.local(2006, 8, 16, 14, 0, 1), time
 
     time = parse_now("this second")
     assert_equal Time.local(2006, 8, 16, 14), time
