@@ -686,10 +686,10 @@ class TestParsing < TestCase
   end
 
   def test_parse_guess_a_ago
-    time = parse_now("an hour ago")
+    time = parse_now("AN hour ago")
     assert_equal Time.local(2006, 8, 16, 13), time
 
-    time = parse_now("a day ago")
+    time = parse_now("A day ago")
     assert_equal Time.local(2006, 8, 15, 14), time
 
     time = parse_now("a month ago")
