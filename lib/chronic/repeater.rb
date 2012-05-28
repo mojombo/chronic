@@ -104,8 +104,11 @@ module Chronic
         /^weekends?$/ => :weekend,
         /^(week|business)days?$/ => :weekday,
         /^days?$/ => :day,
+	/^hrs?$/ => :hour,
         /^hours?$/ => :hour,
+	/^mins?$/ => :minute,
         /^minutes?$/ => :minute,
+	/^secs?$/ => :second,
         /^seconds?$/ => :second
       }.each do |item, symbol|
         if item =~ token.word
