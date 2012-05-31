@@ -4,6 +4,7 @@
 * Ensure periods are interpreted as colons (#81).
 * Support month/day and day/month parsing (#59).
 * Support day(scalar)-month(name)-year(scalar) (#99).
+* Handle text starting with 'a' or 'an' (#101, @steveburkett).
 
 # 0.6.7 / 2012-01-31
 
