@@ -348,7 +348,7 @@ module Chronic
       repeater = tokens[1].get_tag(Repeater)
       pointer = tokens[2].get_tag(Pointer).type
 
-      repeater.offset(span, distance, pointer)
+      repeater.offset(span, distance, pointer) if repeater.respond_to?(:offset)
     end
 
     # Handle scalar/repeater/pointer
