@@ -365,6 +365,11 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 8, 9, 12), time
   end
 
+  def test_handle_sm_rmn_sy
+    time = parse_now('30-Mar-11')
+    assert_equal Time.local(2011, 3, 30, 12), time
+  end
+
   # end of testing handlers
 
   def test_parse_guess_r
