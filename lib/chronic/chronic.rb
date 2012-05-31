@@ -123,7 +123,7 @@ module Chronic
       text.gsub!(/\b\d+:?\d*[ap]\b/,'\0m')
       text.gsub!(/(\d)([ap]m|oclock)\b/, '\1 \2')
       text.gsub!(/\b(hence|after|from)\b/, 'future')
-      text.gsub!(/^\s?[aA][nN]? /, '1 ')
+      text.gsub!(/^\s?an? /i, '1 ')
       text
     end
 
