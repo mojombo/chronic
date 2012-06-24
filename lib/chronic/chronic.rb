@@ -104,6 +104,7 @@ module Chronic
       text.gsub!(/\./, ':')
       text.gsub!(/['"]/, '')
       text.gsub!(/,/, ' ')
+      text.gsub!(/^second /, '2nd ')
       text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
       text = Numerizer.numerize(text)
       text.gsub!(/ \-(\d{4})\b/, ' tzminus\1')

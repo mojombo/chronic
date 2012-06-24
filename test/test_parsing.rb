@@ -598,7 +598,7 @@ class TestParsing < TestCase
 
     time = parse_now("next hrs")
     assert_equal Time.local(2006, 8, 16, 15, 30, 0), time
-    
+
     # minute
 
     time = parse_now("next min")
@@ -886,6 +886,7 @@ class TestParsing < TestCase
     assert_equal parse_now("33 days from now"), parse_now("thirty-three days from now")
     assert_equal parse_now("2867532 seconds from now"), parse_now("two million eight hundred and sixty seven thousand five hundred and thirty two seconds from now")
     assert_equal parse_now("may 10th"), parse_now("may tenth")
+    assert_equal parse_now("second monday in january"), parse_now("2nd monday in january")
   end
 
   def test_parse_only_complete_pointers
