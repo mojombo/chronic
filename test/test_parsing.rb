@@ -252,6 +252,9 @@ class TestParsing < TestCase
 
     time = parse_now("27/5/1979 @ 0700")
     assert_equal Time.local(1979, 5, 27, 7), time
+
+    time = parse_now("03/18/2012 09:26 pm")
+    assert_equal Time.local(2012, 3, 18, 21, 26), time
   end
 
   def test_handle_sy_sm_sd
