@@ -5,6 +5,7 @@
 * Support month/day and day/month parsing (#59).
 * Support day(scalar)-month(name)-year(scalar) (#99).
 * Handle text starting with 'a' or 'an' (#101, @steveburkett).
+* Ensure post medium timestamps are correctly formatted (#89)
 
 # 0.6.7 / 2012-01-31
 
