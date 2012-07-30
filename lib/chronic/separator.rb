@@ -23,7 +23,7 @@ module Chronic
     #
     # Returns a new SeparatorComma object.
     def self.scan_for_commas(token)
-      scan_for token, SeparatorComma, { /^,$/ => :comma }
+      scan_for token, SeparatorComma, { Chronic.locale_hash[:token][:comma] => :comma }
     end
 
     # token - The Token object we want to scan.
@@ -41,21 +41,21 @@ module Chronic
     #
     # Returns a new SeparatorAt object.
     def self.scan_for_at(token)
-      scan_for token, SeparatorAt, { /^(at|@)$/ => :at }
+      scan_for token, SeparatorAt, { Chronic.locale_hash[:token][:at] => :at }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorIn object.
     def self.scan_for_in(token)
-      scan_for token, SeparatorIn, { /^in$/ => :in }
+      scan_for token, SeparatorIn, { Chronic.locale_hash[:token][:in] => :in }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorOn object.
     def self.scan_for_on(token)
-      scan_for token, SeparatorOn, { /^on$/ => :on }
+      scan_for token, SeparatorOn, { Chronic.locale_hash[:token][:on] => :on }
     end
 
     # token - The Token object we want to scan.
