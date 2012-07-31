@@ -70,19 +70,6 @@ module Chronic
     # Returns The Time class Chronic uses internally.
     attr_accessor :time_class
 
-    # The current locale Chronic is using to parse strings
-    #
-    # Examples:
-    #
-    #   require 'chronic'
-    #
-    #   Chronic.locale = :'pt-BR'
-    #   Chronic.parse('15 de Junho de 2006 as 5:54 da manha ')
-    #     # => Thu, 15 Jun 2006 05:45:00 UTC +00:00
-    #
-    # Returns the locale name Chronic uses internally
-    attr_accessor :locale
-
     # Returns the available locales that Chronic can use
     attr_accessor :locale_hashes
   end
@@ -93,7 +80,6 @@ module Chronic
   require 'chronic/locales/en'
   require 'chronic/locales/pt_br'
 
-  self.locale = :en
   self.locale_hashes = {
     :en => Chronic::Locales::EN,
     :'pt-BR' => Chronic::Locales::PT_BR

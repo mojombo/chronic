@@ -1,18 +1,18 @@
 require 'helper'
 
-class TestParsing < TestCase
+class TestParsingPtBr < TestCase
   # Wed Aug 16 14:00:00 UTC 2006
   TIME_2006_08_16_14_00_00 = Time.local(2006, 8, 16, 14, 0, 0, 0)
 
-  #def setup
-    #@time_2006_08_16_14_00_00 = TIME_2006_08_16_14_00_00
-    #@locale_before = Chronic.locale
-    #Chronic.locale = :'pt-BR'
-  #end
+  def setup
+    @time_2006_08_16_14_00_00 = TIME_2006_08_16_14_00_00
+    @locale_before = Chronic.locale
+    Chronic.locale = :'pt-BR'
+  end
 
-  #def teardown
-    #Chronic.locale = @locale_before
-  #end
+  def teardown
+    Chronic.locale = @locale_before
+  end
 
   def test_handle_rmn_sd
     time = parse_now("3 de agosto")

@@ -194,6 +194,32 @@ module Chronic
       end
     end
 
+    # The current locale Chronic is using to parse strings
+    #
+    # Examples:
+    #
+    #   require 'chronic'
+    #
+    #   Chronic.locale = :'pt-BR'
+    #   Chronic.parse('15 de Junho de 2006 as 5:54 da manha ')
+    #     # => Thu, 15 Jun 2006 05:45:00 UTC +00:00
+    #
+    # Returns the locale name Chronic uses internally
+    def locale
+      Thread.current[:locale] ||= :en
+    end
+
+    # Sets the current locale for the current thread
+    #
+    # value - Symbol locale
+    def locale=(value)
+      Thread.current[:locale] = value
+    end
+
+    # Adds a locale to the locale hash
+    #
+    # name - Symbol locale name
+    # locale - Hash locale values
     def add_locale(name, locale)
       raise ArgumentError, "Locale shoud be a hash" unless locale.is_a?(Hash)
       locale_hashes[name] = locale
