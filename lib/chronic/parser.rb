@@ -90,6 +90,7 @@ module Chronic
     # Returns a new String ready for Chronic to parse.
     def pre_normalize(text)
       text = text.to_s.downcase
+      text = locale_hash[:pre_normalize][:preprocess].call(text)
       locale_hash[:pre_normalize][:pre_numerize].each do |sub|
         text.gsub!(*sub)
       end

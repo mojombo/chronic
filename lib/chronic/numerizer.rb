@@ -6,8 +6,13 @@ module Chronic
       string = string.dup
 
       # preprocess
-      string.gsub!(/ +|([^\d])-([^\d])/, '\1 \2') # will mutilate hyphenated-words but shouldn't matter for date extraction
-      string.gsub!(/a half/, 'haAlf') # take the 'a' out so it doesn't turn into a 1, save the half for the end
+      Chronic.locale_hash[:numerizer][:preprocess].each do |pp|
+        if pp[1].is_a? Proc
+          string.gsub!(pp[0], &pp[1])
+        else
+          string.gsub!(pp[0], pp[1])
+        end
+      end
 
       # easy/direct replacements
 
@@ -39,7 +44,13 @@ module Chronic
       # fractional addition
       # I'm not combining this with the previous block as using float addition complicates the strings
       # (with extraneous .0's and such )
-      string.gsub!(/(\d+)(?: | and |-)*haAlf/i) { ($1.to_f + 0.5).to_s }
+      Chronic.locale_hash[:numerizer][:fractional].each do |fc|
+        if fc[1].is_a? Proc
+          string.gsub!(fc[0], &fc[1])
+        else
+          string.gsub!(fc[0], fc[1])
+        end
+      end
 
       string.gsub(/<num>/, '')
     end
@@ -50,8 +61,8 @@ module Chronic
       def andition(string)
         sc = StringScanner.new(string)
 
-        while sc.scan_until(/<num>(\d+)( | and )<num>(\d+)(?=[^\w]|$)/i)
-          if sc[2] =~ /and/ || sc[1].size > sc[3].size
+        while sc.scan_until(/<num>(\d+)( | #{Chronic.locale_hash[:numerizer][:and]} )<num>(\d+)(?=[^\w]|$)/i)
+          if sc[2] =~ /#{Chronic.locale_hash[:numerizer][:and]}/ || sc[1].size > sc[3].size
             string[(sc.pos - sc.matched_size)..(sc.pos-1)] = '<num>' + (sc[1].to_i + sc[3].to_i).to_s
             sc.reset
           end

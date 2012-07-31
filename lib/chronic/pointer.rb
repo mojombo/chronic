@@ -18,11 +18,7 @@ module Chronic
     #
     # Returns a new Pointer object.
     def self.scan_for_all(token)
-      scan_for token, self,
-      {
-        /\bpast\b/ => :past,
-        /\b(?:future|in)\b/ => :future,
-      }
+      scan_for token, self, Chronic.locale_hash[:pointer]
     end
 
     def to_s

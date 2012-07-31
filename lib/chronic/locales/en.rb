@@ -1,7 +1,20 @@
 module Chronic
   module Locales
     EN = {
+      :pointer => {
+        /\bpast\b/ => :past,
+        /\b(?:future|in)\b/ => :future,
+      },
+      :ordinal_regex => /^(\d*)(st|nd|rd|th)$/,
       :numerizer => {
+        :and => 'and',
+        :preprocess => [
+          [/ +|([^\d])-([^\d])/, '\1 \2'], # will mutilate hyphenated-words but shouldn't matter for date extraction
+          [/a half/, 'haAlf'] # take the 'a' out so it doesn't turn into a 1, save the half for the end
+        ],
+        :fractional => [
+          [/(\d+)(?: | and |-)*haAlf/i, proc { ($1.to_f + 0.5).to_s }]
+        ],
         :direct_nums => [
           ['eleven', '11'],
           ['twelve', '12'],
@@ -114,6 +127,7 @@ module Chronic
       },
 
       :pre_normalize => {
+        :preprocess => proc {|str| str},
         :pre_numerize => [
           [/\./, ':'],
           [/['"]/, ''],
