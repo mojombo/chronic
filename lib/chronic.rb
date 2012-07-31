@@ -78,11 +78,9 @@ module Chronic
   self.time_class = Time
 
   require 'chronic/locales/en'
-  require 'chronic/locales/pt_br'
 
   self.locale_hashes = {
-    :en => Chronic::Locales::EN,
-    :'pt-BR' => Chronic::Locales::PT_BR
+    :en => Chronic::Locales::EN
   }
 
   # Parses a string containing a natural language date or time.

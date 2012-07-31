@@ -146,6 +146,19 @@ class to get full time zone support.
 => Thu, 15 Jun 2006 05:45:00 UTC +00:00
 ```
 
+## Localization
+
+Chronic supports basic localization. You can either create your own based on
+the default english locale or use the
+[chronic-l10n](http://github.com/luan/chronic-l10n) gem. You can change the
+locale by simply changing the `Chronic.locale` value, such as (given you have
+:pt-BR available):
+
+    >> Chronic.locale = :'pt-BR'
+    >> Chronic.parse("15 de Junho de 2006 as 5:45 da manha")
+    => Thu, 15 Jun 2006 05:45:00 UTC +00:00
+
+
 ## Limitations
 
 Chronic uses Ruby's built in Time class for all time storage and computation.
