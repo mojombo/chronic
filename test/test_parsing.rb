@@ -281,6 +281,10 @@ class TestParsing < TestCase
 
     time = parse_now("1902-08-20")
     assert_equal Time.local(1902, 8, 20, 12, 0, 0), time
+
+    # exif date time original
+    time = parse_now("2012:05:25 22:06:50")
+    assert_equal Time.local(2012, 5, 25, 22, 6, 50), time
   end
 
   def test_handle_sm_sd

@@ -125,6 +125,7 @@ module Chronic
       text.gsub!(/(\d)([ap]m|oclock)\b/, '\1 \2')
       text.gsub!(/\b(hence|after|from)\b/, 'future')
       text.gsub!(/^\s?an? /i, '1 ')
+      text.gsub!(/\b(\d{4}):(\d{2}):(\d{2})\b/, '\1 / \2 / \3') # DTOriginal
       text
     end
 
