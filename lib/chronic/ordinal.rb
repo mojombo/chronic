@@ -19,14 +19,14 @@ module Chronic
     #
     # Returns a new Ordinal object.
     def self.scan_for_ordinals(token)
-      Ordinal.new($1.to_i) if token.word =~ Chronic.locale_hash[:ordinal_regex]
+      Ordinal.new($1.to_i) if token.word =~ Chronic.translate([:ordinal_regex])
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new Ordinal object.
     def self.scan_for_days(token)
-      if token.word =~ Chronic.locale_hash[:ordinal_regex]
+      if token.word =~ Chronic.translate([:ordinal_regex])
         unless $1.to_i > 31 || $1.to_i < 1
           OrdinalDay.new(token.word.to_i)
         end

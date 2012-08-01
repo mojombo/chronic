@@ -54,7 +54,7 @@ module Chronic
     # Returns either a Time or Chronic::Span, depending on the value of options[:guess]
     def parse(text)
       # ensure current locale is available
-      raise ArgumentError, "#{locale} is not an available locale" if locale_hash.nil?
+      raise ArgumentError, "#{locale} is not an available locale" unless has_locale(locale)
       options = DEFAULT_OPTIONS.merge opts
 
       tokens = tokenize(text, options)
@@ -90,12 +90,12 @@ module Chronic
     # Returns a new String ready for Chronic to parse.
     def pre_normalize(text)
       text = text.to_s.downcase
-      text = locale_hash[:pre_normalize][:preprocess].call(text)
-      locale_hash[:pre_normalize][:pre_numerize].each do |sub|
+      text = translate([:pre_normalize, :preprocess]).call(text)
+      translate([:pre_normalize, :pre_numerize]).each do |sub|
         text.gsub!(*sub)
       end
       text = Numerizer.numerize(text)
-      locale_hash[:pre_normalize][:pos_numerize].each do |sub|
+      translate([:pre_normalize, :pos_numerize]).each do |sub|
         text.gsub!(*sub)
       end
       text
@@ -226,9 +226,29 @@ module Chronic
       locale_hashes[name] = locale
     end
 
+    # Checks if a locale is available
+    #
+    # name - Symbol locale name
+    #
+    # Returns true if the locale is available, false if not
+    def has_locale(name)
+      locale_hashes.include? name
+    end
+
     # Returns the translations for the current locale
-    def locale_hash
-      locale_hashes[locale]
+    def translate(keys, loc=nil)
+      loc ||= locale
+      node = locale_hashes[loc]
+
+      keys.each do |key|
+        if node.include? key
+          node = node[key]
+        else
+          return translate(keys, :en)
+        end
+      end
+
+      node
     end
 
     private

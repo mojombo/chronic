@@ -18,7 +18,7 @@ module Chronic
     #
     # Returns a new Pointer object.
     def self.scan_for_all(token)
-      scan_for token, self, Chronic.locale_hash[:pointer]
+      scan_for token, self, Chronic.translate([:pointer])
     end
 
     def to_s

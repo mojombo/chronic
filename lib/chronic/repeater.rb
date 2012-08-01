@@ -23,28 +23,28 @@ module Chronic
     #
     # Returns a new Repeater object.
     def self.scan_for_season_names(token)
-      scan_for token, RepeaterSeasonName, Chronic.locale_hash[:repeater][:season_names]
+      scan_for token, RepeaterSeasonName, Chronic.translate([:repeater, :season_names])
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new Repeater object.
     def self.scan_for_month_names(token)
-      scan_for token, RepeaterMonthName, Chronic.locale_hash[:repeater][:month_names]
+      scan_for token, RepeaterMonthName, Chronic.translate([:repeater, :month_names])
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new Repeater object.
     def self.scan_for_day_names(token)
-      scan_for token, RepeaterDayName, Chronic.locale_hash[:repeater][:day_names]
+      scan_for token, RepeaterDayName, Chronic.translate([:repeater, :day_names])
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new Repeater object.
     def self.scan_for_day_portions(token)
-      scan_for token, RepeaterDayPortion, Chronic.locale_hash[:repeater][:day_portions]
+      scan_for token, RepeaterDayPortion, Chronic.translate([:repeater, :day_portions])
     end
 
     # token - The Token object we want to scan.
@@ -58,7 +58,7 @@ module Chronic
     #
     # Returns a new Repeater object.
     def self.scan_for_units(token)
-      Chronic.locale_hash[:repeater][:units].each do |item, symbol|
+      Chronic.translate([:repeater, :units]).each do |item, symbol|
         if item =~ token.word
           klass_name = 'Repeater' + symbol.to_s.capitalize
           klass = Chronic.const_get(klass_name)
