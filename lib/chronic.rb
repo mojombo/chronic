@@ -27,7 +27,7 @@ require 'date'
 #   Chronic.parse('may 27th', :guess => false)
 #     #=> Sun May 27 00:00:00 PDT 2007..Mon May 28 00:00:00 PDT 2007
 module Chronic
-  VERSION = "0.6.7"
+  VERSION = "0.7.0"
 
   class << self
 
@@ -63,7 +63,7 @@ module Chronic
 
   self.debug = false
   self.time_class = Time
-  
+
   autoload :Handler, 'chronic/handler'
   autoload :Handlers, 'chronic/handlers'
   autoload :MiniDate, 'chronic/mini_date'
@@ -79,7 +79,7 @@ module Chronic
   autoload :TimeZone, 'chronic/time_zone'
   autoload :Numerizer, 'chronic/numerizer'
   autoload :Season, 'chronic/season'
-  
+
   autoload :Repeater, 'chronic/repeater'
   autoload :RepeaterYear, 'chronic/repeaters/repeater_year'
   autoload :RepeaterSeason, 'chronic/repeaters/repeater_season'
@@ -97,13 +97,13 @@ module Chronic
   autoload :RepeaterMinute, 'chronic/repeaters/repeater_minute'
   autoload :RepeaterSecond, 'chronic/repeaters/repeater_second'
   autoload :RepeaterTime, 'chronic/repeaters/repeater_time'
-  
+
 end
 
 require 'chronic/chronic'
 
 class Time
-  
+
   def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
     warn "Time.construct will be deprecated in version 0.7.0. Please use Chronic.construct instead"
     Chronic.construct(year, month, day, hour, minute, second)
@@ -113,5 +113,5 @@ class Time
     warn "Time.to_minidate will be deprecated in version 0.7.0. Please use Chronic::MiniDate.from_time(time) instead"
     Chronic::MiniDate.from_time(self)
   end
-  
+
 end
