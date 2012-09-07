@@ -301,7 +301,7 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 6, 5, 18, 05, 57), time
 
     time = parse_now("13/01")
-    assert_nil time
+    assert_equal Time.local(2006, 1, 13, 12), time
   end
 
   # def test_handle_sm_sy
