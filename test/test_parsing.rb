@@ -294,6 +294,12 @@ class TestParsing < TestCase
     time = parse_now("05/06", :endian_precedence => [:little, :medium])
     assert_equal Time.local(2006, 6, 5, 12), time
 
+    time = parse_now("05/06 6:05:57 PM")
+    assert_equal Time.local(2006, 5, 6, 18, 05, 57), time
+
+    time = parse_now("05/06 6:05:57 PM", :endian_precedence => [:little, :medium])
+    assert_equal Time.local(2006, 6, 5, 18, 05, 57), time
+
     time = parse_now("13/01")
     assert_nil time
   end
