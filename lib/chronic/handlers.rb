@@ -224,25 +224,28 @@ module Chronic
       handle_sm_sd_sy(new_tokens + time_tokens, options)
     end
 
-    # Handle scalar-day/scalar-month AND scalar-month/scalar-day
+    # Handle scalar-month/scalar-day
     def handle_sm_sd(tokens, options)
       month = tokens[0].get_tag(ScalarMonth).type
       day = tokens[1].get_tag(ScalarDay).type
       year = Chronic.now.year
-
-      if Array(options[:endian_precedence]).first == :little
-        day, month = month, day
-      end
+      time_tokens = tokens.last(tokens.size - 2)
 
       return if month_overflow?(year, month, day)
 
       begin
-        start_time = Chronic.time_class.local(year, month, day)
-        end_time = Chronic.time_class.local(year, month, day + 1)
-        Span.new(start_time, end_time)
+        day_start = Chronic.time_class.local(year, month, day)
+        day_or_time(day_start, time_tokens, options)
       rescue ArgumentError
         nil
       end
+    end
+
+    # Handle scalar-day/scalar-month
+    def handle_sd_sm(tokens, options)
+      new_tokens = [tokens[1], tokens[0]]
+      time_tokens = tokens.last(tokens.size - 2)
+      handle_sm_sd(new_tokens + time_tokens, options)
     end
 
     # Handle scalar-month/scalar-year
