@@ -203,7 +203,7 @@ module Chronic
         :arrow => [
           Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
           Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),
-          Handler.new([:scalar, :repeater, :pointer, 'anchor'], :handle_s_r_p_a)
+          Handler.new([:scalar, :repeater, :pointer, :separator_at?, 'anchor'], :handle_s_r_p_a)
         ],
 
         # 3rd week in march
