@@ -430,7 +430,6 @@ module Chronic
     def get_anchor(tokens, options)
       grabber = Grabber.new(:this)
       pointer = :future
-
       repeaters = get_repeaters(tokens)
       repeaters.size.times { tokens.pop }
 

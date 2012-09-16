@@ -88,7 +88,7 @@ module Chronic
     #
     # Returns a new Repeater object.
     def self.scan_for_times(token)
-      scan_for token, RepeaterTime, /^\d{1,2}(:?\d{2})?([\.:]?\d{2})?$/
+      scan_for token, RepeaterTime, /^\d{1,2}(:?\d{1,2})?([\.:]?\d{1,2})?$/
     end
 
     # token - The Token object we want to scan.
@@ -104,11 +104,11 @@ module Chronic
         /^weekends?$/ => :weekend,
         /^(week|business)days?$/ => :weekday,
         /^days?$/ => :day,
-	/^hrs?$/ => :hour,
+	      /^hrs?$/ => :hour,
         /^hours?$/ => :hour,
-	/^mins?$/ => :minute,
+	      /^mins?$/ => :minute,
         /^minutes?$/ => :minute,
-	/^secs?$/ => :second,
+	      /^secs?$/ => :second,
         /^seconds?$/ => :second
       }.each do |item, symbol|
         if item =~ token.word

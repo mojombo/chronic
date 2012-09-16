@@ -333,6 +333,9 @@ class TestParsing < TestCase
   end
 
   def test_handle_s_r_p_a
+    time1 = parse_now("two days ago 0:0:0am")
+    time2 = parse_now("two days ago 00:00:00am")
+    assert_equal time1, time2
   end
 
   def test_handle_orr
