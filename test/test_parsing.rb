@@ -8,6 +8,14 @@ class TestParsing < TestCase
     @time_2006_08_16_14_00_00 = TIME_2006_08_16_14_00_00
   end
 
+  def test_handle_generic
+    time = Chronic.parse("2012-08-02T12:00:00+01:00")
+    assert_equal Time.local(2012, 8, 2, 12), time
+
+    time = Chronic.parse("2012-08-02T12:00:00Z")
+    assert_equal Time.utc(2012, 8, 2, 12), time
+  end
+
   def test_handle_rmn_sd
     time = parse_now("aug 3")
     assert_equal Time.local(2006, 8, 3, 12), time
