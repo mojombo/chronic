@@ -1,5 +1,11 @@
-# HEAD
+# 0.8.0 / 2012-09-16
 
+* Support parsing "<ordinal> of this month" (#109)
+* Support parsing ISO 8601 format (#115)
+* Support parsing "on <day>" without a timestamp (#117)
+* Fix time parsing regexp (#125)
+* Support time when parsing dd-mm-yyy <time> (#126)
+* Allow anchor handler to accept any separators (at, on) (#128)
 * Support parsing EXIF date format (#112)
 * Start using minitest for testing
 * Ensure periods are interpreted as colons (#81).
