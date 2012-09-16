@@ -439,17 +439,3 @@ module Chronic
   end
 
 end
-
-class Time
-
-  def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
-    warn "Time.construct will be deprecated in version 0.7.0. Please use Chronic.construct instead"
-    Chronic.construct(year, month, day, hour, minute, second)
-  end
-
-  def to_minidate
-    warn "Time.to_minidate will be deprecated in version 0.7.0. Please use Chronic::MiniDate.from_time(time) instead"
-    Chronic::MiniDate.from_time(self)
-  end
-
-end
