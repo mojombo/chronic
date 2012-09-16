@@ -49,6 +49,13 @@ module Chronic
       handle_m_d(month, day, tokens[2..tokens.size], options)
     end
 
+    # Handle ordinal this month
+    def handle_od_rm(tokens, options)
+      day = tokens[0].get_tag(OrdinalDay).type
+      month = tokens[2].get_tag(RepeaterMonth)
+      handle_m_d(month, day, tokens[3..tokens.size], options)
+    end
+
     # Handle ordinal-day/repeater-month-name
     def handle_od_rmn(tokens, options)
       month = tokens[1].get_tag(RepeaterMonthName)
