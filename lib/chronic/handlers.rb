@@ -324,8 +324,15 @@ module Chronic
       day = tokens[0].get_tag(ScalarDay).type
       month = tokens[1].get_tag(RepeaterMonthName).index
       year = tokens[2].get_tag(ScalarYear).type
-      time = Chronic.time_class.local(year, month, day)
-      end_time = Chronic.time_class.local(year, month, day + 1)
+      if tokens.size > 3
+        time = get_anchor([tokens.last], options).begin
+        h, m, s = time.hour, time.min, time.sec
+        time = Chronic.time_class.local(year, month, day, h, m, s)
+        end_time = Chronic.time_class.local(year, month, day + 1, h, m, s)
+      else
+        time = Chronic.time_class.local(year, month, day)
+        end_time = Chronic.time_class.local(year, month, day + 1)
+      end
       Span.new(time, end_time)
     end
 
