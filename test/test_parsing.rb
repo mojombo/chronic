@@ -316,6 +316,8 @@ class TestParsing < TestCase
   # end
 
   def test_handle_r
+    time = parse_now("9am on Saturday")
+    assert_equal Time.local(2006, 8, 19, 9), time
   end
 
   def test_handle_r_g_r
