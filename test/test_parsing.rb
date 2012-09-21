@@ -14,6 +14,10 @@ class TestParsing < TestCase
 
     time = Chronic.parse("2012-08-02T12:00:00Z")
     assert_equal Time.utc(2012, 8, 2, 12), time
+
+    time = Chronic.parse("2012-01-03 01:00:00.100")
+    time2 = Time.parse("2012-01-03 01:00:00.100")
+    assert_equal time, time2
   end
 
   def test_handle_rmn_sd
