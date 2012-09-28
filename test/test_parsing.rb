@@ -9,8 +9,14 @@ class TestParsing < TestCase
   end
 
   def test_handle_generic
-    time = Chronic.parse("2012-08-02T12:00:00+01:00")
-    assert_equal Time.local(2012, 8, 2, 12), time
+    time = Chronic.parse("2012-08-02T13:00:00")
+    assert_equal Time.local(2012, 8, 2, 13), time
+
+    time = Chronic.parse("2012-08-02T13:00:00+01:00")
+    assert_equal Time.utc(2012, 8, 2, 12), time
+
+    time = Chronic.parse("2012-08-02T08:00:00-04:00")
+    assert_equal Time.utc(2012, 8, 2, 12), time
 
     time = Chronic.parse("2012-08-02T12:00:00Z")
     assert_equal Time.utc(2012, 8, 2, 12), time
