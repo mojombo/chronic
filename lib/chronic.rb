@@ -205,7 +205,7 @@ module Chronic
       text.gsub!(/^second /, '2nd ')
       text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
       text = Numerizer.numerize(text)
-      text.gsub!(/ \-(\d{4})\b/, ' tzminus\1')
+      text.gsub!(/\-(\d{2}:?\d{2})\b/, 'tzminus\1')
       text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
       text.gsub!(/(?:^|\s)0(\d+:\d+\s*pm?\b)/, ' \1')
       text.gsub!(/\btoday\b/, 'this day')
