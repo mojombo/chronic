@@ -58,7 +58,14 @@ module Chronic
     #   Chronic.parse('tomorrow', :now => now) #=> 2025-12-25 12:00:00 +0000
     #
     # Returns a Time object.
-    attr_accessor :now
+    #
+    # To ensure thread safety, this value is thread-local.
+    def now
+      Thread.current[:__Chronic_now]
+    end
+    def now=(time)
+      Thread.current[:__Chronic_now] = time
+    end
   end
 
   self.debug = false
