@@ -62,7 +62,7 @@ class ParseNumbersTest < TestCase
     }.each do |key, val|
       # Use pre_normalize here instead of Numerizer directly because
       # pre_normalize deals with parsing 'second' appropriately
-      assert_equal val, Chronic.pre_normalize(key)
+      assert_equal val, Chronic::Parser.new.pre_normalize(key)
     end
   end
 
