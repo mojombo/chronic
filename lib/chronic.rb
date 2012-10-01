@@ -46,19 +46,6 @@ module Chronic
     #
     # Returns The Time class Chronic uses internally.
     attr_accessor :time_class
-
-    # The current Time Chronic is using to base from.
-    #
-    # Examples:
-    #
-    #   Time.now #=> 2011-06-06 14:13:43 +0100
-    #   Chronic.parse('yesterday') #=> 2011-06-05 12:00:00 +0100
-    #
-    #   now = Time.local(2025, 12, 24)
-    #   Chronic.parse('tomorrow', :now => now) #=> 2025-12-25 12:00:00 +0000
-    #
-    # Returns a Time object.
-    attr_accessor :now
   end
 
   self.debug = false
@@ -148,28 +135,93 @@ module Chronic
     #
     # Returns a new Time object, or Chronic::Span if :guess option is false.
     def parse(text, opts={})
-      options = DEFAULT_OPTIONS.merge opts
+      Parser.new(opts).parse(text)
+    end
 
-      # ensure the specified options are valid
-      (opts.keys - DEFAULT_OPTIONS.keys).each do |key|
-        raise ArgumentError, "#{key} is not a valid option key."
+    # Construct a new time object determining possible month overflows
+    # and leap years.
+    #
+    # year   - Integer year.
+    # month  - Integer month.
+    # day    - Integer day.
+    # hour   - Integer hour.
+    # minute - Integer minute.
+    # second - Integer second.
+    #
+    # Returns a new Time object constructed from these params.
+    def construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
+      if second >= 60
+        minute += second / 60
+        second = second % 60
       end
 
+      if minute >= 60
+        hour += minute / 60
+        minute = minute % 60
+      end
+
+      if hour >= 24
+        day += hour / 24
+        hour = hour % 24
+      end
+
+      # determine if there is a day overflow. this is complicated by our crappy calendar
+      # system (non-constant number of days per month)
+      day <= 56 || raise("day must be no more than 56 (makes month resolution easier)")
+      if day > 28
+        # no month ever has fewer than 28 days, so only do this if necessary
+        leap_year_month_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        common_year_month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+        days_this_month = Date.leap?(year) ? leap_year_month_days[month - 1] : common_year_month_days[month - 1]
+        if day > days_this_month
+          month += day / days_this_month
+          day = day % days_this_month
+        end
+      end
+
+      if month > 12
+        if month % 12 == 0
+          year += (month - 12) / 12
+          month = 12
+        else
+          year += month / 12
+          month = month % 12
+        end
+      end
+
+      Chronic.time_class.local(year, month, day, hour, minute, second)
+    end
+  end
+
+  # a Parser holds the state needed by a single Chronic.parse operation
+  class Parser # :nodoc:
+    include Handlers
+
+    def initialize(options={})
+      options  = DEFAULT_OPTIONS.merge(options)
+
+      # ensure the specified options are valid
+      (options.keys - DEFAULT_OPTIONS.keys).each do |key|
+        raise ArgumentError, "#{key} is not a valid option key."
+      end
       unless [:past, :future, :none].include?(options[:context])
         raise ArgumentError, "Invalid context, :past/:future only"
       end
 
-      options[:text] = text
-      Chronic.now = options[:now] || Chronic.time_class.now
+      @now     = options.delete(:now) || Chronic.time_class.now
+      @options = options.freeze
+    end
 
-      # tokenize words
+    attr_accessor :now     # "Base" Time for the current parsing operation
+    attr_reader   :options # Hash of other options (See Chronic.parse documentation for a full list)
+
+    # Parse "text" and return either a Time or Chronic::Span
+    def parse(text)
       tokens = tokenize(text, options)
 
-      if Chronic.debug
-        puts "+#{'-' * 51}\n| #{tokens}\n+#{'-' * 51}"
-      end
+      puts "+#{'-' * 51}\n| #{tokens}\n+#{'-' * 51}" if Chronic.debug
 
-      span = tokens_to_span(tokens, options)
+      span = tokens_to_span(tokens, options.merge(:text => text))
 
       if span
         options[:guess] ? guess(span) : span
@@ -250,7 +302,7 @@ module Chronic
       end
     end
 
-    # List of Handler definitions. See #parse for a list of options this
+    # List of Handler definitions. See Chronic.parse for a list of options this
     # method accepts.
     #
     # options - An optional Hash of configuration options:
@@ -260,7 +312,7 @@ module Chronic
     def definitions(options={})
       options[:endian_precedence] ||= [:middle, :little]
 
-      @definitions ||= {
+      @@definitions ||= {
         :time => [
           Handler.new([:repeater_time, :repeater_day_portion?], nil)
         ],
@@ -324,68 +376,12 @@ module Chronic
 
       case endian = Array(options[:endian_precedence]).first
       when :little
-        @definitions[:endian] = endians.reverse
+        @@definitions.merge(:endian => endians.reverse)
       when :middle
-        @definitions[:endian] = endians
+        @@definitions.merge(:endian => endians)
       else
         raise ArgumentError, "Unknown endian option '#{endian}'"
       end
-
-      @definitions
-    end
-
-    # Construct a new time object determining possible month overflows
-    # and leap years.
-    #
-    # year   - Integer year.
-    # month  - Integer month.
-    # day    - Integer day.
-    # hour   - Integer hour.
-    # minute - Integer minute.
-    # second - Integer second.
-    #
-    # Returns a new Time object constructed from these params.
-    def construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0)
-      if second >= 60
-        minute += second / 60
-        second = second % 60
-      end
-
-      if minute >= 60
-        hour += minute / 60
-        minute = minute % 60
-      end
-
-      if hour >= 24
-        day += hour / 24
-        hour = hour % 24
-      end
-
-      # determine if there is a day overflow. this is complicated by our crappy calendar
-      # system (non-constant number of days per month)
-      day <= 56 || raise("day must be no more than 56 (makes month resolution easier)")
-      if day > 28
-        # no month ever has fewer than 28 days, so only do this if necessary
-        leap_year_month_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-        common_year_month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-        days_this_month = Date.leap?(year) ? leap_year_month_days[month - 1] : common_year_month_days[month - 1]
-        if day > days_this_month
-          month += day / days_this_month
-          day = day % days_this_month
-        end
-      end
-
-      if month > 12
-        if month % 12 == 0
-          year += (month - 12) / 12
-          month = 12
-        else
-          year += month / 12
-          month = month % 12
-        end
-      end
-
-      Chronic.time_class.local(year, month, day, hour, minute, second)
     end
 
     private
@@ -405,34 +401,33 @@ module Chronic
       (definitions[:endian] + definitions[:date]).each do |handler|
         if handler.match(tokens, definitions)
           good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return handler.invoke(:date, good_tokens, options)
+          return handler.invoke(:date, good_tokens, self, options)
         end
       end
 
       definitions[:anchor].each do |handler|
         if handler.match(tokens, definitions)
           good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return handler.invoke(:anchor, good_tokens, options)
+          return handler.invoke(:anchor, good_tokens, self, options)
         end
       end
 
       definitions[:arrow].each do |handler|
         if handler.match(tokens, definitions)
           good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) }
-          return handler.invoke(:arrow, good_tokens, options)
+          return handler.invoke(:arrow, good_tokens, self, options)
         end
       end
 
       definitions[:narrow].each do |handler|
         if handler.match(tokens, definitions)
-          return handler.invoke(:narrow, tokens, options)
+          return handler.invoke(:narrow, tokens, self, options)
         end
       end
 
       puts "-none" if Chronic.debug
       return nil
     end
-
   end
 
   # Internal exception
