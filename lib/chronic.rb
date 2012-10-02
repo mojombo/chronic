@@ -1,5 +1,6 @@
 require 'time'
 require 'date'
+require 'chronic/parser'
 
 # Parse natural language dates and times into Time or Chronic::Span objects.
 #
@@ -85,16 +86,6 @@ module Chronic
   autoload :RepeaterSecond, 'chronic/repeaters/repeater_second'
   autoload :RepeaterTime, 'chronic/repeaters/repeater_time'
 
-  # Returns a Hash of default configuration options.
-  DEFAULT_OPTIONS = {
-    :context => :future,
-    :now => nil,
-    :guess => true,
-    :ambiguous_time_range => 6,
-    :endian_precedence    => [:middle, :little],
-    :ambiguous_year_future_bias => 50
-  }
-
   class << self
 
     # Parses a string containing a natural language date or time.
@@ -135,7 +126,7 @@ module Chronic
     #
     # Returns a new Time object, or Chronic::Span if :guess option is false.
     def parse(text, opts={})
-      Parser.new(opts).parse(text)
+      Chronic::Parser.new(opts).parse(text)
     end
 
     # Construct a new time object determining possible month overflows
@@ -190,243 +181,6 @@ module Chronic
       end
 
       Chronic.time_class.local(year, month, day, hour, minute, second)
-    end
-  end
-
-  # a Parser holds the state needed by a single Chronic.parse operation
-  class Parser # :nodoc:
-    include Handlers
-
-    def initialize(options={})
-      options  = DEFAULT_OPTIONS.merge(options)
-
-      # ensure the specified options are valid
-      (options.keys - DEFAULT_OPTIONS.keys).each do |key|
-        raise ArgumentError, "#{key} is not a valid option key."
-      end
-      unless [:past, :future, :none].include?(options[:context])
-        raise ArgumentError, "Invalid context, :past/:future only"
-      end
-
-      @now     = options.delete(:now) || Chronic.time_class.now
-      @options = options.freeze
-    end
-
-    attr_accessor :now     # "Base" Time for the current parsing operation
-    attr_reader   :options # Hash of other options (See Chronic.parse documentation for a full list)
-
-    # Parse "text" and return either a Time or Chronic::Span
-    def parse(text)
-      tokens = tokenize(text, options)
-
-      puts "+#{'-' * 51}\n| #{tokens}\n+#{'-' * 51}" if Chronic.debug
-
-      span = tokens_to_span(tokens, options.merge(:text => text))
-
-      if span
-        options[:guess] ? guess(span) : span
-      end
-    end
-
-    # Clean up the specified text ready for parsing.
-    #
-    # Clean up the string by stripping unwanted characters, converting
-    # idioms to their canonical form, converting number words to numbers
-    # (three => 3), and converting ordinal words to numeric
-    # ordinals (third => 3rd)
-    #
-    # text - The String text to normalize.
-    #
-    # Examples:
-    #
-    #   Chronic.pre_normalize('first day in May')
-    #     #=> "1st day in may"
-    #
-    #   Chronic.pre_normalize('tomorrow after noon')
-    #     #=> "next day future 12:00"
-    #
-    #   Chronic.pre_normalize('one hundred and thirty six days from now')
-    #     #=> "136 days future this second"
-    #
-    # Returns a new String ready for Chronic to parse.
-    def pre_normalize(text)
-      text = text.to_s.downcase
-      text.gsub!(/\./, ':')
-      text.gsub!(/['"]/, '')
-      text.gsub!(/,/, ' ')
-      text.gsub!(/^second /, '2nd ')
-      text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
-      text = Numerizer.numerize(text)
-      text.gsub!(/\-(\d{2}:?\d{2})\b/, 'tzminus\1')
-      text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
-      text.gsub!(/(?:^|\s)0(\d+:\d+\s*pm?\b)/, ' \1')
-      text.gsub!(/\btoday\b/, 'this day')
-      text.gsub!(/\btomm?orr?ow\b/, 'next day')
-      text.gsub!(/\byesterday\b/, 'last day')
-      text.gsub!(/\bnoon\b/, '12:00pm')
-      text.gsub!(/\bmidnight\b/, '24:00')
-      text.gsub!(/\bnow\b/, 'this second')
-      text.gsub!(/\b(?:ago|before(?: now)?)\b/, 'past')
-      text.gsub!(/\bthis (?:last|past)\b/, 'last')
-      text.gsub!(/\b(?:in|during) the (morning)\b/, '\1')
-      text.gsub!(/\b(?:in the|during the|at) (afternoon|evening|night)\b/, '\1')
-      text.gsub!(/\btonight\b/, 'this night')
-      text.gsub!(/\b\d+:?\d*[ap]\b/,'\0m')
-      text.gsub!(/(\d)([ap]m|oclock)\b/, '\1 \2')
-      text.gsub!(/\b(hence|after|from)\b/, 'future')
-      text.gsub!(/^\s?an? /i, '1 ')
-      text.gsub!(/\b(\d{4}):(\d{2}):(\d{2})\b/, '\1 / \2 / \3') # DTOriginal
-      text
-    end
-
-    # Convert number words to numbers (three => 3, fourth => 4th).
-    #
-    # text - The String to convert.
-    #
-    # Returns a new String with words converted to numbers.
-    def numericize_numbers(text)
-      warn "Chronic.numericize_numbers will be deprecated in version 0.7.0. Please use Chronic::Numerizer.numerize instead"
-      Numerizer.numerize(text)
-    end
-
-    # Guess a specific time within the given span.
-    #
-    # span - The Chronic::Span object to calcuate a guess from.
-    #
-    # Returns a new Time object.
-    def guess(span)
-      if span.width > 1
-        span.begin + (span.width / 2)
-      else
-        span.begin
-      end
-    end
-
-    # List of Handler definitions. See Chronic.parse for a list of options this
-    # method accepts.
-    #
-    # options - An optional Hash of configuration options:
-    #           :endian_precedence -
-    #
-    # Returns A Hash of Handler definitions.
-    def definitions(options={})
-      options[:endian_precedence] ||= [:middle, :little]
-
-      @@definitions ||= {
-        :time => [
-          Handler.new([:repeater_time, :repeater_day_portion?], nil)
-        ],
-
-        :date => [
-          Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :repeater_time, :separator_slash_or_dash?, :time_zone, :scalar_year], :handle_generic),
-          Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day], :handle_rdn_rmn_sd),
-          Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :scalar_year], :handle_rdn_rmn_sd_sy),
-          Handler.new([:repeater_day_name, :repeater_month_name, :ordinal_day], :handle_rdn_rmn_od),
-          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_day, :repeater_time, :time_zone], :handle_generic),
-          Handler.new([:repeater_month_name, :scalar_day, :scalar_year], :handle_rmn_sd_sy),
-          Handler.new([:repeater_month_name, :ordinal_day, :scalar_year], :handle_rmn_od_sy),
-          Handler.new([:repeater_month_name, :scalar_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_sd_sy),
-          Handler.new([:repeater_month_name, :ordinal_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_od_sy),
-          Handler.new([:repeater_month_name, :scalar_day, :separator_at?, 'time?'], :handle_rmn_sd),
-          Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :scalar_day], :handle_rmn_sd_on),
-          Handler.new([:repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rmn_od),
-          Handler.new([:ordinal_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_od_rmn_sy),
-          Handler.new([:ordinal_day, :repeater_month_name, :separator_at?, 'time?'], :handle_od_rmn),
-          Handler.new([:ordinal_day, :grabber?, :repeater_month, :separator_at?, 'time?'], :handle_od_rm),
-          Handler.new([:scalar_year, :repeater_month_name, :ordinal_day], :handle_sy_rmn_od),
-          Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :ordinal_day], :handle_rmn_od_on),
-          Handler.new([:repeater_month_name, :scalar_year], :handle_rmn_sy),
-          Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy),
-          Handler.new([:scalar_day, :repeater_month_name, :separator_at?, 'time?'], :handle_sd_rmn),
-          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
-          Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_year], :handle_sm_sy),
-          Handler.new([:scalar_day, :separator_slash_or_dash, :repeater_month_name, :separator_slash_or_dash, :scalar_year, :repeater_time?], :handle_sm_rmn_sy),
-          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar?, :time_zone], :handle_generic),
-          # Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :time_zone], :handle_generic)
-
-        ],
-
-        # tonight at 7pm
-        :anchor => [
-          Handler.new([:separator_on?, :grabber?, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
-          Handler.new([:grabber?, :repeater, :repeater, :separator?, :repeater?, :repeater?], :handle_r),
-          Handler.new([:repeater, :grabber, :repeater], :handle_r_g_r)
-        ],
-
-        # 3 weeks from now, in 2 months
-        :arrow => [
-          Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
-          Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),
-          Handler.new([:scalar, :repeater, :pointer, :separator_at?, 'anchor'], :handle_s_r_p_a)
-        ],
-
-        # 3rd week in march
-        :narrow => [
-          Handler.new([:ordinal, :repeater, :separator_in, :repeater], :handle_o_r_s_r),
-          Handler.new([:ordinal, :repeater, :grabber, :repeater], :handle_o_r_g_r)
-        ]
-      }
-
-      endians = [
-        Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
-        Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sm_sd),
-        Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_at?, 'time?'], :handle_sd_sm),
-        Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
-      ]
-
-      case endian = Array(options[:endian_precedence]).first
-      when :little
-        @@definitions.merge(:endian => endians.reverse)
-      when :middle
-        @@definitions.merge(:endian => endians)
-      else
-        raise ArgumentError, "Unknown endian option '#{endian}'"
-      end
-    end
-
-    private
-
-    def tokenize(text, options)
-      text = pre_normalize(text)
-      tokens = text.split(' ').map { |word| Token.new(word) }
-      [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, TimeZone].each do |tok|
-        tok.scan(tokens, options)
-      end
-      tokens.select { |token| token.tagged? }
-    end
-
-    def tokens_to_span(tokens, options)
-      definitions = definitions(options)
-
-      (definitions[:endian] + definitions[:date]).each do |handler|
-        if handler.match(tokens, definitions)
-          good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return handler.invoke(:date, good_tokens, self, options)
-        end
-      end
-
-      definitions[:anchor].each do |handler|
-        if handler.match(tokens, definitions)
-          good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return handler.invoke(:anchor, good_tokens, self, options)
-        end
-      end
-
-      definitions[:arrow].each do |handler|
-        if handler.match(tokens, definitions)
-          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) }
-          return handler.invoke(:arrow, good_tokens, self, options)
-        end
-      end
-
-      definitions[:narrow].each do |handler|
-        if handler.match(tokens, definitions)
-          return handler.invoke(:narrow, tokens, self, options)
-        end
-      end
-
-      puts "-none" if Chronic.debug
-      return nil
     end
   end
 
