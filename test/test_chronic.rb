@@ -77,16 +77,6 @@ class TestChronic < TestCase
     end
   end
 
-  def test_passing_options
-    assert_raises(ArgumentError) do
-      Chronic.parse('now', :invalid => :option)
-    end
-
-    assert_raises(ArgumentError) do
-      Chronic.parse('now', :context => :invalid_context)
-    end
-  end
-
   def test_debug
     require 'stringio'
     $stdout = StringIO.new

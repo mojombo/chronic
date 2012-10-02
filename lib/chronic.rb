@@ -94,8 +94,8 @@ module Chronic
     # will be returned (depending on the value of `:guess`). If no
     # date or time can be found, `nil` will be returned.
     #
-    # text - The String text to parse.
-    # opts - An optional Hash of configuration options:
+    # text    - The String text to parse.
+    # options - An optional Hash of configuration options:
     #        :context - If your string represents a birthday, you can set
     #                   this value to :past and if an ambiguous string is
     #                   given, it will assume it is in the past.
@@ -125,8 +125,8 @@ module Chronic
     #                 future, `now - x years` is assumed to be the past.
     #
     # Returns a new Time object, or Chronic::Span if :guess option is false.
-    def parse(text, opts={})
-      Chronic::Parser.new(opts).parse(text)
+    def parse(text, options = {})
+      Chronic::Parser.new(options).parse(text)
     end
 
     # Construct a new time object determining possible month overflows

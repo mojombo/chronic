@@ -4,6 +4,18 @@ module Chronic
   class Parser # :nodoc:
     include Handlers
 
+    DEFAULT_OPTIONS = {
+      :context => :future,
+      :now => nil,
+      :guess => true,
+      :ambiguous_time_range => 6,
+      :endian_precedence    => [:middle, :little],
+      :ambiguous_year_future_bias => 50
+    }
+
+    attr_accessor :now
+    attr_reader :options
+
     # Valid options for Parser.new:
     #
     #        :context - If your string represents a birthday, you can set
@@ -34,42 +46,20 @@ module Chronic
     #                 two digit year is `now + x years` it's assumed to be the
     #                 future, `now - x years` is assumed to be the past.
     #
-    def initialize(options={})
-      options  = DEFAULT_OPTIONS.merge(options)
-
-      # ensure the specified options are valid
-      (options.keys - DEFAULT_OPTIONS.keys).each do |key|
-        raise ArgumentError, "#{key} is not a valid option key."
-      end
-      unless [:past, :future, :none].include?(options[:context])
-        raise ArgumentError, "Invalid context, :past/:future only"
-      end
-
-      @now     = options.delete(:now) || Chronic.time_class.now
-      @options = options.freeze
+    def initialize(options = {})
+      @options = DEFAULT_OPTIONS.merge(options)
+      @now = @options.delete(:now) || Chronic.time_class.now
     end
-
-    # Hash of default configuration options.
-    DEFAULT_OPTIONS = {
-      :context => :future,
-      :now => nil,
-      :guess => true,
-      :ambiguous_time_range => 6,
-      :endian_precedence    => [:middle, :little],
-      :ambiguous_year_future_bias => 50
-    }
-
-    attr_accessor :now     # "Base" Time for the current parsing operation
-    attr_reader   :options # Hash of other options
 
     # Parse "text" with the given options
     # Returns either a Time or Chronic::Span, depending on the value of options[:guess]
     def parse(text)
+      options.merge!(:text => text)
       tokens = tokenize(text, options)
 
       puts "+#{'-' * 51}\n| #{tokens}\n+#{'-' * 51}" if Chronic.debug
 
-      span = tokens_to_span(tokens, options.merge(:text => text))
+      span = tokens_to_span(tokens, options)
 
       if span
         options[:guess] ? guess(span) : span
@@ -157,7 +147,7 @@ module Chronic
     #           :endian_precedence -
     #
     # Returns A Hash of Handler definitions.
-    def definitions(options={})
+    def definitions(options = {})
       options[:endian_precedence] ||= [:middle, :little]
 
       @@definitions ||= {
