@@ -74,6 +74,8 @@ Simple
 * yesterday
 * today
 * tomorrow
+* last week
+* next week
 * this tuesday
 * next month
 * last winter
