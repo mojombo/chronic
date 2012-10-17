@@ -6,8 +6,8 @@ module Chronic
     attr_reader :handler_method
 
     # pattern        - An Array of patterns to match tokens against.
-    # handler_method - A Symbole representing the method to be invoked
-    #   when patterns are matched.
+    # handler_method - A Symbol representing the method to be invoked
+    #   when a pattern matches.
     def initialize(pattern, handler_method)
       @pattern = pattern
       @handler_method = handler_method
@@ -58,13 +58,13 @@ module Chronic
       return true
     end
 
-    def invoke(type, tokens, options)
+    def invoke(type, tokens, parser, options)
       if Chronic.debug
         puts "-#{type}"
         puts "Handler: #{@handler_method}"
       end
 
-      Handlers.send(@handler_method, tokens, options)
+      parser.send(@handler_method, tokens, options)
     end
 
     # other - The other Handler object to compare.
