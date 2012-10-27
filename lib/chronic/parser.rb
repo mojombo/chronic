@@ -4,6 +4,19 @@ module Chronic
   class Parser
     include Handlers
 
+    # Hash of default configuration options.
+    DEFAULT_OPTIONS = {
+      :context => :future,
+      :now => nil,
+      :guess => true,
+      :ambiguous_time_range => 6,
+      :endian_precedence    => [:middle, :little],
+      :ambiguous_year_future_bias => 50
+    }
+
+    attr_accessor :now
+    attr_reader :options
+
     # Valid options for Parser.new:
     #
     #        :context - If your string represents a birthday, you can set
@@ -38,19 +51,6 @@ module Chronic
       @options = DEFAULT_OPTIONS.merge(options)
       @now = options.delete(:now) || Chronic.time_class.now
     end
-
-    # Hash of default configuration options.
-    DEFAULT_OPTIONS = {
-      :context => :future,
-      :now => nil,
-      :guess => true,
-      :ambiguous_time_range => 6,
-      :endian_precedence    => [:middle, :little],
-      :ambiguous_year_future_bias => 50
-    }
-
-    attr_accessor :now     # "Base" Time for the current parsing operation
-    attr_reader   :options # Hash of other options
 
     # Parse "text" with the given options
     # Returns either a Time or Chronic::Span, depending on the value of options[:guess]
