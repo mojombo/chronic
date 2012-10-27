@@ -107,6 +107,7 @@ module Chronic
       text.gsub!(/\b(?:in the|during the|at) (afternoon|evening|night)\b/, '\1')
       text.gsub!(/\btonight\b/, 'this night')
       text.gsub!(/\b\d+:?\d*[ap]\b/,'\0m')
+      text.gsub!(/\b(\d{2})(\d{2})(am|pm)\b/, '\1:\2\3')
       text.gsub!(/(\d)([ap]m|oclock)\b/, '\1 \2')
       text.gsub!(/\b(hence|after|from)\b/, 'future')
       text.gsub!(/^\s?an? /i, '1 ')
