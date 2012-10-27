@@ -130,11 +130,10 @@ module Chronic
     # List of Handler definitions. See Chronic.parse for a list of options this
     # method accepts.
     #
-    # options - An optional Hash of configuration options:
-    #           :endian_precedence -
+    # options - An optional Hash of configuration options.
     #
-    # Returns A Hash of Handler definitions.
-    def definitions(options={})
+    # Returns a Hash of Handler definitions.
+    def definitions(options = {})
       options[:endian_precedence] ||= [:middle, :little]
 
       @@definitions ||= {
@@ -167,25 +166,20 @@ module Chronic
           Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_year], :handle_sm_sy),
           Handler.new([:scalar_day, :separator_slash_or_dash, :repeater_month_name, :separator_slash_or_dash, :scalar_year, :repeater_time?], :handle_sm_rmn_sy),
           Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar?, :time_zone], :handle_generic),
-          # Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :time_zone], :handle_generic)
-
         ],
 
-        # tonight at 7pm
         :anchor => [
           Handler.new([:separator_on?, :grabber?, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
           Handler.new([:grabber?, :repeater, :repeater, :separator?, :repeater?, :repeater?], :handle_r),
           Handler.new([:repeater, :grabber, :repeater], :handle_r_g_r)
         ],
 
-        # 3 weeks from now, in 2 months
         :arrow => [
           Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
           Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),
           Handler.new([:scalar, :repeater, :pointer, :separator_at?, 'anchor'], :handle_s_r_p_a)
         ],
 
-        # 3rd week in march
         :narrow => [
           Handler.new([:ordinal, :repeater, :separator_in, :repeater], :handle_o_r_s_r),
           Handler.new([:ordinal, :repeater, :grabber, :repeater], :handle_o_r_g_r)
