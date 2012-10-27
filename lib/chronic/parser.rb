@@ -17,8 +17,7 @@ module Chronic
     attr_accessor :now
     attr_reader :options
 
-    # Valid options for Parser.new:
-    #
+    # options - An optional Hash of configuration options:
     #        :context - If your string represents a birthday, you can set
     #                   this value to :past and if an ambiguous string is
     #                   given, it will assume it is in the past.
@@ -46,7 +45,6 @@ module Chronic
     #                 look x amount of years into the future and past. If the
     #                 two digit year is `now + x years` it's assumed to be the
     #                 future, `now - x years` is assumed to be the past.
-    #
     def initialize(options = {})
       @options = DEFAULT_OPTIONS.merge(options)
       @now = options.delete(:now) || Chronic.time_class.now
@@ -56,10 +54,9 @@ module Chronic
     # Returns either a Time or Chronic::Span, depending on the value of options[:guess]
     def parse(text)
       tokens = tokenize(text, options)
+      span = tokens_to_span(tokens, options.merge(:text => text))
 
       puts "+#{'-' * 51}\n| #{tokens}\n+#{'-' * 51}" if Chronic.debug
-
-      span = tokens_to_span(tokens, options.merge(:text => text))
 
       if span
         options[:guess] ? guess(span) : span
