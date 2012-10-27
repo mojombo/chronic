@@ -114,16 +114,6 @@ module Chronic
       text
     end
 
-    # Convert number words to numbers (three => 3, fourth => 4th).
-    #
-    # text - The String to convert.
-    #
-    # Returns a new String with words converted to numbers.
-    def numericize_numbers(text)
-      warn "Chronic.numericize_numbers will be deprecated in version 0.7.0. Please use Chronic::Numerizer.numerize instead"
-      Numerizer.numerize(text)
-    end
-
     # Guess a specific time within the given span.
     #
     # span - The Chronic::Span object to calcuate a guess from.
