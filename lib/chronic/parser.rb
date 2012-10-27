@@ -1,7 +1,7 @@
 require 'chronic/handlers'
 
 module Chronic
-  class Parser # :nodoc:
+  class Parser
     include Handlers
 
     # Valid options for Parser.new:
@@ -37,10 +37,6 @@ module Chronic
     def initialize(options={})
       options  = DEFAULT_OPTIONS.merge(options)
 
-      # ensure the specified options are valid
-      (options.keys - DEFAULT_OPTIONS.keys).each do |key|
-        raise ArgumentError, "#{key} is not a valid option key."
-      end
       unless [:past, :future, :none].include?(options[:context])
         raise ArgumentError, "Invalid context, :past/:future only"
       end

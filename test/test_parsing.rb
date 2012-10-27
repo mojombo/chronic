@@ -949,16 +949,6 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 8, 16, 18, 30), parse_now("8/16/2006 at 6:30p")
   end
 
-  def test_argument_validation
-    assert_raises(ArgumentError) do
-      time = Chronic.parse("may 27", :foo => :bar)
-    end
-
-    assert_raises(ArgumentError) do
-      time = Chronic.parse("may 27", :context => :bar)
-    end
-  end
-
   def test_seasons
     t = parse_now("this spring", :guess => false)
     assert_equal Time.local(2007, 3, 20), t.begin
