@@ -127,7 +127,7 @@ module Chronic
     #
     # Returns a new Time object, or Chronic::Span if :guess option is false.
     def parse(text, opts={})
-      Chronic::Parser.new(opts).parse(text)
+      Parser.new(opts).parse(text)
     end
 
     # Construct a new time object determining possible month overflows
