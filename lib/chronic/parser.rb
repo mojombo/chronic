@@ -34,15 +34,9 @@ module Chronic
     #                 two digit year is `now + x years` it's assumed to be the
     #                 future, `now - x years` is assumed to be the past.
     #
-    def initialize(options={})
-      options  = DEFAULT_OPTIONS.merge(options)
-
-      unless [:past, :future, :none].include?(options[:context])
-        raise ArgumentError, "Invalid context, :past/:future only"
-      end
-
-      @now     = options.delete(:now) || Chronic.time_class.now
-      @options = options.freeze
+    def initialize(options = {})
+      @options = DEFAULT_OPTIONS.merge(options)
+      @now = options.delete(:now) || Chronic.time_class.now
     end
 
     # Hash of default configuration options.
