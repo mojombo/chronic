@@ -8,12 +8,12 @@ class TestChronic < TestCase
   end
 
   def test_pre_normalize
-    assert_equal Chronic.pre_normalize('12:55 pm'), Chronic.pre_normalize('12.55 pm')
+    assert_equal Chronic::Parser.new.pre_normalize('12:55 pm'), Chronic::Parser.new.pre_normalize('12.55 pm')
   end
 
   def test_pre_normalize_numerized_string
     string = 'two and a half years'
-    assert_equal Chronic::Numerizer.numerize(string), Chronic.pre_normalize(string)
+    assert_equal Chronic::Numerizer.numerize(string), Chronic::Parser.new.pre_normalize(string)
   end
 
   def test_post_normalize_am_pm_aliases
@@ -46,21 +46,13 @@ class TestChronic < TestCase
 
   def test_guess
     span = Chronic::Span.new(Time.local(2006, 8, 16, 0), Time.local(2006, 8, 17, 0))
-    assert_equal Time.local(2006, 8, 16, 12), Chronic.guess(span)
+    assert_equal Time.local(2006, 8, 16, 12), Chronic::Parser.new.guess(span)
 
     span = Chronic::Span.new(Time.local(2006, 8, 16, 0), Time.local(2006, 8, 17, 0, 0, 1))
-    assert_equal Time.local(2006, 8, 16, 12), Chronic.guess(span)
+    assert_equal Time.local(2006, 8, 16, 12), Chronic::Parser.new.guess(span)
 
     span = Chronic::Span.new(Time.local(2006, 11), Time.local(2006, 12))
-    assert_equal Time.local(2006, 11, 16), Chronic.guess(span)
-  end
-
-  def test_now
-    Chronic.parse('now', :now => Time.local(2006, 01))
-    assert_equal Time.local(2006, 01), Chronic.now
-
-    Chronic.parse('now', :now => Time.local(2007, 01))
-    assert_equal Time.local(2007, 01), Chronic.now
+    assert_equal Time.local(2006, 11, 16), Chronic::Parser.new.guess(span)
   end
 
   def test_endian_definitions
@@ -72,16 +64,16 @@ class TestChronic < TestCase
       Chronic::Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
     ]
 
-    assert_equal endians, Chronic.definitions[:endian]
+    assert_equal endians, Chronic::Parser.new.definitions[:endian]
 
-    defs = Chronic.definitions(:endian_precedence => :little)
+    defs = Chronic::Parser.new.definitions(:endian_precedence => :little)
     assert_equal endians.reverse, defs[:endian]
 
-    defs = Chronic.definitions(:endian_precedence => [:little, :middle])
+    defs = Chronic::Parser.new.definitions(:endian_precedence => [:little, :middle])
     assert_equal endians.reverse, defs[:endian]
 
     assert_raises(ArgumentError) do
-      Chronic.definitions(:endian_precedence => :invalid)
+      Chronic::Parser.new.definitions(:endian_precedence => :invalid)
     end
   end
 

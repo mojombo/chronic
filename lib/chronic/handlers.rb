@@ -4,7 +4,7 @@ module Chronic
 
     # Handle month/day
     def handle_m_d(month, day, time_tokens, options)
-      month.start = Chronic.now
+      month.start = self.now
       span = month.this(options[:context])
       year, month = span.begin.year, span.begin.month
       day_start = Chronic.time_class.local(year, month, day)
@@ -17,7 +17,7 @@ module Chronic
       month = tokens[0].get_tag(RepeaterMonthName)
       day = tokens[1].get_tag(ScalarDay).type
 
-      return if month_overflow?(Chronic.now.year, month.index, day)
+      return if month_overflow?(self.now.year, month.index, day)
 
       handle_m_d(month, day, tokens[2..tokens.size], options)
     end
@@ -34,7 +34,7 @@ module Chronic
         token_range = 0..0
       end
 
-      return if month_overflow?(Chronic.now.year, month.index, day)
+      return if month_overflow?(self.now.year, month.index, day)
 
       handle_m_d(month, day, tokens[token_range], options)
     end
@@ -44,7 +44,7 @@ module Chronic
       month = tokens[0].get_tag(RepeaterMonthName)
       day = tokens[1].get_tag(OrdinalDay).type
 
-      return if month_overflow?(Chronic.now.year, month.index, day)
+      return if month_overflow?(self.now.year, month.index, day)
 
       handle_m_d(month, day, tokens[2..tokens.size], options)
     end
@@ -61,7 +61,7 @@ module Chronic
       month = tokens[1].get_tag(RepeaterMonthName)
       day = tokens[0].get_tag(OrdinalDay).type
 
-      return if month_overflow?(Chronic.now.year, month.index, day)
+      return if month_overflow?(self.now.year, month.index, day)
 
       handle_m_d(month, day, tokens[2..tokens.size], options)
     end
@@ -87,7 +87,7 @@ module Chronic
       month = tokens[1].get_tag(RepeaterMonthName)
       day = tokens[0].get_tag(ScalarDay).type
 
-      return if month_overflow?(Chronic.now.year, month.index, day)
+      return if month_overflow?(self.now.year, month.index, day)
 
       handle_m_d(month, day, tokens[2..tokens.size], options)
     end
@@ -104,7 +104,7 @@ module Chronic
         token_range = 0..0
       end
 
-      return if month_overflow?(Chronic.now.year, month.index, day)
+      return if month_overflow?(self.now.year, month.index, day)
 
       handle_m_d(month, day, tokens[token_range], options)
     end
@@ -229,7 +229,7 @@ module Chronic
     def handle_sm_sd(tokens, options)
       month = tokens[0].get_tag(ScalarMonth).type
       day = tokens[1].get_tag(ScalarDay).type
-      year = Chronic.now.year
+      year = self.now.year
       time_tokens = tokens.last(tokens.size - 2)
 
       return if month_overflow?(year, month, day)
@@ -274,7 +274,7 @@ module Chronic
     def handle_rdn_rmn_od(tokens, options)
       month = tokens[1].get_tag(RepeaterMonthName)
       day = tokens[2].get_tag(OrdinalDay).type
-      year = Chronic.now.year
+      year = self.now.year
 
       return if month_overflow?(year, month.index, day)
 
@@ -291,7 +291,7 @@ module Chronic
     def handle_rdn_rmn_sd(tokens, options)
       month = tokens[1].get_tag(RepeaterMonthName)
       day = tokens[2].get_tag(ScalarDay).type
-      year = Chronic.now.year
+      year = self.now.year
 
       return if month_overflow?(year, month.index, day)
 
@@ -365,7 +365,7 @@ module Chronic
     # Handle scalar/repeater/pointer
     def handle_s_r_p(tokens, options)
       repeater = tokens[1].get_tag(Repeater)
-      span = Span.new(Chronic.now, Chronic.now + 1)
+      span = Span.new(self.now, self.now + 1)
 
       handle_srp(tokens, span, options)
     end
@@ -421,7 +421,7 @@ module Chronic
       outer_span = Span.new(day_start, day_start + (24 * 60 * 60))
 
       if !time_tokens.empty?
-        Chronic.now = outer_span.begin
+        self.now = outer_span.begin
         get_anchor(dealias_and_disambiguate_times(time_tokens, options), options)
       else
         outer_span
@@ -439,7 +439,7 @@ module Chronic
       end
 
       head = repeaters.shift
-      head.start = Chronic.now
+      head.start = self.now
 
       case grabber.type
       when :last
