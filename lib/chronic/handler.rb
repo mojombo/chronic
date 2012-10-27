@@ -43,14 +43,14 @@ module Chronic
           if definitions.key?(name.to_sym)
             sub_handlers = definitions[name.to_sym]
           else
-            raise ChronicPain, "Invalid subset #{name} specified"
+            raise "Invalid subset #{name} specified"
           end
 
           sub_handlers.each do |sub_handler|
             return true if sub_handler.match(tokens[token_index..tokens.size], definitions)
           end
         else
-          raise ChronicPain, "Invalid match type: #{element.class}"
+          raise "Invalid match type: #{element.class}"
         end
       end
 

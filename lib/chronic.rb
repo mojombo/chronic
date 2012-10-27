@@ -185,8 +185,4 @@ module Chronic
     end
   end
 
-  # Internal exception
-  class ChronicPain < Exception
-  end
-
 end
