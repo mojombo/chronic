@@ -936,6 +936,30 @@ class TestParsing < TestCase
     assert_equal parse_now("second monday in january"), parse_now("2nd monday in january")
   end
 
+  def test_relative_to_an_hour_before
+    # example prenormalization "10 to 2" becomes "10 minutes past 2"
+    assert_equal Time.local(2006, 8, 16, 13, 50), parse_now(s = "10 to 2"), "Failed parse for `#{s}`"
+    assert_equal Time.local(2006, 8, 16, 13, 50), parse_now(s = "10 till 2"), "Failed parse for `#{s}`"
+    assert_equal Time.local(2006, 8, 16, 13, 50), parse_now(s = "10 prior to 2"), "Failed parse for `#{s}`"
+    assert_equal Time.local(2006, 8, 16, 13, 50), parse_now(s = "10 before 2"), "Failed parse for `#{s}`"
+
+    # uses the current hour, so 2006-08-16 13:50:00, not 14:50
+    assert_equal Time.local(2006, 8, 16, 13, 50), parse_now(s = "10 to"), "Failed parse for `#{s}`"
+    assert_equal Time.local(2006, 8, 16, 13, 50), parse_now(s = "10 till"), "Failed parse for `#{s}`"
+
+    assert_equal Time.local(2006, 8, 16, 15, 45), parse_now(s = "quarter to 4"), "Failed parse for `#{s}`"
+    
+    # LEFTOFF - should be supported as well
+    # assert_equal Time.local(2006, 8, 16, 13, 50), parse_now(s = "10 minutes to 2"), "Failed parse for `#{s}`"
+  end
+
+  def test_relative_to_an_hour_after
+    # not nil
+    assert_equal Time.local(2006, 8, 16, 14, 10), parse_now(s = "10 after 2"), "Failed parse for `#{s}`"
+    assert_equal Time.local(2006, 8, 16, 14, 10), parse_now(s = "10 past 2"), "Failed parse for `#{s}`"
+    assert_equal Time.local(2006, 8, 16, 14, 30), parse_now(s = "half past 2"), "Failed parse for `#{s}`"
+  end
+
   def test_parse_only_complete_pointers
     assert_equal parse_now("eat pasty buns today at 2pm"), @time_2006_08_16_14_00_00
     assert_equal parse_now("futuristically speaking today at 2pm"), @time_2006_08_16_14_00_00
@@ -1050,5 +1074,8 @@ class TestParsing < TestCase
   private
   def parse_now(string, options={})
     Chronic.parse(string, {:now => TIME_2006_08_16_14_00_00 }.merge(options))
+  end
+  def pre_normalize(s)
+    Chronic::Parser.new.pre_normalize s
   end
 end
