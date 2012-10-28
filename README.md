@@ -68,6 +68,9 @@ Simple
 * friday 13:00
 * mon 2:35
 * 4pm
+* 10 to 8
+* 10 past 2
+* half past 2
 * 6 in the morning
 * friday 1pm
 * sat 7 in the evening
