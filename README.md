@@ -1,60 +1,47 @@
 Chronic
 =======
 
-## DESCRIPTION
-
 Chronic is a natural language date/time parser written in pure Ruby. See below
 for the wide variety of formats Chronic will parse.
 
+## Installation
 
-## INSTALLATION
+```
+$ gem install chronic
+```
 
-### RubyGems
+## Usage
 
-    $ [sudo] gem install chronic
+```ruby
+require 'chronic'
 
-### GitHub
+Time.now   #=> Sun Aug 27 23:18:25 PDT 2006
 
-    $ git clone git://github.com/mojombo/chronic.git
-    $ cd chronic && gem build chronic.gemspec
-    $ gem install chronic-<version>.gem
+Chronic.parse('tomorrow')
+  #=> Mon Aug 28 12:00:00 PDT 2006
 
+Chronic.parse('monday', :context => :past)
+  #=> Mon Aug 21 12:00:00 PDT 2006
 
-## USAGE
+Chronic.parse('this tuesday 5:00')
+  #=> Tue Aug 29 17:00:00 PDT 2006
 
-You can parse strings containing a natural language date using the
-`Chronic.parse` method.
+Chronic.parse('this tuesday 5:00', :ambiguous_time_range => :none)
+  #=> Tue Aug 29 05:00:00 PDT 2006
 
-    require 'chronic'
+Chronic.parse('may 27th', :now => Time.local(2000, 1, 1))
+  #=> Sat May 27 12:00:00 PDT 2000
 
-    Time.now   #=> Sun Aug 27 23:18:25 PDT 2006
+Chronic.parse('may 27th', :guess => false)
+  #=> Sun May 27 00:00:00 PDT 2007..Mon May 28 00:00:00 PDT 2007
 
-    Chronic.parse('tomorrow')
-      #=> Mon Aug 28 12:00:00 PDT 2006
-
-    Chronic.parse('monday', :context => :past)
-      #=> Mon Aug 21 12:00:00 PDT 2006
-
-    Chronic.parse('this tuesday 5:00')
-      #=> Tue Aug 29 17:00:00 PDT 2006
-
-    Chronic.parse('this tuesday 5:00', :ambiguous_time_range => :none)
-      #=> Tue Aug 29 05:00:00 PDT 2006
-
-    Chronic.parse('may 27th', :now => Time.local(2000, 1, 1))
-      #=> Sat May 27 12:00:00 PDT 2000
-
-    Chronic.parse('may 27th', :guess => false)
-      #=> Sun May 27 00:00:00 PDT 2007..Mon May 28 00:00:00 PDT 2007
-      
-    Chronic.parse('6/4/2012', :endian_precedence => :little)
-      #=> Fri Apr 06 00:00:00 PDT 2012
-      
+Chronic.parse('6/4/2012', :endian_precedence => :little)
+  #=> Fri Apr 06 00:00:00 PDT 2012
+```
 
 See `Chronic.parse` for detailed usage instructions.
 
-
-## EXAMPLES
+## Examples
 
 Chronic can parse a huge variety of date and time formats. Following is a
 small sample of strings that will be properly parsed. Parsing is case
@@ -144,7 +131,7 @@ Specific Times (many of the above with an added time)
 * etc
 
 
-## TIME ZONES
+## Time Zones
 
 Chronic allows you to set which Time class to use when constructing times. By
 default, the built in Ruby time class creates times in your system's local
@@ -152,13 +139,14 @@ time zone. You can set this to something like ActiveSupport's
 [TimeZone](http://api.rubyonrails.org/classes/ActiveSupport/TimeZone.html)
 class to get full time zone support.
 
-    >> Time.zone = "UTC"
-    >> Chronic.time_class = Time.zone
-    >> Chronic.parse("June 15 2006 at 5:45 AM")
-    => Thu, 15 Jun 2006 05:45:00 UTC +00:00
+```
+>> Time.zone = "UTC"
+>> Chronic.time_class = Time.zone
+>> Chronic.parse("June 15 2006 at 5:45 AM")
+=> Thu, 15 Jun 2006 05:45:00 UTC +00:00
+```
 
-
-## LIMITATIONS
+## Limitations
 
 Chronic uses Ruby's built in Time class for all time storage and computation.
 Because of this, only times that the Time class can handle will be properly
@@ -166,7 +154,7 @@ parsed. Parsing for times outside of this range will simply return nil.
 Support for a wider range of times is planned for a future release.
 
 
-## CONTRIBUTE
+## Contribute
 
 If you'd like to hack on Chronic, start by forking the repo on GitHub:
 
