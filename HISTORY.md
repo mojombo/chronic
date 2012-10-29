@@ -1,3 +1,8 @@
+# HEAD
+
+* Added support for time expressions such as '10 till' or 'half
+  past two' (#146, @chicagogrooves)
+
 # 0.8.0 / 2012-09-16
 
 * Support parsing "<ordinal> of this month" (#109)
