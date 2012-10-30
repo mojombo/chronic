@@ -1,5 +1,6 @@
 # HEAD
 
+* Add support for excel date formats (#149, @jmondo)
 * Added support for time expressions such as '10 till' or 'half
   past two' (#146, @chicagogrooves)
 
