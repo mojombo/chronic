@@ -424,6 +424,9 @@ class TestParsing < TestCase
   def test_handle_sm_rmn_sy
     time = parse_now('30-Mar-11')
     assert_equal Time.local(2011, 3, 30, 12), time
+
+    time = parse_now('31-Aug-12')
+    assert_equal Time.local(2012, 8, 31), time
   end
 
   # end of testing handlers

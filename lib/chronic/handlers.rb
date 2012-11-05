@@ -332,7 +332,8 @@ module Chronic
         end_time = Chronic.time_class.local(year, month, day + 1, h, m, s)
       else
         time = Chronic.time_class.local(year, month, day)
-        end_time = Chronic.time_class.local(year, month, day + 1)
+        day += 1 unless day >= 31
+        end_time = Chronic.time_class.local(year, month, day)
       end
       Span.new(time, end_time)
     end
