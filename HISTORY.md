@@ -3,6 +3,8 @@
 * Add support for excel date formats (#149, @jmondo)
 * Added support for time expressions such as '10 till' or 'half
   past two' (#146, @chicagogrooves)
+* Add support for RepeaterDayName, RepeaterMonthName,
+  Ordinal/ScalarDay and Time (#153, @kareemk)
 
 # 0.8.0 / 2012-09-16
 
