@@ -1055,6 +1055,38 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 12, 31, 12), time
   end
 
+  def test_handle_rdn_rmn_sd_rt
+    time = parse_now("Thu Aug 10 4pm")
+    assert_equal Time.local(2006, 8, 10, 16), time
+
+    time = parse_now("Thu Aug 10 at 4pm")
+    assert_equal Time.local(2006, 8, 10, 16), time
+  end
+
+  def test_handle_rdn_rmn_od_rt
+    time = parse_now("Thu Aug 10th at 4pm")
+    assert_equal Time.local(2006, 8, 10, 16), time
+  end
+
+  def test_handle_rdn_od_rt
+    time = parse_now("Thu 17th at 4pm")
+    assert_equal Time.local(2006, 8, 17, 16), time
+
+    time = parse_now("Thu 16th at 4pm")
+    assert_equal Time.local(2006, 8, 16, 16), time
+
+    time = parse_now("Thu 1st at 4pm")
+    assert_equal Time.local(2006, 9, 1, 16), time
+
+    time = parse_now("Thu 1st at 4pm", :context => :past)
+    assert_equal Time.local(2006, 8, 1, 16), time
+  end
+
+  def test_handle_rdn_od
+    time = parse_now("Thu 17th")
+    assert_equal Time.local(2006, 8, 17, 12), time
+  end
+
   def test_handle_rdn_rmn_sd_sy
     time = parse_now("Thu Aug 10 2006")
     assert_equal Time.local(2006, 8, 10, 12), time

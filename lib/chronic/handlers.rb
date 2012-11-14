@@ -274,14 +274,46 @@ module Chronic
     def handle_rdn_rmn_od(tokens, options)
       month = tokens[1].get_tag(RepeaterMonthName)
       day = tokens[2].get_tag(OrdinalDay).type
+      time_tokens = tokens.last(tokens.size - 3)
       year = self.now.year
 
       return if month_overflow?(year, month.index, day)
 
       begin
-        start_time = Chronic.time_class.local(year, month.index, day)
-        end_time = time_with_rollover(year, month.index, day + 1)
-        Span.new(start_time, end_time)
+        if time_tokens.empty?
+          start_time = Chronic.time_class.local(year, month.index, day)
+          end_time = time_with_rollover(year, month.index, day + 1)
+          Span.new(start_time, end_time)
+        else
+          day_start = Chronic.time_class.local(year, month.index, day)
+          day_or_time(day_start, time_tokens, options)
+        end
+      rescue ArgumentError
+        nil
+      end
+    end
+
+    # Handle RepeaterDayName OrdinalDay
+    def handle_rdn_od(tokens, options)
+      day = tokens[1].get_tag(OrdinalDay).type
+      time_tokens = tokens.last(tokens.size - 2)
+      year = self.now.year
+      month = self.now.month
+      if options[:context] == :future
+        self.now.day > day ? month += 1 : month
+      end
+
+      return if month_overflow?(year, month, day)
+
+      begin
+        if time_tokens.empty?
+          start_time = Chronic.time_class.local(year, month, day)
+          end_time = time_with_rollover(year, month, day + 1)
+          Span.new(start_time, end_time)
+        else
+          day_start = Chronic.time_class.local(year, month, day)
+          day_or_time(day_start, time_tokens, options)
+        end
       rescue ArgumentError
         nil
       end
@@ -291,14 +323,20 @@ module Chronic
     def handle_rdn_rmn_sd(tokens, options)
       month = tokens[1].get_tag(RepeaterMonthName)
       day = tokens[2].get_tag(ScalarDay).type
+      time_tokens = tokens.last(tokens.size - 3)
       year = self.now.year
 
       return if month_overflow?(year, month.index, day)
 
       begin
-        start_time = Chronic.time_class.local(year, month.index, day)
-        end_time = time_with_rollover(year, month.index, day + 1)
-        Span.new(start_time, end_time)
+        if time_tokens.empty?
+          start_time = Chronic.time_class.local(year, month.index, day)
+          end_time = time_with_rollover(year, month.index, day + 1)
+          Span.new(start_time, end_time)
+        else
+          day_start = Chronic.time_class.local(year, month.index, day)
+          day_or_time(day_start, time_tokens, options)
+        end
       rescue ArgumentError
         nil
       end
