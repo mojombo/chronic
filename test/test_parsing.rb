@@ -859,6 +859,16 @@ class TestParsing < TestCase
 
     time = Chronic.parse("2 months ago", :now => Time.parse("2007-03-07 23:30"))
     assert_equal Time.local(2007, 1, 7, 23, 30), time
+
+    # Two repeaters
+    time = parse_now("25 minutes and 20 seconds from now")
+    assert_equal Time.local(2006, 8, 16, 14, 25, 20), time
+
+    time = parse_now("24 hours and 20 minutes from now")
+    assert_equal Time.local(2006, 8, 17, 14, 20, 0), time
+
+    time = parse_now("24 hours 20 minutes from now")
+    assert_equal Time.local(2006, 8, 17, 14, 20, 0), time
   end
 
   def test_parse_guess_p_s_r
