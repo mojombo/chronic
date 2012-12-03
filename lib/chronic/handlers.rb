@@ -421,6 +421,13 @@ module Chronic
       handle_srp(tokens, anchor_span, options)
     end
 
+    def handle_s_r_a_s_r_p_a(tokens, options)
+      anchor_span = get_anchor(tokens[4..tokens.size - 1], options)
+
+      span = handle_srp(tokens[0..1]+tokens[4..6], anchor_span, options)
+      handle_srp(tokens[2..3]+tokens[4..6], span, options)
+    end
+
     # narrows
 
     # Handle oridinal repeaters
