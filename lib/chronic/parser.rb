@@ -184,6 +184,7 @@ module Chronic
 
         :arrow => [
           Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
+          Handler.new([:scalar, :repeater, :separator_and?, :scalar, :repeater, :pointer, :separator_at?, 'anchor'], :handle_s_r_a_s_r_p_a),
           Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),
           Handler.new([:scalar, :repeater, :pointer, :separator_at?, 'anchor'], :handle_s_r_p_a)
         ],
@@ -241,7 +242,7 @@ module Chronic
 
       definitions[:arrow].each do |handler|
         if handler.match(tokens, definitions)
-          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) }
+          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) || o.get_tag(SeparatorAnd) }
           return handler.invoke(:arrow, good_tokens, self, options)
         end
       end
