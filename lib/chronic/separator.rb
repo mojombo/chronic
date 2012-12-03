@@ -15,6 +15,7 @@ module Chronic
         if t = scan_for_at(token) then token.tag(t); next end
         if t = scan_for_in(token) then token.tag(t); next end
         if t = scan_for_on(token) then token.tag(t); next end
+        if t = scan_for_and(token) then token.tag(t); next end
       end
     end
 
@@ -57,6 +58,13 @@ module Chronic
       scan_for token, SeparatorOn, { /^on$/ => :on }
     end
 
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeperatorAnd Object object.
+    def self.scan_for_and(token)
+      scan_for token, SeparatorAnd, { /^and$/ => :and }
+    end
+
     def to_s
       'separator'
     end
@@ -89,6 +97,12 @@ module Chronic
   class SeparatorOn < Separator #:nodoc:
     def to_s
       super << '-on'
+    end
+  end
+
+  class SeparatorAnd < Separator #:nodoc:
+    def to_s
+      super << '-and'
     end
   end
 end
