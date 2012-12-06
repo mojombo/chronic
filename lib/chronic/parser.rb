@@ -197,6 +197,7 @@ module Chronic
 
       endians = [
         Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
+        Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :repeater_time, :time_zone], :handle_sm_sd_sy),
         Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sm_sd),
         Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_at?, 'time?'], :handle_sd_sm),
         Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
