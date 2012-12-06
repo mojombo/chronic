@@ -276,6 +276,9 @@ class TestParsing < TestCase
     time = parse_now("9/19/2011 6:05:57 PM")
     assert_equal Time.local(2011, 9, 19, 18, 05, 57), time
 
+    time = parse_now("9/19/2011 6:05:57 UTC")
+    assert_equal Time.local(2011, 9, 19, 6, 05, 57), time
+
     # month day overflows
     time = parse_now("30/2/2000")
     assert_nil time
