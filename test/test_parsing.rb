@@ -324,19 +324,29 @@ class TestParsing < TestCase
 
   def test_handle_sm_sd
     time = parse_now("05/06")
-    assert_equal Time.local(2006, 5, 6, 12), time
+    assert_equal Time.local(2007, 5, 6, 12), time
 
     time = parse_now("05/06", :endian_precedence => [:little, :medium])
-    assert_equal Time.local(2006, 6, 5, 12), time
+    assert_equal Time.local(2007, 6, 5, 12), time
 
     time = parse_now("05/06 6:05:57 PM")
-    assert_equal Time.local(2006, 5, 6, 18, 05, 57), time
+    assert_equal Time.local(2007, 5, 6, 18, 05, 57), time
 
     time = parse_now("05/06 6:05:57 PM", :endian_precedence => [:little, :medium])
-    assert_equal Time.local(2006, 6, 5, 18, 05, 57), time
+    assert_equal Time.local(2007, 6, 5, 18, 05, 57), time
 
-    time = parse_now("13/01")
-    assert_equal Time.local(2006, 1, 13, 12), time
+    time = parse_now("13/09")
+    assert_equal Time.local(2006, 9, 13, 12), time
+
+    # future
+    time = parse_now("05/06") # future is default context
+    assert_equal Time.local(2007, 5, 6, 12), time
+
+    time = parse_now("1/13", :context => :future)
+    assert_equal Time.local(2007, 1, 13, 12), time
+
+    time = parse_now("3/13", :context => :none)
+    assert_equal Time.local(2006, 3, 13, 12), time
   end
 
   # def test_handle_sm_sy
