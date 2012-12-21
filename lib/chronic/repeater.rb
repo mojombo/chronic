@@ -38,18 +38,18 @@ module Chronic
     def self.scan_for_month_names(token)
       scan_for token, RepeaterMonthName,
       {
-        /^jan\.?(uary)?$/ => :january,
-        /^feb\.?(ruary)?$/ => :february,
-        /^mar\.?(ch)?$/ => :march,
-        /^apr\.?(il)?$/ => :april,
+        /^jan[:\.]?(uary)?$/ => :january,
+        /^feb[:\.]?(ruary)?$/ => :february,
+        /^mar[:\.]?(ch)?$/ => :march,
+        /^apr[:\.]?(il)?$/ => :april,
         /^may$/ => :may,
-        /^jun\.?e?$/ => :june,
-        /^jul\.?y?$/ => :july,
-        /^aug\.?(ust)?$/ => :august,
-        /^sep\.?(t\.?|tember)?$/ => :september,
-        /^oct\.?(ober)?$/ => :october,
-        /^nov\.?(ember)?$/ => :november,
-        /^dec\.?(ember)?$/ => :december
+        /^jun[:\.]?e?$/ => :june,
+        /^jul[:\.]?y?$/ => :july,
+        /^aug[:\.]?(ust)?$/ => :august,
+        /^sep[:\.]?(t[:\.]?|tember)?$/ => :september,
+        /^oct[:\.]?(ober)?$/ => :october,
+        /^nov[:\.]?(ember)?$/ => :november,
+        /^dec[:\.]?(ember)?$/ => :december
       }
     end
 

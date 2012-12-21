@@ -33,6 +33,9 @@ class TestParsing < TestCase
     time = parse_now("aug 3", :context => :past)
     assert_equal Time.local(2006, 8, 3, 12), time
 
+    time = parse_now("aug. 3")
+    assert_equal Time.local(2006, 8, 3, 12), time
+
     time = parse_now("aug 20")
     assert_equal Time.local(2006, 8, 20, 12), time
 
