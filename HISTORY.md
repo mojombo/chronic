@@ -1,5 +1,8 @@
-# HEAD
+# 0.9.0 / 2012-12-21
 
+* Implement Chronic::Parser class and create an instance of this class
+  instead of leaving all data in the class level of Chronic
+* Various bug fixes
 * Add support for excel date formats (#149, @jmondo)
 * Added support for time expressions such as '10 till' or 'half
   past two' (#146, @chicagogrooves)
