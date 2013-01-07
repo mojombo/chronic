@@ -171,6 +171,7 @@ module Chronic
           Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy),
           Handler.new([:scalar_day, :separator_slash_or_dash?, :repeater_month_name, :separator_at?, 'time?'], :handle_sd_rmn),
           Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
+          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month], :handle_sy_sm),
           Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_year], :handle_sm_sy),
           Handler.new([:scalar_day, :separator_slash_or_dash, :repeater_month_name, :separator_slash_or_dash, :scalar_year, :repeater_time?], :handle_sm_rmn_sy),
           Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar?, :time_zone], :handle_generic),

@@ -250,11 +250,7 @@ module Chronic
       handle_sm_sd(new_tokens + time_tokens, options)
     end
 
-    # Handle scalar-month/scalar-year
-    def handle_sm_sy(tokens, options)
-      month = tokens[0].get_tag(ScalarMonth).type
-      year = tokens[1].get_tag(ScalarYear).type
-
+    def handle_year_and_month(year, month)
       if month == 12
         next_month_year = year + 1
         next_month_month = 1
@@ -269,6 +265,20 @@ module Chronic
       rescue ArgumentError
         nil
       end
+    end
+
+    # Handle scalar-month/scalar-year
+    def handle_sm_sy(tokens, options)
+      month = tokens[0].get_tag(ScalarMonth).type
+      year = tokens[1].get_tag(ScalarYear).type
+      handle_year_and_month(year, month)
+    end
+
+    # Handle scalar-year/scalar-month
+    def handle_sy_sm(tokens, options)
+      year = tokens[0].get_tag(ScalarYear).type
+      month = tokens[1].get_tag(ScalarMonth).type
+      handle_year_and_month(year, month)
     end
 
     # Handle RepeaterDayName RepeaterMonthName OrdinalDay
