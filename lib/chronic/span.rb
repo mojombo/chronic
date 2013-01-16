@@ -25,7 +25,7 @@ module Chronic
       '(' << self.begin.to_s << '..' << self.end.to_s << ')'
     end
 
-    alias :cover? :include? unless RUBY_VERSION =~ /^1.9/
+    alias :cover? :include? if RUBY_VERSION =~ /^1.8/
 
   end
 end
