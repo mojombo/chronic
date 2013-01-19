@@ -53,7 +53,6 @@ module Chronic
   VERSION = "0.9.0"
 
   class << self
-
     # Returns true when debug mode is enabled.
     attr_accessor :debug
 
@@ -106,7 +105,45 @@ module Chronic
   # text - The String text to parse.
   # opts - An optional Hash of configuration options passed to Parser::new.
   def self.parse(text, options = {})
+    # ensure current locale is available
+    raise ArgumentError, "#{locale} is not an available locale" unless has_locale(locale)
+
     Parser.new(options).parse(text)
+  end
+
+  # Adds a locale to the locale hash
+  #
+  # name - Symbol locale name
+  # locale - Hash locale values
+  def self.add_locale(name, locale)
+    raise ArgumentError, "Locale shoud be a hash" unless locale.is_a?(Hash)
+    locale_hashes[name] = locale
+  end
+
+  # Checks if a locale is available
+  #
+  # name - Symbol locale name
+  #
+  # Returns true if the locale is available, false if not
+  def self.has_locale(name)
+    locale_hashes.include? name
+  end
+
+
+  # Returns the translations for the current locale
+  def self.translate(keys, loc=nil)
+    loc ||= locale
+    node = locale_hashes[loc]
+
+    keys.each do |key|
+      if node.include? key
+        node = node[key]
+      else
+        return translate(keys, :en)
+      end
+    end
+
+    node
   end
 
   # Construct a new time object determining possible month overflows

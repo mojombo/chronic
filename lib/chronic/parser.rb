@@ -53,10 +53,6 @@ module Chronic
     # Parse "text" with the given options
     # Returns either a Time or Chronic::Span, depending on the value of options[:guess]
     def parse(text)
-      # ensure current locale is available
-      raise ArgumentError, "#{locale} is not an available locale" unless has_locale(locale)
-      options = DEFAULT_OPTIONS.merge opts
-
       tokens = tokenize(text, options)
       span = tokens_to_span(tokens, options.merge(:text => text))
 
@@ -90,12 +86,12 @@ module Chronic
     # Returns a new String ready for Chronic to parse.
     def pre_normalize(text)
       text = text.to_s.downcase
-      text = translate([:pre_normalize, :preprocess]).call(text)
-      translate([:pre_normalize, :pre_numerize]).each do |sub|
+      text = Chronic.translate([:pre_normalize, :preprocess]).call(text)
+      Chronic.translate([:pre_normalize, :pre_numerize]).each do |sub|
         text.gsub!(*sub)
       end
       text = Numerizer.numerize(text)
-      translate([:pre_normalize, :pos_numerize]).each do |sub|
+      Chronic.translate([:pre_normalize, :pos_numerize]).each do |sub|
         text.gsub!(*sub)
       end
       text
@@ -193,40 +189,6 @@ module Chronic
       else
         raise ArgumentError, "Unknown endian option '#{endian}'"
       end
-    end
-
-    # Adds a locale to the locale hash
-    #
-    # name - Symbol locale name
-    # locale - Hash locale values
-    def add_locale(name, locale)
-      raise ArgumentError, "Locale shoud be a hash" unless locale.is_a?(Hash)
-      locale_hashes[name] = locale
-    end
-
-    # Checks if a locale is available
-    #
-    # name - Symbol locale name
-    #
-    # Returns true if the locale is available, false if not
-    def has_locale(name)
-      locale_hashes.include? name
-    end
-
-    # Returns the translations for the current locale
-    def translate(keys, loc=nil)
-      loc ||= locale
-      node = locale_hashes[loc]
-
-      keys.each do |key|
-        if node.include? key
-          node = node[key]
-        else
-          return translate(keys, :en)
-        end
-      end
-
-      node
     end
 
     private
