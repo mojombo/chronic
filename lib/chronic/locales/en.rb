@@ -136,7 +136,7 @@ module Chronic
           [/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1']
         ],
         :pos_numerize => [
-          [/ \-(\d{4})\b/, ' tzminus\1'],
+          [/\-(\d{2}:?\d{2})\b/, 'tzminus\1'],
           [/([\/\-\,\@])/, ' \1 '],
           [/(?:^|\s)0(\d+:\d+\s*pm?\b)/, ' \1'],
           [/\btoday\b/, 'this day'],
