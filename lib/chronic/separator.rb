@@ -62,7 +62,7 @@ module Chronic
     #
     # Returns a new SeperatorAnd Object object.
     def self.scan_for_and(token)
-      scan_for token, SeparatorAnd, { /^and$/ => :and }
+      scan_for token, SeparatorAnd, { Chronic.translate([:token, :and]) => :and }
     end
 
     def to_s

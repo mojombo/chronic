@@ -173,7 +173,8 @@ module Chronic
         :comma => /^,$/,
         :at => /^(at|@)$/,
         :in => /^in$/,
-        :on => /^on$/
+        :on => /^on$/,
+        :and => /^and$/
       }
     }
   end
