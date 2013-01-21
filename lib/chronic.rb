@@ -87,6 +87,10 @@ module Chronic
     Parser.new(options).parse(text)
   end
 
+  def self.parse!(text, options = {})
+    parse(text, options) || ( raise RuntimeError.new("Could not parse: #{text}") )
+  end
+
   # Construct a new time object determining possible month overflows
   # and leap years.
   #

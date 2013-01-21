@@ -129,4 +129,10 @@ class TestChronic < TestCase
     assert_equal Time.local(2005, 12), Chronic.construct(2000, 72)
   end
 
+  def test_error_thrown_on_parse_fail
+    assert_raises(RuntimeError, "Could not parse: unparseable time string") do
+      Chronic.parse!("unparseable time string")
+    end
+  end
+
 end
