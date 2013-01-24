@@ -116,6 +116,7 @@ module Chronic
       text.gsub!(/\b(hence|after|from)\b/, 'future')
       text.gsub!(/^\s?an? /i, '1 ')
       text.gsub!(/\b(\d{4}):(\d{2}):(\d{2})\b/, '\1 / \2 / \3') # DTOriginal
+      text.gsub!(/\b0(\d+):(\d{2}):(\d{2}) ([ap]m)\b/, '\1:\2:\3 \4')
       text
     end
 
