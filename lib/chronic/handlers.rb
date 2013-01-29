@@ -414,7 +414,6 @@ module Chronic
 
     # Handle scalar/repeater/pointer
     def handle_s_r_p(tokens, options)
-      repeater = tokens[1].get_tag(Repeater)
       span = Span.new(self.now, self.now + 1)
 
       handle_srp(tokens, span, options)
