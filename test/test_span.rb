@@ -9,7 +9,7 @@ class TestSpan < TestCase
 
   def test_span_width
     span = Chronic::Span.new(Time.local(2006, 8, 16, 0), Time.local(2006, 8, 17, 0))
-    assert_equal (60 * 60 * 24), span.width
+    assert_equal((60 * 60 * 24), span.width)
   end
 
   def test_span_math
