@@ -18,12 +18,7 @@ module Chronic
     #
     # Returns a new Grabber object.
     def self.scan_for_all(token)
-      scan_for token, self,
-      {
-        /last/ => :last,
-        /this/ => :this,
-        /next/ => :next
-      }
+      scan_for token, self, Chronic.translate([:grabber])
     end
 
     def to_s
