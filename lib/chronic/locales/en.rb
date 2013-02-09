@@ -159,7 +159,8 @@ module Chronic
           [/(\d)([ap]m|oclock)\b/, '\1 \2'],
           [/\b(hence|after|from)\b/, 'future'],
           [/^\s?an? /i, '1 '],
-          [/\b(\d{4}):(\d{2}):(\d{2})\b/, '\1 / \2 / \3'] # DTOriginal
+          [/\b(\d{4}):(\d{2}):(\d{2})\b/, '\1 / \2 / \3'], # DTOriginal
+          [/\b0(\d+):(\d{2}):(\d{2}) ([ap]m)\b/, '\1:\2:\3 \4']
         ]
       },
 
