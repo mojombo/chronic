@@ -37,7 +37,8 @@ module Chronic
       ['seventh', '7'],
       ['eighth', '8'],
       ['ninth', '9'],
-      ['tenth', '10']
+      ['tenth', '10'],
+      ['twelfth', '12']
     ]
 
     TEN_PREFIXES = [
