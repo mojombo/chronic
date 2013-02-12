@@ -37,7 +37,16 @@ module Chronic
       ['seventh', '7'],
       ['eighth', '8'],
       ['ninth', '9'],
-      ['tenth', '10']
+      ['tenth', '10'],
+      ['twelfth', '12'],
+      ['twentieth', '20'],
+      ['thirtieth', '30'],
+      ['fourtieth', '40'],
+      ['fiftieth', '50'],
+      ['sixtieth', '60'],
+      ['seventieth', '70'],
+      ['eightieth', '80'],
+      ['ninetieth', '90']
     ]
 
     TEN_PREFIXES = [
@@ -90,7 +99,7 @@ module Chronic
       # hundreds, thousands, millions, etc.
 
       BIG_PREFIXES.each do |bp|
-        string.gsub!(/(?:<num>)?(\d*) *#{bp[0]}/i) { '<num>' + (bp[1] * $1.to_i).to_s}
+        string.gsub!(/(?:<num>)?(\d*) *#{bp[0]}/i) { $1.empty? ? bp[1] : '<num>' + (bp[1] * $1.to_i).to_s}
         andition(string)
       end
 
