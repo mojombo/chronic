@@ -1149,6 +1149,10 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 12, 31, 12), time
   end
 
+  def test_normalizing_day_portions
+    assert_equal pre_normalize("8:00 pm February 11"), pre_normalize("8:00 p.m. February 11")
+  end
+
   private
   def parse_now(string, options={})
     Chronic.parse(string, {:now => TIME_2006_08_16_14_00_00 }.merge(options))

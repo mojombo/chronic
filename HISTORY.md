@@ -1,3 +1,7 @@
+# HEAD
+
+* Ensure Chronic strips periods from day portions (#173)
+
 # 0.9.0 / 2012-12-21
 
 * Implement Chronic::Parser class and create an instance of this class
