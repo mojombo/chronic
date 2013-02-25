@@ -1,6 +1,8 @@
-# HEAD
+# 0.9.1 / 2013-02-25
 
 * Ensure Chronic strips periods from day portions (#173)
+* Properly numerize "twelfth", "twentieth" etc. (#172, James McKinney)
+* Ensure Chronic is compatible with Ruby 2.0.0 (#165, Ravil Bayramgalin)
 
 # 0.9.0 / 2012-12-21
 
