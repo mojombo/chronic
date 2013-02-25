@@ -43,5 +43,9 @@ module Chronic
     def to_s
       @word << '(' << @tags.join(', ') << ') '
     end
+
+    def inspect
+      to_s
+    end
   end
 end
