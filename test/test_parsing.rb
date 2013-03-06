@@ -367,8 +367,8 @@ class TestParsing < TestCase
     time = parse_now("2012-06")
     assert_equal Time.local(2012, 06, 16), time
 
-    time = parse_now("2013/11")
-    assert_equal Time.local(2013, 11, 16), time
+    time = parse_now("2013/12")
+    assert_equal Time.local(2013, 12, 16, 12, 0), time
   end
 
   def test_handle_r
