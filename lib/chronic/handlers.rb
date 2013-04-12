@@ -478,7 +478,7 @@ module Chronic
 
       if !time_tokens.empty?
         self.now = outer_span.begin
-        get_anchor(dealias_and_disambiguate_times(time_tokens, options), options)
+        get_anchor(dealias_and_disambiguate_times(time_tokens, options), options.merge(:context => :future))
       else
         outer_span
       end
