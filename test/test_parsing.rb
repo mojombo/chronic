@@ -282,6 +282,9 @@ class TestParsing < TestCase
     # month day overflows
     time = parse_now("30/2/2000")
     assert_nil time
+
+    time = parse_now("2013-03-12 17:00", :context => :past)
+    assert_equal Time.local(2013, 3, 12, 17, 0, 0), time
   end
 
   def test_handle_sd_sm_sy
