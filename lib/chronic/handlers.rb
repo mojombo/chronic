@@ -134,6 +134,8 @@ module Chronic
     def handle_generic(tokens, options)
       t = Chronic.time_class.parse(options[:text])
       Span.new(t, t + 1)
+    rescue ArgumentError => e
+      raise e unless e.message =~ /out of range/
     end
 
     # Handle repeater-month-name/scalar-day/scalar-year
