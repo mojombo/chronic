@@ -53,7 +53,6 @@ module Chronic
   VERSION = "0.9.1"
 
   class << self
-
     # Returns true when debug mode is enabled.
     attr_accessor :debug
 
@@ -69,11 +68,33 @@ module Chronic
     #
     # Returns The Time class Chronic uses internally.
     attr_accessor :time_class
+
+    # Returns the available locales that Chronic can use
+    attr_accessor :locale_hashes
+
+    # The current locale Chronic is using to parse strings
+    #
+    # Examples:
+    #
+    #   require 'chronic'
+    #
+    #   Chronic.locale = :'pt-BR'
+    #   Chronic.parse('15 de Junho de 2006 as 5:54 da manha ')
+    #     # => Thu, 15 Jun 2006 05:45:00 UTC +00:00
+    #
+    # Returns the locale name Chronic uses internally
+    attr_accessor :locale
   end
 
   self.debug = false
   self.time_class = Time
+  self.locale = :en
 
+  require 'chronic/locales/en'
+
+  self.locale_hashes = {
+    :en => Chronic::Locales::EN
+  }
 
   # Parses a string containing a natural language date or time.
   #
@@ -84,7 +105,45 @@ module Chronic
   # text - The String text to parse.
   # opts - An optional Hash of configuration options passed to Parser::new.
   def self.parse(text, options = {})
+    # ensure current locale is available
+    raise ArgumentError, "#{locale} is not an available locale" unless has_locale(locale)
+
     Parser.new(options).parse(text)
+  end
+
+  # Adds a locale to the locale hash
+  #
+  # name - Symbol locale name
+  # locale - Hash locale values
+  def self.add_locale(name, locale)
+    raise ArgumentError, "Locale shoud be a hash" unless locale.is_a?(Hash)
+    locale_hashes[name] = locale
+  end
+
+  # Checks if a locale is available
+  #
+  # name - Symbol locale name
+  #
+  # Returns true if the locale is available, false if not
+  def self.has_locale(name)
+    locale_hashes.include? name
+  end
+
+
+  # Returns the translations for the current locale
+  def self.translate(keys, loc=nil)
+    loc ||= locale
+    node = locale_hashes[loc]
+
+    keys.each do |key|
+      if node.include? key
+        node = node[key]
+      else
+        return translate(keys, :en)
+      end
+    end
+
+    node
   end
 
   # Construct a new time object determining possible month overflows
@@ -140,5 +199,4 @@ module Chronic
 
     Chronic.time_class.local(year, month, day, hour, minute, second)
   end
-
 end
