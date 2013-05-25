@@ -88,6 +88,7 @@ module Chronic
       text = text.to_s.downcase
       text.gsub!(/\b([ap])\.m\.?/, '\1m')
       text.gsub!(/\./, ':')
+      text.gsub!(/([ap]):m:?/, '\1m')
       text.gsub!(/['"]/, '')
       text.gsub!(/,/, ' ')
       text.gsub!(/^second /, '2nd ')
