@@ -64,7 +64,7 @@ module Chronic
 
       first = false
 
-      unless @current_time
+      unless instance_variable_defined?(:@current_time)
         first = true
         midnight = Chronic.time_class.local(@now.year, @now.month, @now.day)
 

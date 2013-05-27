@@ -25,7 +25,7 @@ module Chronic
     def next(pointer)
       super
 
-      if !@current_span
+      unless instance_variable_defined?(:@current_span)
         now_seconds = @now - Chronic.construct(@now.year, @now.month, @now.day)
         if now_seconds < @range.begin
           case pointer
@@ -84,7 +84,7 @@ module Chronic
 
     def width
       @range || raise("Range has not been set")
-      return @current_span.width if @current_span
+      return @current_span.width if instance_variable_defined?(:@current_span)
       if @type.kind_of? Integer
         return (12 * 60 * 60)
       else

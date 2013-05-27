@@ -9,7 +9,7 @@ module Chronic
     def next(pointer = :future)
       super
 
-      if !@current_minute_start
+      unless instance_variable_defined?(:@current_minute_start)
         case pointer
         when :future
           @current_minute_start = Chronic.construct(@now.year, @now.month, @now.day, @now.hour, @now.min + 1)

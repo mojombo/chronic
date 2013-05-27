@@ -478,7 +478,7 @@ module Chronic
     def day_or_time(day_start, time_tokens, options)
       outer_span = Span.new(day_start, day_start + (24 * 60 * 60))
 
-      if !time_tokens.empty?
+      unless time_tokens.empty?
         self.now = outer_span.begin
         get_anchor(dealias_and_disambiguate_times(time_tokens, options), options.merge(:context => :future))
       else

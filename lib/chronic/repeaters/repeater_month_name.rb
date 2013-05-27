@@ -23,7 +23,7 @@ module Chronic
     def next(pointer)
       super
 
-      if !@current_month_begin
+      unless instance_variable_defined?(:@current_month_begin)
         case pointer
         when :future
           if @now.month < index

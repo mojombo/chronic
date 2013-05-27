@@ -9,7 +9,7 @@ module Chronic
     def next(pointer)
       super
 
-      if !@current_day_start
+      unless instance_variable_defined?(:@current_day_start)
         @current_day_start = Chronic.time_class.local(@now.year, @now.month, @now.day)
       end
 

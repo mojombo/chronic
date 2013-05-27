@@ -11,7 +11,7 @@ module Chronic
 
       direction = pointer == :future ? 1 : -1
 
-      if !@second_start
+      unless instance_variable_defined?(:@second_start)
         @second_start = @now + (direction * SECOND_SECONDS)
       else
         @second_start += SECOND_SECONDS * direction

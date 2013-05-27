@@ -9,7 +9,7 @@ module Chronic
     def next(pointer)
       super
 
-      if !@current_week_start
+      unless instance_variable_defined?(:@current_week_start)
         case pointer
         when :future
           saturday_repeater = RepeaterDayName.new(:saturday)

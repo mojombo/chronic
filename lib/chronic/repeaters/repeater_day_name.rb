@@ -11,7 +11,7 @@ module Chronic
 
       direction = pointer == :future ? 1 : -1
 
-      if !@current_date
+      unless instance_variable_defined?(:@current_date)
         @current_date = Date.new(@now.year, @now.month, @now.day)
         @current_date += direction
 

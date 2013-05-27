@@ -12,7 +12,7 @@ module Chronic
     def next(pointer)
       super
 
-      if !@current_month_start
+      unless instance_variable_defined?(:@current_month_start)
         @current_month_start = offset_by(Chronic.construct(@now.year, @now.month), 1, pointer)
       else
         @current_month_start = offset_by(Chronic.construct(@current_month_start.year, @current_month_start.month), 1, pointer)
