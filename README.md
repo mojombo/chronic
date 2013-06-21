@@ -37,7 +37,14 @@ Chronic.parse('may 27th', :guess => false)
 
 Chronic.parse('6/4/2012', :endian_precedence => :little)
   #=> Fri Apr 06 00:00:00 PDT 2012
+
+Chronic.parse('INVALID DATE')
+  #=> nil
 ```
+
+If the parser can find a date or time, either a Time or Chronic::Span
+will be returned (depending on the value of `:guess`). If no
+date or time can be found, `nil` will be returned.
 
 See `Chronic.parse` for detailed usage instructions.
 
