@@ -28,30 +28,33 @@ module Chronic
 
     def initialize(time)
       @current_time = nil
-      t = time.gsub(/\:/, '')
+      timeParts = time.split(':')
+      raise("Time cannot have more than 4 groups of ':'") if timeParts.count > 4
 
-      @type =
-      case t.size
-      when 1..2
-        hours = t.to_i
-        Tick.new((hours == 12 ? 0 : hours) * 60 * 60, true)
-      when 3
-        hours = t[0..0].to_i
-        ambiguous = hours > 0
-        Tick.new((hours * 60 * 60) + (t[1..2].to_i * 60), ambiguous)
-      when 4
-        ambiguous = time =~ /:/ && t[0..0].to_i != 0 && t[0..1].to_i <= 12
-        hours = t[0..1].to_i
-        hours == 12 ? Tick.new(0 * 60 * 60 + t[2..3].to_i * 60, ambiguous) : Tick.new(hours * 60 * 60 + t[2..3].to_i * 60, ambiguous)
-      when 5
-        Tick.new(t[0..0].to_i * 60 * 60 + t[1..2].to_i * 60 + t[3..4].to_i, true)
-      when 6
-        ambiguous = time =~ /:/ && t[0..0].to_i != 0 && t[0..1].to_i <= 12
-        hours = t[0..1].to_i
-        hours == 12 ? Tick.new(0 * 60 * 60 + t[2..3].to_i * 60 + t[4..5].to_i, ambiguous) : Tick.new(hours * 60 * 60 + t[2..3].to_i * 60 + t[4..5].to_i, ambiguous)
-      else
-        raise("Time cannot exceed six digits")
+      if timeParts.first.length > 2 and timeParts.count == 1
+        if timeParts.first.length > 4
+          secondIndex = timeParts.first.length - 2
+          timeParts.insert(1, timeParts.first[secondIndex..timeParts.first.length])
+          timeParts[0] = timeParts.first[0..secondIndex - 1]
+        end
+        minuteIndex = timeParts.first.length - 2
+        timeParts.insert(1, timeParts.first[minuteIndex..timeParts.first.length])
+        timeParts[0] = timeParts.first[0..minuteIndex - 1]
       end
+
+      ambiguous = false
+      hours = timeParts.first.to_i
+      ambiguous = true if (timeParts.first.length == 1 and hours > 0) or (hours >= 10 and hours <= 12)
+      hours = (hours == 12 ? 0 : hours) * 60 * 60
+      minutes = 0
+      seconds = 0
+      subseconds = 0
+
+      minutes = timeParts[1].to_i * 60 if timeParts.count > 1
+      seconds = timeParts[2].to_i if timeParts.count > 2
+      subseconds = timeParts[3].to_f / (10 ** timeParts[3].length) if timeParts.count > 3
+
+      @type = Tick.new(hours + minutes + seconds + subseconds, ambiguous)
     end
 
     # Return the next past or future Span for the time that this Repeater represents
