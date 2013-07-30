@@ -86,6 +86,7 @@ module Chronic
     # Returns a new String ready for Chronic to parse.
     def pre_normalize(text)
       text = text.to_s.downcase
+      text.gsub!(/\b(\d{2})\.(\d{2})\.(\d{4})\b/, '\3 / \2 / \1')
       text.gsub!(/\b([ap])\.m\.?/, '\1m')
       text.gsub!(/\./, ':')
       text.gsub!(/([ap]):m:?/, '\1m')
