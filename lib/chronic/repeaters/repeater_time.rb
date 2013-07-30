@@ -27,6 +27,7 @@ module Chronic
     end
 
     def initialize(time)
+      @current_time = nil
       t = time.gsub(/\:/, '')
 
       @type =

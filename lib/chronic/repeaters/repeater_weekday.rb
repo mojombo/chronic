@@ -13,6 +13,7 @@ module Chronic
 
     def initialize(type)
       super
+      @current_weekday_start = nil
     end
 
     def next(pointer)
@@ -20,7 +21,7 @@ module Chronic
 
       direction = pointer == :future ? 1 : -1
 
-      if !@current_weekday_start
+      unless @current_weekday_start
         @current_weekday_start = Chronic.construct(@now.year, @now.month, @now.day)
         @current_weekday_start += direction * DAY_SECONDS
 

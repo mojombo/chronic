@@ -4,12 +4,13 @@ module Chronic
 
     def initialize(type)
       super
+      @current_week_start = nil
     end
 
     def next(pointer)
       super
 
-      if !@current_week_start
+      unless @current_week_start
         case pointer
         when :future
           sunday_repeater = RepeaterDayName.new(:sunday)
