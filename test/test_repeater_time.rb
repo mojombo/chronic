@@ -7,6 +7,12 @@ class TestRepeaterTime < TestCase
     @now = Time.local(2006, 8, 16, 14, 0, 0, 0)
   end
 
+  def test_generic
+    assert_raises(ArgumentError) do
+      Chronic::RepeaterTime.new('00:01:02:03:004')
+    end
+  end
+
   def test_next_future
     t = Chronic::RepeaterTime.new('4:00')
     t.start = @now
