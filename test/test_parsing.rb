@@ -26,6 +26,9 @@ class TestParsing < TestCase
     assert_equal time, time2
 
     assert_nil Chronic.parse("1/1/32.1")
+
+    time = Chronic.parse("28th")
+    assert_equal Time.new(Time.now.year, Time.now.month, 28), time
   end
 
   def test_handle_rmn_sd
