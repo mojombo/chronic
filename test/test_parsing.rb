@@ -311,6 +311,12 @@ class TestParsing < TestCase
 
     time = parse_now("03/18/2012 09:26 pm")
     assert_equal Time.local(2012, 3, 18, 21, 26), time
+
+    time = parse_now("30.07.2013 16:34:22")
+    assert_equal Time.local(2013, 7, 30, 16, 34, 22), time
+
+    time = parse_now("09.08.2013")
+    assert_equal Time.local(2013, 8, 9, 12), time
   end
 
   def test_handle_sy_sm_sd
@@ -340,6 +346,12 @@ class TestParsing < TestCase
 
     time = parse_now("1902-08-20")
     assert_equal Time.local(1902, 8, 20, 12, 0, 0), time
+
+    time = parse_now("2013.07.30 11:45:23")
+    assert_equal Time.local(2013, 7, 30, 11, 45, 23), time
+
+    time = parse_now("2013.08.09")
+    assert_equal Time.local(2013, 8, 9, 12, 0, 0), time
 
     # exif date time original
     time = parse_now("2012:05:25 22:06:50")
