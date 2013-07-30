@@ -18,12 +18,13 @@ module Chronic
 
     def initialize(type)
       super
+      @current_month_begin = nil
     end
 
     def next(pointer)
       super
 
-      unless instance_variable_defined?(:@current_month_begin)
+      unless @current_month_begin
         case pointer
         when :future
           if @now.month < index

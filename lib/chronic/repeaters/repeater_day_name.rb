@@ -4,6 +4,7 @@ module Chronic
 
     def initialize(type)
       super
+      @current_date = nil
     end
 
     def next(pointer)
@@ -11,7 +12,7 @@ module Chronic
 
       direction = pointer == :future ? 1 : -1
 
-      unless instance_variable_defined?(:@current_date)
+      unless @current_date
         @current_date = Date.new(@now.year, @now.month, @now.day)
         @current_date += direction
 

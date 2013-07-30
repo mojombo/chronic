@@ -27,6 +27,7 @@ module Chronic
     end
 
     def initialize(time)
+      @current_time = nil
       t = time.gsub(/\:/, '')
 
       @type =
@@ -64,7 +65,7 @@ module Chronic
 
       first = false
 
-      unless instance_variable_defined?(:@current_time)
+      unless @current_time
         first = true
         midnight = Chronic.time_class.local(@now.year, @now.month, @now.day)
 
