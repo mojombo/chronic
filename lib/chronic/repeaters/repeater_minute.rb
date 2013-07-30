@@ -4,12 +4,13 @@ module Chronic
 
     def initialize(type)
       super
+      @current_minute_start = nil
     end
 
     def next(pointer = :future)
       super
 
-      if !@current_minute_start
+      unless @current_minute_start
         case pointer
         when :future
           @current_minute_start = Chronic.construct(@now.year, @now.month, @now.day, @now.hour, @now.min + 1)

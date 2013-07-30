@@ -11,6 +11,7 @@ module Chronic
 
     def initialize(type)
       super
+      @current_span = nil
 
       if type.kind_of? Integer
         @range = (@type * 60 * 60)..((@type + 12) * 60 * 60)
@@ -25,7 +26,7 @@ module Chronic
     def next(pointer)
       super
 
-      if !@current_span
+      unless @current_span
         now_seconds = @now - Chronic.construct(@now.year, @now.month, @now.day)
         if now_seconds < @range.begin
           case pointer

@@ -4,12 +4,13 @@ module Chronic
 
     def initialize(type)
       super
+      @current_day_start = nil
     end
 
     def next(pointer)
       super
 
-      if !@current_day_start
+      unless @current_day_start
         @current_day_start = Chronic.time_class.local(@now.year, @now.month, @now.day)
       end
 
