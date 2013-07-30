@@ -88,7 +88,7 @@ module Chronic
     #
     # Returns a new Repeater object.
     def self.scan_for_times(token)
-      scan_for token, RepeaterTime, /^\d{1,2}(:?\d{1,2})?([\.:]?\d{1,2})?$/
+      scan_for token, RepeaterTime, /^\d{1,2}(:?\d{1,2})?([\.:]?\d{1,2}([\.:]\d{1,6})?)?$/
     end
 
     # token - The Token object we want to scan.

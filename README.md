@@ -135,6 +135,7 @@ Specific Times (many of the above with an added time)
 * January 5 at 7pm
 * 22nd of june at 8am
 * 1979-05-27 05:00:00
+* 03/01/2012 07:25:09.234567
 * etc
 
 

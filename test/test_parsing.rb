@@ -23,7 +23,11 @@ class TestParsing < TestCase
 
     time = Chronic.parse("2012-01-03 01:00:00.100")
     time2 = Time.parse("2012-01-03 01:00:00.100")
-    assert_equal time, time2
+    assert_in_delta time, time2, 0.001
+
+    time = Chronic.parse("2012-01-03 01:00:00.234567")
+    time2 = Time.parse("2012-01-03 01:00:00.234567")
+    assert_in_delta time, time2, 0.000001
 
     assert_nil Chronic.parse("1/1/32.1")
 
@@ -64,6 +68,9 @@ class TestParsing < TestCase
 
     time = parse_now("may 28 at 5:32.19pm", :context => :past)
     assert_equal Time.local(2006, 5, 28, 17, 32, 19), time
+
+    time = parse_now("may 28 at 5:32:19.764")
+    assert_in_delta Time.local(2007, 5, 28, 17, 32, 19, 764000), time, 0.001
   end
 
   def test_handle_rmn_sd_on
@@ -171,6 +178,9 @@ class TestParsing < TestCase
 
     time = parse_now("2011-07-03 21:11:35 UTC")
     assert_equal 1309727495, time.to_i
+
+    time = parse_now("2011-07-03 21:11:35.362 UTC")
+    assert_in_delta 1309727495.362, time.to_f, 0.001
   end
 
   def test_handle_rmn_sd_sy
@@ -324,6 +334,9 @@ class TestParsing < TestCase
 
     time = parse_now("2006-08-20 15:30.30")
     assert_equal Time.local(2006, 8, 20, 15, 30, 30), time
+
+    time = parse_now("2006-08-20 15:30:30:000536")
+    assert_in_delta Time.local(2006, 8, 20, 15, 30, 30, 536), time, 0.000001
 
     time = parse_now("1902-08-20")
     assert_equal Time.local(1902, 8, 20, 12, 0, 0), time

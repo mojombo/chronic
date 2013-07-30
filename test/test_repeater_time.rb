@@ -7,6 +7,12 @@ class TestRepeaterTime < TestCase
     @now = Time.local(2006, 8, 16, 14, 0, 0, 0)
   end
 
+  def test_generic
+    assert_raises(ArgumentError) do
+      Chronic::RepeaterTime.new('00:01:02:03:004')
+    end
+  end
+
   def test_next_future
     t = Chronic::RepeaterTime.new('4:00')
     t.start = @now
@@ -25,6 +31,12 @@ class TestRepeaterTime < TestCase
 
     assert_equal Time.local(2006, 8, 17, 4), t.next(:future).begin
     assert_equal Time.local(2006, 8, 18, 4), t.next(:future).begin
+
+    t = Chronic::RepeaterTime.new('0000')
+    t.start = @now
+
+    assert_equal Time.local(2006, 8, 17, 0), t.next(:future).begin
+    assert_equal Time.local(2006, 8, 18, 0), t.next(:future).begin
   end
 
   def test_next_past
@@ -39,6 +51,12 @@ class TestRepeaterTime < TestCase
 
     assert_equal Time.local(2006, 8, 16, 13), t.next(:past).begin
     assert_equal Time.local(2006, 8, 15, 13), t.next(:past).begin
+
+    t = Chronic::RepeaterTime.new('0:00.000')
+    t.start = @now
+
+    assert_equal Time.local(2006, 8, 16, 0), t.next(:past).begin
+    assert_equal Time.local(2006, 8, 15, 0), t.next(:past).begin
   end
 
   def test_type
