@@ -28,31 +28,31 @@ module Chronic
 
     def initialize(time)
       @current_time = nil
-      timeParts = time.split(':')
-      raise("Time cannot have more than 4 groups of ':'") if timeParts.count > 4
+      time_parts = time.split(':')
+      raise ArgumentError, "Time cannot have more than 4 groups of ':'" if time_parts.count > 4
 
-      if timeParts.first.length > 2 and timeParts.count == 1
-        if timeParts.first.length > 4
-          secondIndex = timeParts.first.length - 2
-          timeParts.insert(1, timeParts.first[secondIndex..timeParts.first.length])
-          timeParts[0] = timeParts.first[0..secondIndex - 1]
+      if time_parts.first.length > 2 and time_parts.count == 1
+        if time_parts.first.length > 4
+          second_index = time_parts.first.length - 2
+          time_parts.insert(1, time_parts.first[second_index..time_parts.first.length])
+          time_parts[0] = time_parts.first[0..second_index - 1]
         end
-        minuteIndex = timeParts.first.length - 2
-        timeParts.insert(1, timeParts.first[minuteIndex..timeParts.first.length])
-        timeParts[0] = timeParts.first[0..minuteIndex - 1]
+        minute_index = time_parts.first.length - 2
+        time_parts.insert(1, time_parts.first[minute_index..time_parts.first.length])
+        time_parts[0] = time_parts.first[0..minute_index - 1]
       end
 
       ambiguous = false
-      hours = timeParts.first.to_i
-      ambiguous = true if (timeParts.first.length == 1 and hours > 0) or (hours >= 10 and hours <= 12)
+      hours = time_parts.first.to_i
+      ambiguous = true if (time_parts.first.length == 1 and hours > 0) or (hours >= 10 and hours <= 12)
       hours = (hours == 12 ? 0 : hours) * 60 * 60
       minutes = 0
       seconds = 0
       subseconds = 0
 
-      minutes = timeParts[1].to_i * 60 if timeParts.count > 1
-      seconds = timeParts[2].to_i if timeParts.count > 2
-      subseconds = timeParts[3].to_f / (10 ** timeParts[3].length) if timeParts.count > 3
+      minutes = time_parts[1].to_i * 60 if time_parts.count > 1
+      seconds = time_parts[2].to_i if time_parts.count > 2
+      subseconds = time_parts[3].to_f / (10 ** time_parts[3].length) if time_parts.count > 3
 
       @type = Tick.new(hours + minutes + seconds + subseconds, ambiguous)
     end
