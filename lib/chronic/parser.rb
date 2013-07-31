@@ -47,7 +47,9 @@ module Chronic
     #                 future, `now - x years` is assumed to be the past.
     def initialize(options = {})
       @options = DEFAULT_OPTIONS.merge(options)
-      @now = options.delete(:now) || Chronic.time_class.now
+      now = options.delete(:now)
+      now = Chronic.parse(now) if now.is_a?(String)
+      @now = now || Chronic.time_class.now
     end
 
     # Parse "text" with the given options
