@@ -18,6 +18,10 @@ class TestParsing < TestCase
     time = Chronic.parse("2012-08-02T08:00:00-04:00")
     assert_equal Time.utc(2012, 8, 2, 12), time
 
+    time = Chronic.parse("2013-08-01T19:30:00.345-07:00")
+    time2 = Time.parse("2013-08-01 019:30:00.345-07:00")
+    assert_in_delta time, time2, 0.001
+
     time = Chronic.parse("2012-08-02T12:00:00Z")
     assert_equal Time.utc(2012, 8, 2, 12), time
 
