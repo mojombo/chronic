@@ -151,7 +151,7 @@ module Chronic
         ],
 
         :date => [
-          Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :repeater_time, :separator_slash_or_dash?, :time_zone, :scalar_year], :handle_generic),
+          Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :repeater_time, [:separator_slash?, :separator_dash?], :time_zone, :scalar_year], :handle_generic),
           Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day], :handle_rdn_rmn_sd),
           Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :scalar_year], :handle_rdn_rmn_sd_sy),
           Handler.new([:repeater_day_name, :repeater_month_name, :ordinal_day], :handle_rdn_rmn_od),
@@ -159,13 +159,13 @@ module Chronic
           Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :separator_at?, 'time?'], :handle_rdn_rmn_sd),
           Handler.new([:repeater_day_name, :repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rdn_rmn_od),
           Handler.new([:repeater_day_name, :ordinal_day, :separator_at?, 'time?'], :handle_rdn_od),
-          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_day, :repeater_time, :time_zone], :handle_generic),
+          Handler.new([:scalar_year, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar_day, :repeater_time, :time_zone], :handle_generic),
           Handler.new([:ordinal_day], :handle_generic),
           Handler.new([:repeater_month_name, :scalar_day, :scalar_year], :handle_rmn_sd_sy),
           Handler.new([:repeater_month_name, :ordinal_day, :scalar_year], :handle_rmn_od_sy),
           Handler.new([:repeater_month_name, :scalar_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_sd_sy),
           Handler.new([:repeater_month_name, :ordinal_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_od_sy),
-          Handler.new([:repeater_month_name, :separator_slash_or_dash?, :scalar_day, :separator_at?, 'time?'], :handle_rmn_sd),
+          Handler.new([:repeater_month_name, [:separator_slash?, :separator_dash?], :scalar_day, :separator_at?, 'time?'], :handle_rmn_sd),
           Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :scalar_day], :handle_rmn_sd_on),
           Handler.new([:repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rmn_od),
           Handler.new([:ordinal_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_od_rmn_sy),
@@ -175,12 +175,12 @@ module Chronic
           Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :ordinal_day], :handle_rmn_od_on),
           Handler.new([:repeater_month_name, :scalar_year], :handle_rmn_sy),
           Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy),
-          Handler.new([:scalar_day, :separator_slash_or_dash?, :repeater_month_name, :separator_at?, 'time?'], :handle_sd_rmn),
-          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
-          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month], :handle_sy_sm),
-          Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_year], :handle_sm_sy),
-          Handler.new([:scalar_day, :separator_slash_or_dash, :repeater_month_name, :separator_slash_or_dash, :scalar_year, :repeater_time?], :handle_sm_rmn_sy),
-          Handler.new([:scalar_year, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar?, :time_zone], :handle_generic),
+          Handler.new([:scalar_day, [:separator_slash?, :separator_dash?], :repeater_month_name, :separator_at?, 'time?'], :handle_sd_rmn),
+          Handler.new([:scalar_year, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
+          Handler.new([:scalar_year, [:separator_slash, :separator_dash], :scalar_month], :handle_sy_sm),
+          Handler.new([:scalar_month, [:separator_slash, :separator_dash], :scalar_year], :handle_sm_sy),
+          Handler.new([:scalar_day, [:separator_slash, :separator_dash], :repeater_month_name, [:separator_slash, :separator_dash], :scalar_year, :repeater_time?], :handle_sm_rmn_sy),
+          Handler.new([:scalar_year, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar?, :time_zone], :handle_generic),
         ],
 
         :anchor => [
@@ -203,10 +203,10 @@ module Chronic
       }
 
       endians = [
-        Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
-        Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sm_sd),
-        Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_at?, 'time?'], :handle_sd_sm),
-        Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
+        Handler.new([:scalar_month, [:separator_slash, :separator_dash], :scalar_day, [:separator_slash, :separator_dash], :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
+        Handler.new([:scalar_month, [:separator_slash, :separator_dash], :scalar_day, :separator_at?, 'time?'], :handle_sm_sd),
+        Handler.new([:scalar_day, [:separator_slash, :separator_dash], :scalar_month, :separator_at?, 'time?'], :handle_sd_sm),
+        Handler.new([:scalar_day, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
       ]
 
       case endian = Array(options[:endian_precedence]).first
@@ -249,7 +249,7 @@ module Chronic
 
       definitions[:arrow].each do |handler|
         if handler.match(tokens, definitions)
-          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlashOrDash) || o.get_tag(SeparatorComma) || o.get_tag(SeparatorAnd) }
+          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlash) || o.get_tag(SeparatorDash) || o.get_tag(SeparatorComma) || o.get_tag(SeparatorAnd) }
           return handler.invoke(:arrow, good_tokens, self, options)
         end
       end
