@@ -6,8 +6,9 @@ module Chronic
     attr_accessor :type
 
     # type - The Symbol type of this tag.
-    def initialize(type)
+    def initialize(type, options = {})
       @type = type
+      @options = options
     end
 
     # time - Set the start Time for this Tag.
@@ -18,13 +19,13 @@ module Chronic
     class << self
       private
 
-      def scan_for(token, klass, items={})
+      def scan_for(token, klass, items={}, options = {})
         case items
         when Regexp
-          return klass.new(token.word) if items =~ token.word
+          return klass.new(token.word, options) if items =~ token.word
         when Hash
           items.each do |item, symbol|
-            return klass.new(symbol) if item =~ token.word
+            return klass.new(symbol, options) if item =~ token.word
           end
         end
         nil

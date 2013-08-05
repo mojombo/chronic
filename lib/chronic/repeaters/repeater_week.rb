@@ -2,7 +2,7 @@ module Chronic
   class RepeaterWeek < Repeater #:nodoc:
     WEEK_SECONDS = 604800 # (7 * 24 * 60 * 60)
 
-    def initialize(type)
+    def initialize(type, options = {})
       super
       @current_week_start = nil
     end

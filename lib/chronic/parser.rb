@@ -8,6 +8,7 @@ module Chronic
     DEFAULT_OPTIONS = {
       :context => :future,
       :now => nil,
+      :hours24 => nil,
       :guess => true,
       :ambiguous_time_range => 6,
       :endian_precedence    => [:middle, :little],
@@ -23,6 +24,7 @@ module Chronic
     #                   given, it will assume it is in the past.
     #        :now - Time, all computations will be based off of time
     #               instead of Time.now.
+    #        :hours24 - Time will be parsed as it would be 24 hour clock.
     #        :guess - By default the parser will guess a single point in time
     #                 for the given date or time. If you'd rather have the
     #                 entire time span returned, set this to false
