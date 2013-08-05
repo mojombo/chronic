@@ -74,7 +74,7 @@ module Chronic
     private
 
     def month_days(year, month)
-      Date.leap?(year) ? MONTH_DAYS_LEAP[month - 1] : MONTH_DAYS[month - 1]
+      ::Date.leap?(year) ? MONTH_DAYS_LEAP[month - 1] : MONTH_DAYS[month - 1]
     end
   end
 end

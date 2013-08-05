@@ -68,7 +68,7 @@ module Chronic
     end
 
     def month_days(year, month)
-      if Date.leap?(year)
+      if ::Date.leap?(year)
         RepeaterMonth::MONTH_DAYS_LEAP[month - 1]
       else
         RepeaterMonth::MONTH_DAYS[month - 1]

@@ -13,7 +13,7 @@ module Chronic
       direction = pointer == :future ? 1 : -1
 
       unless @current_date
-        @current_date = Date.new(@now.year, @now.month, @now.day)
+        @current_date = ::Date.new(@now.year, @now.month, @now.day)
         @current_date += direction
 
         day_num = symbol_to_number(@type)
