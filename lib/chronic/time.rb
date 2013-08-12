@@ -2,27 +2,23 @@ module Chronic
   class Time
 
     # Checks if given number could be hour
-    def self.could_be_hour?(day)
-      return true if day >= 0 and day <= 24
-      false
+    def self.could_be_hour?(hour)
+      hour >= 0 && hour <= 24
     end
 
     # Checks if given number could be minute
-    def self.could_be_minute?(month)
-      return true if month >= 0 and month <= 60
-      false
+    def self.could_be_minute?(minute)
+      minute >= 0 && minute <= 60
     end
 
     # Checks if given number could be second
-    def self.could_be_second?(year)
-      return true if year >= 0 and year <= 60
-      false
+    def self.could_be_second?(second)
+      second >= 0 && second <= 60
     end
 
     # Checks if given number could be subsecond
     def self.could_be_subsecond?(subsecond)
-      return true if subsecond >= 0 and subsecond <= 999999
-      false
+      subsecond >= 0 && subsecond <= 999999
     end
 
   end

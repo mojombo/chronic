@@ -3,20 +3,17 @@ module Chronic
 
     # Checks if given number could be day
     def self.could_be_day?(day)
-      return true if day >= 1 and day <= 31
-      false
+      day >= 1 && day <= 31
     end
 
     # Checks if given number could be month
     def self.could_be_month?(month)
-      return true if month >= 1 and month <= 12
-      false
+      month >= 1 && month <= 12
     end
 
     # Checks if given number could be year
     def self.could_be_year?(year)
-      return true if year >= 1 and year <= 9999
-      false
+      year >= 1 && year <= 9999
     end
 
     # Build a year from a 2 digit suffix.
