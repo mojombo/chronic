@@ -2,7 +2,7 @@ module Chronic
   class RepeaterDayName < Repeater #:nodoc:
     DAY_SECONDS = 86400 # (24 * 60 * 60)
 
-    def initialize(type)
+    def initialize(type, options = {})
       super
       @current_date = nil
     end
@@ -13,7 +13,7 @@ module Chronic
       direction = pointer == :future ? 1 : -1
 
       unless @current_date
-        @current_date = Date.new(@now.year, @now.month, @now.day)
+        @current_date = ::Date.new(@now.year, @now.month, @now.day)
         @current_date += direction
 
         day_num = symbol_to_number(@type)

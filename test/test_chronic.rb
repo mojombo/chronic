@@ -58,10 +58,10 @@ class TestChronic < TestCase
   def test_endian_definitions
     # middle, little
     endians = [
-      Chronic::Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
-      Chronic::Handler.new([:scalar_month, :separator_slash_or_dash, :scalar_day, :separator_at?, 'time?'], :handle_sm_sd),
-      Chronic::Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_at?, 'time?'], :handle_sd_sm),
-      Chronic::Handler.new([:scalar_day, :separator_slash_or_dash, :scalar_month, :separator_slash_or_dash, :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
+      Chronic::Handler.new([:scalar_month, [:separator_slash, :separator_dash], :scalar_day, [:separator_slash, :separator_dash], :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
+      Chronic::Handler.new([:scalar_month, [:separator_slash, :separator_dash], :scalar_day, :separator_at?, 'time?'], :handle_sm_sd),
+      Chronic::Handler.new([:scalar_day, [:separator_slash, :separator_dash], :scalar_month, :separator_at?, 'time?'], :handle_sd_sm),
+      Chronic::Handler.new([:scalar_day, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
     ]
 
     assert_equal endians, Chronic::Parser.new.definitions[:endian]

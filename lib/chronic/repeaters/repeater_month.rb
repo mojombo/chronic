@@ -5,7 +5,7 @@ module Chronic
     MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     MONTH_DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-    def initialize(type)
+    def initialize(type, options = {})
       super
       @current_month_start = nil
     end
@@ -74,7 +74,7 @@ module Chronic
     private
 
     def month_days(year, month)
-      Date.leap?(year) ? MONTH_DAYS_LEAP[month - 1] : MONTH_DAYS[month - 1]
+      ::Date.leap?(year) ? MONTH_DAYS_LEAP[month - 1] : MONTH_DAYS[month - 1]
     end
   end
 end

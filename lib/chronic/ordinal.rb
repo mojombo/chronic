@@ -9,26 +9,16 @@ module Chronic
     #
     # Returns an Array of tokens.
     def self.scan(tokens, options)
-      tokens.each do |token|
-        if t = scan_for_ordinals(token) then token.tag(t) end
-        if t = scan_for_days(token) then token.tag(t) end
-      end
-    end
-
-    # token - The Token object we want to scan.
-    #
-    # Returns a new Ordinal object.
-    def self.scan_for_ordinals(token)
-      Ordinal.new($1.to_i) if token.word =~ /^(\d*)(st|nd|rd|th)$/
-    end
-
-    # token - The Token object we want to scan.
-    #
-    # Returns a new Ordinal object.
-    def self.scan_for_days(token)
-      if token.word =~ /^(\d*)(st|nd|rd|th)$/
-        unless $1.to_i > 31 || $1.to_i < 1
-          OrdinalDay.new(token.word.to_i)
+      tokens.each_index do |i|
+        if tokens[i].word =~ /^(\d+)(st|nd|rd|th|\.)$/
+            ordinal = $1.to_i
+            tokens[i].tag(Ordinal.new(ordinal))
+            tokens[i].tag(OrdinalDay.new(ordinal)) if Chronic::Date::could_be_day?(ordinal)
+            tokens[i].tag(OrdinalMonth.new(ordinal)) if Chronic::Date::could_be_month?(ordinal)
+            if Chronic::Date::could_be_year?(ordinal)
+                year = Chronic::Date::make_year(ordinal, options[:ambiguous_year_future_bias])
+                tokens[i].tag(OrdinalYear.new(year.to_i))
+            end
         end
       end
     end
@@ -41,6 +31,18 @@ module Chronic
   class OrdinalDay < Ordinal #:nodoc:
     def to_s
       super << '-day-' << @type.to_s
+    end
+  end
+
+  class OrdinalMonth < Ordinal #:nodoc:
+    def to_s
+      super << '-month-' << @type.to_s
+    end
+  end
+
+  class OrdinalYear < Ordinal #:nodoc:
+    def to_s
+      super << '-year-' << @type.to_s
     end
   end
 

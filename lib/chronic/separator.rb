@@ -11,11 +11,18 @@ module Chronic
     def self.scan(tokens, options)
       tokens.each do |token|
         if t = scan_for_commas(token) then token.tag(t); next end
-        if t = scan_for_slash_or_dash(token) then token.tag(t); next end
+        if t = scan_for_dots(token) then token.tag(t); next end
+        if t = scan_for_colon(token) then token.tag(t); next end
+        if t = scan_for_space(token) then token.tag(t); next end
+        if t = scan_for_slash(token) then token.tag(t); next end
+        if t = scan_for_dash(token) then token.tag(t); next end
+        if t = scan_for_quote(token) then token.tag(t); next end
         if t = scan_for_at(token) then token.tag(t); next end
         if t = scan_for_in(token) then token.tag(t); next end
         if t = scan_for_on(token) then token.tag(t); next end
         if t = scan_for_and(token) then token.tag(t); next end
+        if t = scan_for_t(token) then token.tag(t); next end
+        if t = scan_for_w(token) then token.tag(t); next end
       end
     end
 
@@ -28,12 +35,47 @@ module Chronic
 
     # token - The Token object we want to scan.
     #
-    # Returns a new SeparatorSlashOrDash object.
-    def self.scan_for_slash_or_dash(token)
-      scan_for token, SeparatorSlashOrDash,
+    # Returns a new SeparatorDot object.
+    def self.scan_for_dots(token)
+      scan_for token, SeparatorDot, { /^\.$/ => :dot }
+    end
+
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeparatorColon object.
+    def self.scan_for_colon(token)
+      scan_for token, SeparatorColon, { /^:$/ => :colon }
+    end
+
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeparatorSpace object.
+    def self.scan_for_space(token)
+      scan_for token, SeparatorSpace, { /^ $/ => :space }
+    end
+
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeparatorSlash object.
+    def self.scan_for_slash(token)
+      scan_for token, SeparatorSlash, { /^\/$/ => :slash }
+    end
+
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeparatorDash object.
+    def self.scan_for_dash(token)
+      scan_for token, SeparatorDash, { /^-$/ => :dash }
+    end
+
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeparatorQuote object.
+    def self.scan_for_quote(token)
+      scan_for token, SeparatorQuote,
       {
-        /^-$/ => :dash,
-        /^\/$/ => :slash
+        /^'$/ => :single_quote,
+        /^"$/ => :double_quote
       }
     end
 
@@ -65,6 +107,20 @@ module Chronic
       scan_for token, SeparatorAnd, { /^and$/ => :and }
     end
 
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeperatorT Object object.
+    def self.scan_for_t(token)
+      scan_for token, SeparatorT, { /^t$/ => :T }
+    end
+
+    # token - The Token object we want to scan.
+    #
+    # Returns a new SeperatorW Object object.
+    def self.scan_for_w(token)
+      scan_for token, SeparatorW, { /^w$/ => :W }
+    end
+
     def to_s
       'separator'
     end
@@ -76,9 +132,39 @@ module Chronic
     end
   end
 
-  class SeparatorSlashOrDash < Separator #:nodoc:
+  class SeparatorDot < Separator #:nodoc:
     def to_s
-      super << '-slashordash-' << @type.to_s
+      super << '-dot'
+    end
+  end
+
+  class SeparatorColon < Separator #:nodoc:
+    def to_s
+      super << '-colon'
+    end
+  end
+
+  class SeparatorSpace < Separator #:nodoc:
+    def to_s
+      super << '-space'
+    end
+  end
+
+  class SeparatorSlash < Separator #:nodoc:
+    def to_s
+      super << '-slash'
+    end
+  end
+
+  class SeparatorDash < Separator #:nodoc:
+    def to_s
+      super << '-dash'
+    end
+  end
+
+  class SeparatorQuote < Separator #:nodoc:
+    def to_s
+      super << '-quote-' << @type.to_s
     end
   end
 
@@ -105,4 +191,17 @@ module Chronic
       super << '-and'
     end
   end
+
+  class SeparatorT < Separator #:nodoc:
+    def to_s
+      super << '-T'
+    end
+  end
+
+  class SeparatorW < Separator #:nodoc:
+    def to_s
+      super << '-W'
+    end
+  end
+
 end

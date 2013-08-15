@@ -424,6 +424,18 @@ class TestParsing < TestCase
     time = parse_now("01:00:00 PM")
     assert_equal Time.local(2006, 8, 16, 13), time
 
+    time = parse_now("today at 02:00:00", :hours24 => false)
+    assert_equal Time.local(2006, 8, 16, 14), time
+
+    time = parse_now("today at 02:00:00 AM", :hours24 => false)
+    assert_equal Time.local(2006, 8, 16, 2), time
+
+    time = parse_now("today at 3:00:00", :hours24 => true)
+    assert_equal Time.local(2006, 8, 16, 3), time
+
+    time = parse_now("today at 03:00:00", :hours24 => true)
+    assert_equal Time.local(2006, 8, 16, 3), time
+
     time = parse_now("tomorrow at 4a.m.")
     assert_equal Time.local(2006, 8, 17, 4), time
   end

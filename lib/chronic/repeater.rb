@@ -10,32 +10,32 @@ module Chronic
     # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
-        if t = scan_for_season_names(token) then token.tag(t); next end
-        if t = scan_for_month_names(token) then token.tag(t); next end
-        if t = scan_for_day_names(token) then token.tag(t); next end
-        if t = scan_for_day_portions(token) then token.tag(t); next end
-        if t = scan_for_times(token) then token.tag(t); next end
-        if t = scan_for_units(token) then token.tag(t); next end
+        if t = scan_for_season_names(token, options) then token.tag(t); next end
+        if t = scan_for_month_names(token, options) then token.tag(t); next end
+        if t = scan_for_day_names(token, options) then token.tag(t); next end
+        if t = scan_for_day_portions(token, options) then token.tag(t); next end
+        if t = scan_for_times(token, options) then token.tag(t); next end
+        if t = scan_for_units(token, options) then token.tag(t); next end
       end
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new Repeater object.
-    def self.scan_for_season_names(token)
+    def self.scan_for_season_names(token, options = {})
       scan_for token, RepeaterSeasonName,
       {
         /^springs?$/ => :spring,
         /^summers?$/ => :summer,
         /^(autumn)|(fall)s?$/ => :autumn,
         /^winters?$/ => :winter
-      }
+      }, options
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new Repeater object.
-    def self.scan_for_month_names(token)
+    def self.scan_for_month_names(token, options = {})
       scan_for token, RepeaterMonthName,
       {
         /^jan[:\.]?(uary)?$/ => :january,
@@ -50,13 +50,13 @@ module Chronic
         /^oct[:\.]?(ober)?$/ => :october,
         /^nov[:\.]?(ember)?$/ => :november,
         /^dec[:\.]?(ember)?$/ => :december
-      }
+      }, options
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new Repeater object.
-    def self.scan_for_day_names(token)
+    def self.scan_for_day_names(token, options = {})
       scan_for token, RepeaterDayName,
       {
         /^m[ou]n(day)?$/ => :monday,
@@ -66,13 +66,13 @@ module Chronic
         /^fr[iy](day)?$/ => :friday,
         /^sat(t?[ue]rday)?$/ => :saturday,
         /^su[nm](day)?$/ => :sunday
-      }
+      }, options
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new Repeater object.
-    def self.scan_for_day_portions(token)
+    def self.scan_for_day_portions(token, options = {})
       scan_for token, RepeaterDayPortion,
       {
         /^ams?$/ => :am,
@@ -81,20 +81,20 @@ module Chronic
         /^afternoons?$/ => :afternoon,
         /^evenings?$/ => :evening,
         /^(night|nite)s?$/ => :night
-      }
+      }, options
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new Repeater object.
-    def self.scan_for_times(token)
-      scan_for token, RepeaterTime, /^\d{1,2}(:?\d{1,2})?([\.:]?\d{1,2}([\.:]\d{1,6})?)?$/
+    def self.scan_for_times(token, options = {})
+      scan_for token, RepeaterTime, /^\d{1,2}(:?\d{1,2})?([\.:]?\d{1,2}([\.:]\d{1,6})?)?$/, options
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new Repeater object.
-    def self.scan_for_units(token)
+    def self.scan_for_units(token, options = {})
       {
         /^years?$/ => :year,
         /^seasons?$/ => :season,
@@ -114,7 +114,7 @@ module Chronic
         if item =~ token.word
           klass_name = 'Repeater' + symbol.to_s.capitalize
           klass = Chronic.const_get(klass_name)
-          return klass.new(symbol)
+          return klass.new(symbol, options)
         end
       end
       return nil
