@@ -1192,6 +1192,20 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 12, 31, 12), time
   end
 
+  def test_handle_rdn_rmn_od_sy
+    time = parse_now("Thu Aug 10th 2005")
+    assert_equal Time.local(2005, 8, 10, 12), time
+
+    time = parse_now("Thursday July 31st 2005")
+    assert_equal Time.local(2005, 7, 31, 12), time
+
+    time = parse_now("Thursday December 31st 2005")
+    assert_equal Time.local(2005, 12, 31, 12), time
+
+    time = parse_now("Thursday December 30th 2005")
+    assert_equal Time.local(2005, 12, 30, 12), time
+  end
+
   def test_normalizing_day_portions
     assert_equal pre_normalize("8:00 pm February 11"), pre_normalize("8:00 p.m. February 11")
   end
