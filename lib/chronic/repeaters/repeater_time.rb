@@ -26,8 +26,9 @@ module Chronic
 
     end
 
-    def initialize(time)
+    def initialize(time, options = {})
       @current_time = nil
+      @options = options
       time_parts = time.split(':')
       raise ArgumentError, "Time cannot have more than 4 groups of ':'" if time_parts.count > 4
 
@@ -44,8 +45,13 @@ module Chronic
 
       ambiguous = false
       hours = time_parts.first.to_i
-      ambiguous = true if (time_parts.first.length == 1 and hours > 0) or (hours >= 10 and hours <= 12)
-      hours = (hours == 12 ? 0 : hours) * 60 * 60
+
+      if @options[:hours24].nil? or (not @options[:hours24].nil? and @options[:hours24] != true)
+          ambiguous = true if (time_parts.first.length == 1 and hours > 0) or (hours >= 10 and hours <= 12) or (@options[:hours24] == false and hours > 0)
+          hours = 0 if hours == 12 and ambiguous
+      end
+
+      hours *= 60 * 60
       minutes = 0
       seconds = 0
       subseconds = 0

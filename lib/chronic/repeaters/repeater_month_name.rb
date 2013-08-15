@@ -16,7 +16,7 @@ module Chronic
       :december => 12
     }
 
-    def initialize(type)
+    def initialize(type, options = {})
       super
       @current_month_begin = nil
     end

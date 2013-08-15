@@ -544,7 +544,7 @@ module Chronic
     end
 
     def month_overflow?(year, month, day)
-      if Date.leap?(year)
+      if ::Date.leap?(year)
         day > RepeaterMonth::MONTH_DAYS_LEAP[month - 1]
       else
         day > RepeaterMonth::MONTH_DAYS[month - 1]

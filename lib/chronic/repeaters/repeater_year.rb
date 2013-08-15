@@ -2,7 +2,7 @@ module Chronic
   class RepeaterYear < Repeater #:nodoc:
     YEAR_SECONDS =  31536000  # 365 * 24 * 60 * 60
 
-    def initialize(type)
+    def initialize(type, options = {})
       super
       @current_year_start = nil
     end
@@ -68,7 +68,7 @@ module Chronic
     end
 
     def month_days(year, month)
-      if Date.leap?(year)
+      if ::Date.leap?(year)
         RepeaterMonth::MONTH_DAYS_LEAP[month - 1]
       else
         RepeaterMonth::MONTH_DAYS[month - 1]

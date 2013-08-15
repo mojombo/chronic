@@ -2,6 +2,8 @@ require 'time'
 require 'date'
 
 require 'chronic/parser'
+require 'chronic/date'
+require 'chronic/time'
 
 require 'chronic/handler'
 require 'chronic/handlers'
@@ -14,6 +16,7 @@ require 'chronic/pointer'
 require 'chronic/scalar'
 require 'chronic/ordinal'
 require 'chronic/separator'
+require 'chronic/sign'
 require 'chronic/time_zone'
 require 'chronic/numerizer'
 require 'chronic/season'
@@ -72,7 +75,7 @@ module Chronic
   end
 
   self.debug = false
-  self.time_class = Time
+  self.time_class = ::Time
 
 
   # Parses a string containing a natural language date or time.
@@ -121,7 +124,7 @@ module Chronic
       # no month ever has fewer than 28 days, so only do this if necessary
       leap_year_month_days = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
       common_year_month_days = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
-      days_this_month = Date.leap?(year) ? leap_year_month_days[month - 1] : common_year_month_days[month - 1]
+      days_this_month = ::Date.leap?(year) ? leap_year_month_days[month - 1] : common_year_month_days[month - 1]
       if day > days_this_month
         month += day / days_this_month
         day = day % days_this_month
