@@ -35,7 +35,7 @@ class TestParsing < TestCase
 
     assert_nil Chronic.parse("1/1/32.1")
 
-    time = Chronic.parse("28th")
+    time = Chronic.parse("28th", {:guess => :begin})
     assert_equal Time.new(Time.now.year, Time.now.month, 28), time
   end
 

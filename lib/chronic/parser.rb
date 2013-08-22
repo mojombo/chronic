@@ -28,7 +28,9 @@ module Chronic
     #        :guess - By default the parser will guess a single point in time
     #                 for the given date or time. If you'd rather have the
     #                 entire time span returned, set this to false
-    #                 and a Chronic::Span will be returned.
+    #                 and a Chronic::Span will be returned. Setting :guess to :end
+    #                 will return last time from Span, to :middle for middle (same as just true)
+    #                 and :begin for first time from span.
     #        :ambiguous_time_range - If an Integer is given, ambiguous times
     #                  (like 5:00) will be assumed to be within the range of
     #                  that time in the AM to that time in the PM. For
@@ -60,9 +62,7 @@ module Chronic
 
       puts "+#{'-' * 51}\n| #{tokens}\n+#{'-' * 51}" if Chronic.debug
 
-      if span
-        options[:guess] ? guess(span) : span
-      end
+      guess(span, options[:guess]) if span
     end
 
     # Clean up the specified text ready for parsing.
@@ -130,12 +130,11 @@ module Chronic
     # span - The Chronic::Span object to calcuate a guess from.
     #
     # Returns a new Time object.
-    def guess(span)
-      if span.width > 1
-        span.begin + (span.width / 2)
-      else
-        span.begin
-      end
+    def guess(span, mode = :middle)
+      return span if not mode
+      return span.begin + span.width / 2 if span.width > 1 and (mode == true or mode == :middle)
+      return span.end if mode == :end
+      span.begin
     end
 
     # List of Handler definitions. See Chronic.parse for a list of options this
