@@ -92,6 +92,25 @@ module Chronic
       handle_m_d(month, day, tokens[2..tokens.size], options)
     end
 
+    def handle_od(tokens, options)
+      t = Chronic.time_class.parse(options[:text])
+      t = Chronic.time_class.new(self.now.year, self.now.month, t.day)
+
+      Span.new(t, t + 1)
+    rescue ArgumentError => e
+      raise e unless e.message =~ /out of range/
+    end
+
+    # Handle scalar-day
+    def handle_sd(tokens, options)
+      day = tokens[0].get_tag(ScalarDay)
+      t = Chronic.time_class.new(self.now.year, self.now.month, day.type)
+
+      Span.new(t, t + 1)
+    rescue ArgumentError => e
+      raise e unless e.message =~ /out of range/
+    end
+
     # Handle repeater-month-name/ordinal-day with separator-on
     def handle_rmn_od_on(tokens, options)
       if tokens.size > 3

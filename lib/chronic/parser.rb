@@ -12,7 +12,8 @@ module Chronic
       :guess => true,
       :ambiguous_time_range => 6,
       :endian_precedence    => [:middle, :little],
-      :ambiguous_year_future_bias => 50
+      :ambiguous_year_future_bias => 50,
+      :ambiguous_number_priority => :time
     }
 
     attr_accessor :now
@@ -47,6 +48,9 @@ module Chronic
     #                 look x amount of years into the future and past. If the
     #                 two digit year is `now + x years` it's assumed to be the
     #                 future, `now - x years` is assumed to be the past.
+    #        :ambiguous_number_priority - When parsing a number on its own (e.g. "1"),
+    #                 should it be treated as a time (1pm) or a date (1st of
+    #                 the current month)? Valid values are :time (default) or :date
     def initialize(options = {})
       @options = DEFAULT_OPTIONS.merge(options)
       @now = options.delete(:now) || Chronic.time_class.now
@@ -162,7 +166,7 @@ module Chronic
           Handler.new([:repeater_day_name, :repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rdn_rmn_od),
           Handler.new([:repeater_day_name, :ordinal_day, :separator_at?, 'time?'], :handle_rdn_od),
           Handler.new([:scalar_year, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar_day, :repeater_time, :time_zone], :handle_generic),
-          Handler.new([:ordinal_day], :handle_generic),
+          Handler.new([:ordinal_day], :handle_od),
           Handler.new([:repeater_month_name, :scalar_day, :scalar_year], :handle_rmn_sd_sy),
           Handler.new([:repeater_month_name, :ordinal_day, :scalar_year], :handle_rmn_od_sy),
           Handler.new([:repeater_month_name, :scalar_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_sd_sy),
@@ -203,6 +207,12 @@ module Chronic
           Handler.new([:ordinal, :repeater, :grabber, :repeater], :handle_o_r_g_r)
         ]
       }
+
+      if options[:ambiguous_number_priority] == :date
+        @@definitions[:date] << Handler.new([:scalar_day], :handle_sd)
+      else
+        @@definitions[:date] = @@definitions[:date].reject { |l| l.pattern == [:scalar_day] }
+      end
 
       endians = [
         Handler.new([:scalar_month, [:separator_slash, :separator_dash], :scalar_day, [:separator_slash, :separator_dash], :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
