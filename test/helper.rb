@@ -3,6 +3,7 @@ unless defined? Chronic
   require 'chronic'
 end
 
+require 'minitest'
 require 'minitest/autorun'
 
 class TestCase < MiniTest::Test
