@@ -34,9 +34,16 @@ class TestParsing < TestCase
     assert_in_delta time, time2, 0.000001
 
     assert_nil Chronic.parse("1/1/32.1")
+  end
 
-    time = Chronic.parse("28th")
-    assert_equal Time.new(Time.now.year, Time.now.month, 28), time
+  def test_handle_od
+    now = Time.new(2013, 8, 1)
+    time = Chronic.parse("28th", :now => now)
+    assert_equal Time.new(2013, 8, 28), time
+
+    now = Time.new(2013, 9, 1)
+    time = Chronic.parse("28th", :now => now)
+    assert_equal Time.new(2013, 9, 28), time
   end
 
   def test_handle_rmn_sd
