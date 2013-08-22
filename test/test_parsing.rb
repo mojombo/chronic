@@ -46,6 +46,16 @@ class TestParsing < TestCase
     assert_equal Time.new(2013, 9, 28), time
   end
 
+  def test_handle_sd
+    now = Time.new(2013, 8, 1)
+    time = Chronic.parse("28", :now => now, :ambiguous_number_priority => :date)
+    assert_equal Time.new(2013, 8, 28), time
+
+    now = Time.new(2013, 9, 1)
+    time = Chronic.parse("28", :now => now, :ambiguous_number_priority => :date)
+    assert_equal Time.new(2013, 9, 28), time
+  end
+
   def test_handle_rmn_sd
     time = parse_now("aug 3")
     assert_equal Time.local(2006, 8, 3, 12), time
