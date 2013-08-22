@@ -208,7 +208,11 @@ module Chronic
         ]
       }
 
-      @@definitions[:date] << Handler.new([:scalar_day], :handle_sd) if options[:ambiguous_number_priority] == :date
+      if options[:ambiguous_number_priority] == :date
+        @@definitions[:date] << Handler.new([:scalar_day], :handle_sd)
+      else
+        @@definitions[:date] = @@definitions[:date].reject { |l| l.pattern == [:scalar_day] }
+      end
 
       endians = [
         Handler.new([:scalar_month, [:separator_slash, :separator_dash], :scalar_day, [:separator_slash, :separator_dash], :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
