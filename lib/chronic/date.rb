@@ -1,5 +1,38 @@
 module Chronic
   class Date
+    YEAR_MONTHS = 12
+    MONTH_DAYS        = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    MONTH_DAYS_LEAP   = [nil, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    YEAR_SECONDS      = 31_536_000 # 365 * 24 * 60 * 60
+    SEASON_SECONDS    =  7_862_400 #  91 * 24 * 60 * 60
+    MONTH_SECONDS     =  2_592_000 #  30 * 24 * 60 * 60
+    FORTNIGHT_SECONDS =  1_209_600 #  14 * 24 * 60 * 60
+    WEEK_SECONDS      =    604_800 #   7 * 24 * 60 * 60
+    WEEKEND_SECONDS   =    172_800 #   2 * 24 * 60 * 60
+    DAY_SECONDS       =     86_400 #       24 * 60 * 60
+    MONTHS = {
+      :january => 1,
+      :february => 2,
+      :march => 3,
+      :april => 4,
+      :may => 5,
+      :june => 6,
+      :july => 7,
+      :august => 8,
+      :september => 9,
+      :october => 10,
+      :november => 11,
+      :december => 12
+    }
+    DAYS = {
+      :sunday => 0,
+      :monday => 1,
+      :tuesday => 2,
+      :wednesday => 3,
+      :thursday => 4,
+      :friday => 5,
+      :saturday => 6
+    }
 
     # Checks if given number could be day
     def self.could_be_day?(day)
@@ -35,6 +68,14 @@ module Chronic
       full_year = century + year
       full_year += 100 if full_year < start_year
       full_year
+    end
+
+    def self.month_overflow?(year, month, day)
+      if ::Date.leap?(year)
+        day > Date::MONTH_DAYS_LEAP[month]
+      else
+        day > Date::MONTH_DAYS[month]
+      end
     end
 
   end

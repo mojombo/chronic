@@ -1,6 +1,6 @@
-pkg
 *.rbc
-rdoc
 .yardoc
-doc
-tags
+/pkg/
+/coverage/
+/doc/
+/tags/
