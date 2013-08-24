@@ -1,3 +1,15 @@
+# 0.9.2 / 2013
+
+* Chronic will parse subseconds correctly
+  for all supported date/time formats (#195, #198 and #200)
+* Support for date format: dd.mm.yyyy (#197)
+* Option `:hours24` to parse as 24 hour clock (#201 and #202)
+* `:guess` option allows to specify which part of Span to return.
+  (accepted values `false`,`true`,`:begin`, `:middle`, `:end`)
+* Replace `rcov` with `SimpleCov` for coverage generation
+* Add more tests
+* Various changes in codebase (#202 and #206)
+
 # 0.9.1 / 2013-02-25
 
 * Ensure Chronic strips periods from day portions (#173)
