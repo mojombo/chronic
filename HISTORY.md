@@ -1,4 +1,4 @@
-# 0.9.2 / 2013
+# 0.10.0 / 2013-08-25
 
 * Chronic will parse subseconds correctly
   for all supported date/time formats (#195, #198 and #200)
