@@ -1,3 +1,7 @@
+# 0.10.1 / 2013-08-27
+
+* Support `ActiveSupport::TimeZone` (#209, #208)
+
 # 0.10.0 / 2013-08-25
 
 * Chronic will parse subseconds correctly
