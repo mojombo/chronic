@@ -129,4 +129,55 @@ class TestChronic < TestCase
     assert_equal Time.local(2005, 12), Chronic.construct(2000, 72)
   end
 
+  def test_time
+    org = Chronic.time_class
+    begin
+      Chronic.time_class = ::Time
+      assert_equal ::Time.new(2013, 8, 27, 20, 30, 40, '+05:30'), Chronic.construct(2013, 8, 27, 20, 30, 40, '+05:30')
+      assert_equal ::Time.new(2013, 8, 27, 20, 30, 40, '-08:00'), Chronic.construct(2013, 8, 27, 20, 30, 40, -28800)
+    ensure
+      Chronic.time_class = org
+    end
+  end
+
+  def test_date
+    org = Chronic.time_class
+    begin
+      Chronic.time_class = ::Date
+      assert_equal Date.new(2013, 8, 27), Chronic.construct(2013, 8, 27)
+    ensure
+      Chronic.time_class = org
+    end
+  end
+
+  def test_datetime
+    org = Chronic.time_class
+    begin
+      Chronic.time_class = ::DateTime
+      assert_equal DateTime.new(2013, 8, 27, 20, 30, 40, '+05:30'), Chronic.construct(2013, 8, 27, 20, 30, 40, '+05:30')
+      assert_equal DateTime.new(2013, 8, 27, 20, 30, 40, '-08:00'), Chronic.construct(2013, 8, 27, 20, 30, 40, -28800)
+    ensure
+      Chronic.time_class = org
+    end
+  end
+
+  def test_activesupport
+=begin
+    # ActiveSupport needs MiniTest '~> 4.2' which conflicts with '~> 5.0'
+    require 'active_support/time'
+    org = Chronic.time_class
+    org_zone = ::Time.zone
+    begin
+      ::Time.zone = "Tokyo"
+      Chronic.time_class = ::Time.zone
+      assert_equal Time.new(2013, 8, 27, 20, 30, 40, '+09:00'), Chronic.construct(2013, 8, 27, 20, 30, 40)
+      ::Time.zone = "Indiana (East)"
+      Chronic.time_class = ::Time.zone
+      assert_equal Time.new(2013, 8, 27, 20, 30, 40, -14400), Chronic.construct(2013, 8, 27, 20, 30, 40)
+    ensure
+      Chronic.time_class = org
+      ::Time.zone = org_zone
+    end
+=end
+  end
 end

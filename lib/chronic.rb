@@ -137,8 +137,14 @@ module Chronic
         month = month % 12
       end
     end
-    offset = Time::normalize_offset(offset) if Chronic.time_class.is_a?(DateTime)
-    Chronic.time_class.new(year, month, day, hour, minute, second, offset)
+    if Chronic.time_class.name == "Date"
+      Chronic.time_class.new(year, month, day)
+    elsif not Chronic.time_class.respond_to?(:new)
+      Chronic.time_class.local(year, month, day, hour, minute, second)
+    else
+      offset = Time::normalize_offset(offset) if Chronic.time_class.name == "DateTime"
+      Chronic.time_class.new(year, month, day, hour, minute, second, offset)
+    end
   end
 
 end
