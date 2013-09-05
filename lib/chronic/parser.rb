@@ -90,7 +90,7 @@ module Chronic
       text = text.to_s.downcase
       text.gsub!(/\b(\d{2})\.(\d{2})\.(\d{4})\b/, '\3 / \2 / \1')
       text.gsub!(/\b([ap])\.m\.?/, '\1m')
-      text.gsub!(/(?<=:\d{2}|:\d{2}\.\d{3})\-(\d{2}:?\d{2})\b/, 'tzminus\1')
+      text.gsub!(/(\s+|:\d{2}|:\d{2}\.\d{3})\-(\d{2}:?\d{2})\b/, '\1tzminus\2')
       text.gsub!(/\./, ':')
       text.gsub!(/([ap]):m:?/, '\1m')
       text.gsub!(/['"]/, '')
