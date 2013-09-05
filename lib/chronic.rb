@@ -139,7 +139,7 @@ module Chronic
     end
     if Chronic.time_class.name == "Date"
       Chronic.time_class.new(year, month, day)
-    elsif not Chronic.time_class.respond_to?(:new)
+    elsif not Chronic.time_class.respond_to?(:new) or (RUBY_VERSION.to_f < 1.9 and Chronic.time_class.name == "Time")
       Chronic.time_class.local(year, month, day, hour, minute, second)
     else
       offset = Time::normalize_offset(offset) if Chronic.time_class.name == "DateTime"

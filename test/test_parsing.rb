@@ -180,6 +180,9 @@ class TestParsing < TestCase
     time = parse_now("2011-07-03 22:11:35 +01:00")
     assert_equal 1309727495, time.to_i
 
+    time = parse_now("2011-07-03 16:11:35 -05:00")
+    assert_equal 1309727495, time.to_i
+
     time = parse_now("2011-07-03 21:11:35 UTC")
     assert_equal 1309727495, time.to_i
 
