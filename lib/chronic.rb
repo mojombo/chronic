@@ -53,7 +53,7 @@ require 'chronic/repeaters/repeater_time'
 #   Chronic.parse('monday', :context => :past)
 #     #=> Mon Aug 21 12:00:00 PDT 2006
 module Chronic
-  VERSION = "0.10.1"
+  VERSION = "0.10.2"
 
   class << self
 

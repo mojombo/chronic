@@ -1,3 +1,8 @@
+# 0.10.2 / 2013-09-09
+
+* Fix 1.8.7 support (due to be dropped in 0.11.0)
+* Bugfix for times with negative zones
+
 # 0.10.1 / 2013-08-27
 
 * Support `ActiveSupport::TimeZone` (#209, #208)
