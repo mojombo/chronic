@@ -71,7 +71,14 @@ module Chronic
     #     # => Thu, 15 Jun 2006 05:45:00 UTC +00:00
     #
     # Returns The Time class Chronic uses internally.
-    attr_accessor :time_class
+
+    # To ensure thread safety, this value is thread-local.
+    def time_class
+      Thread.current[:__Chronic_time_class] || ::Time
+    end
+    def time_class=(time)
+      Thread.current[:__Chronic_time_class] = time
+    end
   end
 
   self.debug = false
