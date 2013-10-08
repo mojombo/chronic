@@ -9,6 +9,7 @@ class TestParsing < TestCase
   end
 
   def test_handle_generic
+    skip "Test syntax not supported in ruby-1.8" if RUBY_VERSION.split('.')[0..1].join('.') == '1.8'
     time = Chronic.parse("2012-08-02T13:00:00")
     assert_equal Time.local(2012, 8, 2, 13), time
 
