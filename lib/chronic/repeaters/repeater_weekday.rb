@@ -80,7 +80,7 @@ module Chronic
     end
 
     def symbol_to_number(sym)
-      DAYS[sym] || raise("Invalid symbol specified")
+      DAYS[sym] || raise('Invalid symbol specified')
     end
   end
 end

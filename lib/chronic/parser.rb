@@ -261,7 +261,7 @@ module Chronic
         end
       end
 
-      puts "-none" if Chronic.debug
+      puts '-none' if Chronic.debug
       return nil
     end
   end

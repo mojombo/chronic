@@ -20,7 +20,7 @@ module Chronic
         @range || raise("Invalid type '#{type}' for RepeaterDayPortion")
       end
 
-      @range || raise("Range should have been set by now")
+      @range || raise('Range should have been set by now')
     end
 
     def next(pointer)
@@ -84,7 +84,7 @@ module Chronic
     end
 
     def width
-      @range || raise("Range has not been set")
+      @range || raise('Range has not been set')
       return @current_span.width if @current_span
       if @type.kind_of? Integer
         return (12 * 60 * 60)

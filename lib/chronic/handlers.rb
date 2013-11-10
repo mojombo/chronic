@@ -528,7 +528,7 @@ module Chronic
       when :next
         outer_span = head.next(:future)
       else
-        raise "Invalid grabber"
+        raise 'Invalid grabber'
       end
 
       if Chronic.debug
