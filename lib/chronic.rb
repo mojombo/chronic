@@ -53,7 +53,7 @@ require 'chronic/repeaters/repeater_time'
 #   Chronic.parse('monday', :context => :past)
 #     #=> Mon Aug 21 12:00:00 PDT 2006
 module Chronic
-  VERSION = "0.10.2"
+  VERSION = '0.10.2'
 
   class << self
 
@@ -119,7 +119,7 @@ module Chronic
 
     # determine if there is a day overflow. this is complicated by our crappy calendar
     # system (non-constant number of days per month)
-    day <= 56 || raise("day must be no more than 56 (makes month resolution easier)")
+    day <= 56 || raise('day must be no more than 56 (makes month resolution easier)')
     if day > 28 # no month ever has fewer than 28 days, so only do this if necessary
       days_this_month = ::Date.leap?(year) ? Date::MONTH_DAYS_LEAP[month] : Date::MONTH_DAYS[month]
       if day > days_this_month
@@ -137,12 +137,12 @@ module Chronic
         month = month % 12
       end
     end
-    if Chronic.time_class.name == "Date"
+    if Chronic.time_class.name == 'Date'
       Chronic.time_class.new(year, month, day)
-    elsif not Chronic.time_class.respond_to?(:new) or (RUBY_VERSION.to_f < 1.9 and Chronic.time_class.name == "Time")
+    elsif not Chronic.time_class.respond_to?(:new) or (RUBY_VERSION.to_f < 1.9 and Chronic.time_class.name == 'Time')
       Chronic.time_class.local(year, month, day, hour, minute, second)
     else
-      offset = Time::normalize_offset(offset) if Chronic.time_class.name == "DateTime"
+      offset = Time::normalize_offset(offset) if Chronic.time_class.name == 'DateTime'
       Chronic.time_class.new(year, month, day, hour, minute, second, offset)
     end
   end

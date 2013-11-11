@@ -47,7 +47,7 @@ module Chronic
 
     def symbol_to_number(sym)
       lookup = {:sunday => 0, :monday => 1, :tuesday => 2, :wednesday => 3, :thursday => 4, :friday => 5, :saturday => 6}
-      lookup[sym] || raise("Invalid symbol specified")
+      lookup[sym] || raise('Invalid symbol specified')
     end
   end
 end

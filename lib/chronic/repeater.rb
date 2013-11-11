@@ -126,16 +126,16 @@ module Chronic
 
     # returns the width (in seconds or months) of this repeatable.
     def width
-      raise("Repeater#width must be overridden in subclasses")
+      raise('Repeater#width must be overridden in subclasses')
     end
 
     # returns the next occurance of this repeatable.
     def next(pointer)
-      raise("Start point must be set before calling #next") unless @now
+      raise('Start point must be set before calling #next') unless @now
     end
 
     def this(pointer)
-      raise("Start point must be set before calling #this") unless @now
+      raise('Start point must be set before calling #this') unless @now
     end
 
     def to_s

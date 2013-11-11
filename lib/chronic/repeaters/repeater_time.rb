@@ -108,7 +108,7 @@ module Chronic
           end
         end
 
-        @current_time || raise("Current time cannot be nil at this point")
+        @current_time || raise('Current time cannot be nil at this point')
       end
 
       unless first
