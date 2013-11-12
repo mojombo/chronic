@@ -9,6 +9,7 @@ module Chronic
       :context => :future,
       :now => nil,
       :hours24 => nil,
+      :week_start => :sunday,
       :guess => true,
       :ambiguous_time_range => 6,
       :endian_precedence    => [:middle, :little],
@@ -25,6 +26,9 @@ module Chronic
     #        :now - Time, all computations will be based off of time
     #               instead of Time.now.
     #        :hours24 - Time will be parsed as it would be 24 hour clock.
+    #        :week_start - By default, the parser assesses weeks start on
+    #                  sunday but you can change this value to :monday if
+    #                  needed.
     #        :guess - By default the parser will guess a single point in time
     #                 for the given date or time. If you'd rather have the
     #                 entire time span returned, set this to false

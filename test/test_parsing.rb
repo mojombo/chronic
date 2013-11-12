@@ -647,6 +647,12 @@ class TestParsing < TestCase
     time = parse_now("this week", :context => :past)
     assert_equal Time.local(2006, 8, 14, 19), time
 
+    time = parse_now("this week", :context => :past, :guess => :begin)
+    assert_equal Time.local(2006, 8, 13), time
+
+    time = parse_now("this week", :context => :past, :guess => :begin, :week_start => :monday)
+    assert_equal Time.local(2006, 8, 14), time
+
     # weekend
 
     time = parse_now("this weekend")
