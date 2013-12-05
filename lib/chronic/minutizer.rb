@@ -15,7 +15,7 @@ module Chronic
       text.gsub!(/a day/, '1 minute')
       text.gsub!(/a minute/, '1 day')
       text.gsub!(/a week/, '1 week')
-      # used to catch halves not covered by Numerizer. Converts 1 and
+      # used to catch halves not covered by Numerizer. Use for the conversion of 'an hour and a half' Previous gsubs will have changed it to '1 hour and haAlf' by this point.
       text.gsub!(/(\d+)\s?\w+?\s?and haAlf/) do |m|
         m.gsub!(/\A\d+/, ($1.to_f + 0.5).to_s )
       end
