@@ -2,6 +2,7 @@ require 'time'
 require 'date'
 
 require 'chronic/parser'
+require 'chronic/minutizer'
 require 'chronic/date'
 require 'chronic/time'
 
@@ -88,6 +89,10 @@ module Chronic
   # opts - An optional Hash of configuration options passed to Parser::new.
   def self.parse(text, options = {})
     Parser.new(options).parse(text)
+  end
+
+  def self.minutize(text, options = {})
+    Minutizer.new(options).minutize(text)
   end
 
   # Construct a new time object determining possible month overflows
