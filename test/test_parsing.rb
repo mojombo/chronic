@@ -1227,10 +1227,15 @@ class TestParsing < TestCase
     assert_equal Time.local(2005, 12, 30, 12), time
   end
 
-  def test_handle_holiday_days
-    Chronic.debug
-    time = Chronic.parse("christmas 2012")
-    assert_equal Time.utc(2012, 12, 25, 12), time
+  def test_handle_christmas
+    time = Chronic.parse("xmas", :now => Time.local(2007))
+    assert_equal Time.utc(2007, 12, 25, 12), time
+
+    time = Chronic.parse("xmas 2005")
+    assert_equal Time.utc(2005, 12, 25, 12), time
+
+    time = Chronic.parse("xmas 2013")
+    assert_equal Time.utc(2013, 12, 25, 12), time
   end
 
   def test_normalizing_day_portions
