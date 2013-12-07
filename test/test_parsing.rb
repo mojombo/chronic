@@ -1227,16 +1227,50 @@ class TestParsing < TestCase
     assert_equal Time.local(2005, 12, 30, 12), time
   end
 
-  def test_handle_christmas
+  def test_handle_christmas_solo
     time = Chronic.parse("xmas", :now => Time.local(2007))
     assert_equal Time.utc(2007, 12, 25, 12), time
 
+    time = Chronic.parse("Christmas", :now => Time.local(2007))
+    assert_equal Time.utc(2007, 12, 25, 12), time
+
+    time = Chronic.parse("christmas", :now => Time.local(2007))
+    assert_equal Time.utc(2007, 12, 25, 12), time
+
+    time = Chronic.parse("Xmas", :now => Time.local(2007))
+    assert_equal Time.utc(2007, 12, 25, 12), time
+  end
+
+  def test_handle_christmas_years
     time = Chronic.parse("xmas 2005")
     assert_equal Time.utc(2005, 12, 25, 12), time
 
-    time = Chronic.parse("xmas 2013")
+    time = Chronic.parse("Xmas 2005")
+    assert_equal Time.utc(2005, 12, 25, 12), time
+
+    time = Chronic.parse("christmas 2013")
+    assert_equal Time.utc(2013, 12, 25, 12), time
+
+    time = Chronic.parse("Christmas 2013")
     assert_equal Time.utc(2013, 12, 25, 12), time
   end
+
+  def test_handle_christmas_future
+    time = Chronic.parse("next christmas", :now => Time.local(2007))
+    assert_equal Time.utc(2007, 12, 25, 12), time
+
+    time = Chronic.parse("xmas next year", :now => Time.local(2005))
+    assert_equal Time.utc(2006, 12, 25, 12), time
+  end
+
+  def test_handle_christmas_past
+    time = Chronic.parse("last christmas", :now => Time.local(2007))
+    assert_equal Time.utc(2006, 12, 25, 12), time
+
+    time = Chronic.parse("xmas last year", :now => Time.local(2005))
+    assert_equal Time.utc(2004, 12, 25, 12), time
+  end
+
 
   def test_normalizing_day_portions
     assert_equal pre_normalize("8:00 pm February 11"), pre_normalize("8:00 p.m. February 11")
