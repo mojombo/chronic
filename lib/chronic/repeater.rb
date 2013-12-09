@@ -10,12 +10,12 @@ module Chronic
     # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
-        if t = scan_for_season_names(token, options) then token.tag(t); next end
-        if t = scan_for_month_names(token, options) then token.tag(t); next end
-        if t = scan_for_day_names(token, options) then token.tag(t); next end
-        if t = scan_for_day_portions(token, options) then token.tag(t); next end
-        if t = scan_for_times(token, options) then token.tag(t); next end
-        if t = scan_for_units(token, options) then token.tag(t); next end
+        token.tag scan_for_season_names(token, options)
+        token.tag scan_for_month_names(token, options)
+        token.tag scan_for_day_names(token, options)
+        token.tag scan_for_day_portions(token, options)
+        token.tag scan_for_times(token, options)
+        token.tag scan_for_units(token, options)
       end
     end
 
