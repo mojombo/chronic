@@ -10,8 +10,8 @@ module Chronic
     # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
-        if t = scan_for_plus(token) then token.tag(t); next end
-        if t = scan_for_minus(token) then token.tag(t); next end
+        token.tag scan_for_plus(token)
+        token.tag scan_for_minus(token)
       end
     end
 

@@ -10,7 +10,7 @@ module Chronic
     # Returns an Array of Token objects.
     def self.scan(tokens, options)
       tokens.each do |token|
-        if t = scan_for_all(token) then token.tag(t); next end
+        token.tag scan_for_all(token)
       end
     end
 

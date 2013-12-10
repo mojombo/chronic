@@ -10,19 +10,19 @@ module Chronic
     # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
-        if t = scan_for_commas(token) then token.tag(t); next end
-        if t = scan_for_dots(token) then token.tag(t); next end
-        if t = scan_for_colon(token) then token.tag(t); next end
-        if t = scan_for_space(token) then token.tag(t); next end
-        if t = scan_for_slash(token) then token.tag(t); next end
-        if t = scan_for_dash(token) then token.tag(t); next end
-        if t = scan_for_quote(token) then token.tag(t); next end
-        if t = scan_for_at(token) then token.tag(t); next end
-        if t = scan_for_in(token) then token.tag(t); next end
-        if t = scan_for_on(token) then token.tag(t); next end
-        if t = scan_for_and(token) then token.tag(t); next end
-        if t = scan_for_t(token) then token.tag(t); next end
-        if t = scan_for_w(token) then token.tag(t); next end
+        token.tag scan_for_commas(token)
+        token.tag scan_for_dots(token)
+        token.tag scan_for_colon(token)
+        token.tag scan_for_space(token)
+        token.tag scan_for_slash(token)
+        token.tag scan_for_dash(token)
+        token.tag scan_for_quote(token)
+        token.tag scan_for_at(token)
+        token.tag scan_for_in(token)
+        token.tag scan_for_on(token)
+        token.tag scan_for_and(token)
+        token.tag scan_for_t(token)
+        token.tag scan_for_w(token)
       end
     end
 
