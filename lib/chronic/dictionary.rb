@@ -29,7 +29,7 @@ module Chronic
     # returns the definitions of a specific subclass of SpanDefinitions
     # SpanDefinition#definitions returns an Hash of Handler instances
     # arguments should come in as symbols
-    def [] handler_type=:smybol
+    def [](handler_type=:symbol)
       definitions[handler_type]
     end
   end

@@ -8,7 +8,7 @@ class TestHandler < TestCase
   end
 
   def definitions
-    @definitions ||= Chronic::Parser.new.definitions
+    @definitions ||= Chronic::SpanDictionary.new.definitions
   end
 
   def test_handler_class_1
