@@ -64,16 +64,16 @@ class TestChronic < TestCase
       Chronic::Handler.new([:scalar_day, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy)
     ]
 
-    assert_equal endians, Chronic::Parser.new.definitions[:endian]
+    assert_equal endians, Chronic::SpanDictionary.new.definitions[:endian]
 
-    defs = Chronic::Parser.new.definitions(:endian_precedence => :little)
+    defs = Chronic::SpanDictionary.new(:endian_precedence => :little).definitions
     assert_equal endians.reverse, defs[:endian]
 
-    defs = Chronic::Parser.new.definitions(:endian_precedence => [:little, :middle])
+    defs = Chronic::SpanDictionary.new(:endian_precedence => [:little, :middle]).definitions
     assert_equal endians.reverse, defs[:endian]
 
     assert_raises(ArgumentError) do
-      Chronic::Parser.new.definitions(:endian_precedence => :invalid)
+      Chronic::SpanDictionary.new(:endian_precedence => :invalid).definitions
     end
   end
 
