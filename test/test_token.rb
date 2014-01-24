@@ -22,4 +22,10 @@ class TestToken < TestCase
     assert_equal 'foo', token.word
   end
 
+  def test_token_inspect_doesnt_mutate_the_word
+    token = Chronic::Token.new('foo')
+    token.inspect
+    assert_equal 'foo', token.word
+  end
+
 end
