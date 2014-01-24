@@ -1012,6 +1012,9 @@ class TestParsing < TestCase
 
     time = parse_now("Ham Sandwich")
     assert_equal nil, time
+
+    time = parse_now("t")
+    assert_equal nil, time
   end
 
   def test_parse_span
