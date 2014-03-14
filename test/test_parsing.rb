@@ -301,10 +301,6 @@ class TestParsing < TestCase
     time = parse_now("9/19/2011 6:05:57 PM")
     assert_equal Time.local(2011, 9, 19, 18, 05, 57), time
 
-    # month day overflows
-    time = parse_now("30/2/2000")
-    assert_nil time
-
     time = parse_now("2013-03-12 17:00", :context => :past)
     assert_equal Time.local(2013, 3, 12, 17, 0, 0), time
   end
@@ -312,6 +308,12 @@ class TestParsing < TestCase
   def test_handle_sd_sm_sy
     time = parse_now("27/5/1979")
     assert_equal Time.local(1979, 5, 27, 12), time
+
+    time = parse_now("29/5/1979")
+    assert_equal Time.local(1979, 5, 29, 12), time
+
+    time = parse_now("30/5/1979")
+    assert_equal Time.local(1979, 5, 29, 12), time
 
     time = parse_now("27/5/1979 @ 0700")
     assert_equal Time.local(1979, 5, 27, 7), time
