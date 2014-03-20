@@ -6,23 +6,23 @@ module Chronic
     SUBSECOND_SECONDS = 0.001
 
     # Checks if given number could be hour
-    def self.could_be_hour?(hour)
-      hour >= 0 && hour <= 24
+    def self.could_be_hour?(hour, width = nil, hours12 = false)
+      hour >= 0 && hour <= (hours12 ? 12 : 24) && (width.nil? || width > 0)
     end
 
     # Checks if given number could be minute
-    def self.could_be_minute?(minute)
-      minute >= 0 && minute <= 60
+    def self.could_be_minute?(minute, width = nil)
+      minute >= 0 && minute <= 60 && (width.nil? || width <= 2)
     end
 
     # Checks if given number could be second
-    def self.could_be_second?(second)
-      second >= 0 && second <= 60
+    def self.could_be_second?(second, width = nil)
+      second >= 0 && second <= 60 && (width.nil? || width <= 2)
     end
 
     # Checks if given number could be subsecond
-    def self.could_be_subsecond?(subsecond)
-      subsecond >= 0 && subsecond <= 999999
+    def self.could_be_subsecond?(subsecond, width = nil)
+      subsecond >= 0 && subsecond <= 999999 && (width.nil? || width > 0)
     end
 
     # normalize offset in seconds to offset as string +mm:ss or -mm:ss
