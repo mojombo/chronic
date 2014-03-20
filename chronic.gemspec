@@ -16,6 +16,8 @@ Gem::Specification.new do |s|
   s.files = `git ls-files`.split($/)
   s.test_files = `git ls-files -- test`.split($/)
 
+  s.add_runtime_dependency 'numerizer', '~> 0.2'
+
   s.add_development_dependency 'rake'
   s.add_development_dependency 'simplecov'
   s.add_development_dependency 'minitest', '~> 5.0'
