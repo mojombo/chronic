@@ -41,13 +41,13 @@ class TestParsing < TestCase
 
   def test_handle_rmn_sd
     time = parse_now("aug 3")
-    assert_equal Time.local(2006, 8, 3, 12), time
+    assert_equal Time.local(2007, 8, 3, 12), time
 
     time = parse_now("aug 3", :context => :past)
     assert_equal Time.local(2006, 8, 3, 12), time
 
     time = parse_now("aug. 3")
-    assert_equal Time.local(2006, 8, 3, 12), time
+    assert_equal Time.local(2007, 8, 3, 12), time
 
     time = parse_now("aug 20")
     assert_equal Time.local(2006, 8, 20, 12), time
@@ -107,7 +107,7 @@ class TestParsing < TestCase
 
   def test_handle_od_rm
     time = parse_now("fifteenth of this month")
-    assert_equal Time.local(2006, 8, 15, 12), time
+    assert_equal Time.local(2007, 8, 15, 12), time
   end
 
   def test_handle_od_rmn

@@ -8,6 +8,7 @@ module Chronic
       span = month.this(options[:context])
       year, month = span.begin.year, span.begin.month
       day_start = Chronic.time_class.local(year, month, day)
+      day_start = Chronic.time_class.local(year + 1, month, day) if options[:context] == :future && day_start < now
 
       day_or_time(day_start, time_tokens, options)
     end
