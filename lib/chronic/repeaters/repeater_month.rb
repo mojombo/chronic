@@ -5,7 +5,7 @@ module Chronic
     MONTH_DAYS = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     MONTH_DAYS_LEAP = [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
 
-    def initialize(type, options = {})
+    def initialize(type, width = nil, options = {})
       super
       @current_month_start = nil
     end

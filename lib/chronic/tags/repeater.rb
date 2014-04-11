@@ -114,7 +114,7 @@ module Chronic
         if item =~ token.word
           klass_name = 'Repeater' + symbol.to_s.capitalize
           klass = Chronic.const_get(klass_name)
-          return klass.new(symbol, options)
+          return klass.new(symbol, nil, options)
         end
       end
       return nil

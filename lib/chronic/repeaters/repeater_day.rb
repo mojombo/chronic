@@ -2,7 +2,7 @@ module Chronic
   class RepeaterDay < Repeater #:nodoc:
     DAY_SECONDS = 86_400 # (24 * 60 * 60)
 
-    def initialize(type, options = {})
+    def initialize(type, width = nil, options = {})
       super
       @current_day_start = nil
     end
