@@ -1,5 +1,6 @@
 require 'time'
 require 'date'
+require 'numerizer'
 
 require 'chronic/parser'
 require 'chronic/date'
@@ -10,7 +11,6 @@ require 'chronic/handlers'
 require 'chronic/mini_date'
 require 'chronic/span'
 require 'chronic/token'
-require 'chronic/numerizer'
 require 'chronic/season'
 
 require 'chronic/tag'

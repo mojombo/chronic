@@ -13,7 +13,7 @@ class TestChronic < TestCase
 
   def test_pre_normalize_numerized_string
     string = 'two and a half years'
-    assert_equal Chronic::Numerizer.numerize(string), Chronic::Parser.new.pre_normalize(string)
+    assert_equal Numerizer.numerize(string), Chronic::Parser.new.pre_normalize(string)
   end
 
   def test_post_normalize_am_pm_aliases
