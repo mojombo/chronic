@@ -108,7 +108,7 @@ module Chronic
       text.gsub!(/\btoday\b/, 'this day')
       text.gsub!(/\btomm?orr?ow\b/, 'next day')
       text.gsub!(/\byesterday\b/, 'last day')
-      text.gsub!(/\bnoon\b/, '12:00pm')
+      text.gsub!(/\bnoon|midday\b/, '12:00pm')
       text.gsub!(/\bmidnight\b/, '24:00')
       text.gsub!(/\bnow\b/, 'this second')
       text.gsub!('quarter', '15')
