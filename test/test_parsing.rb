@@ -283,6 +283,15 @@ class TestParsing < TestCase
 
     time = parse_now("27 Oct 2006 7:30pm")
     assert_equal Time.local(2006, 10, 27, 19, 30), time
+
+    time = parse_now("3 jan 10")
+    assert_equal Time.local(2010, 1, 3, 12), time
+
+    time = parse_now("3 jan 10", :endian_precedence => :little)
+    assert_equal Time.local(2010, 1, 3, 12), time
+
+    time = parse_now("3 jan 10", :endian_precedence => :middle)
+    assert_equal Time.local(2010, 1, 3, 12), time
   end
 
   def test_handle_sm_sd_sy
