@@ -1,11 +1,12 @@
-require 'date'
+$:.unshift File.expand_path('../lib', __FILE__)
+require 'chronic/version'
 
 def version
-  contents = File.read File.expand_path('../lib/chronic.rb', __FILE__)
-  contents[/VERSION = "([^"]+)"/, 1]
+  Chronic::VERSION
 end
 
 def do_test
+  require 'chronic'
   $:.unshift './test'
   Dir.glob('test/test_*.rb').each { |t| require File.basename(t) }
 end
@@ -21,14 +22,15 @@ def open_command
   end
 end
 
+desc 'Run tests'
 task :test do
   do_test
 end
 
-desc "Generate SimpleCov test coverage and open in your browser"
+desc 'Generate SimpleCov test coverage and open in your browser'
 task :coverage do
   require 'simplecov'
-  FileUtils.rm_rf("./coverage")
+  FileUtils.rm_rf('./coverage')
   SimpleCov.command_name 'Unit Tests'
   SimpleCov.at_exit do
     SimpleCov.result.format!
@@ -38,9 +40,9 @@ task :coverage do
   do_test
 end
 
-desc "Open an irb session preloaded with this library"
+desc 'Open an irb session preloaded with this library'
 task :console do
-  sh "irb -Ilib -rchronic"
+  sh 'irb -Ilib -rchronic'
 end
 
 desc "Release Chronic version #{version}"
@@ -56,10 +58,10 @@ task :release => :build do
   sh "gem push pkg/chronic-#{version}.gem"
 end
 
-desc "Build a gem from the gemspec"
+desc 'Build a gem from the gemspec'
 task :build do
-  FileUtils.mkdir_p "pkg"
-  sh "gem build chronic.gemspec"
+  FileUtils.mkdir_p 'pkg'
+  sh 'gem build chronic.gemspec'
   FileUtils.mv("./chronic-#{version}.gem", "pkg")
 end
 
