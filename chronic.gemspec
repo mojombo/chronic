@@ -1,5 +1,5 @@
 $:.unshift File.expand_path('../lib', __FILE__)
-require 'chronic'
+require 'chronic/version'
 
 Gem::Specification.new do |s|
   s.name = 'chronic'
