@@ -155,7 +155,6 @@ module Chronic
     private
 
     def tokenize(text, options)
-      # require 'pry'; binding.pry
       text = pre_normalize(text)
       tokens = text.split(' ').map { |word| Token.new(word) }
       [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, Sign, TimeZone].each do |tok|
