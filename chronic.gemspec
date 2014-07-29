@@ -1,5 +1,5 @@
 $:.unshift File.expand_path('../lib', __FILE__)
-require 'chronic'
+require 'chronic/version'
 
 Gem::Specification.new do |s|
   s.name = 'chronic'
@@ -18,8 +18,8 @@ Gem::Specification.new do |s|
 
   s.add_runtime_dependency 'numerizer', '~> 0.2'
 
-  s.add_development_dependency 'rake'
-  s.add_development_dependency 'simplecov'
+  s.add_development_dependency 'rake', '~> 10'
+  s.add_development_dependency 'simplecov', '~> 0'
   s.add_development_dependency 'minitest', '~> 5.0'
-  s.add_development_dependency 'activesupport'
+  s.add_development_dependency 'activesupport', '~> 4'
 end
