@@ -60,7 +60,7 @@ class TestRepeaterWeek < TestCase
   end
 
   def test_next_future_starting_on_monday
-    weeks = Chronic::RepeaterWeek.new(:week, :week_start => :monday)
+    weeks = Chronic::RepeaterWeek.new(:week, nil, :week_start => :monday)
     weeks.start = @now
 
     next_week = weeks.next(:future)
@@ -73,7 +73,7 @@ class TestRepeaterWeek < TestCase
   end
 
   def test_next_past_starting_on_monday
-    weeks = Chronic::RepeaterWeek.new(:week, :week_start => :monday)
+    weeks = Chronic::RepeaterWeek.new(:week, nil, :week_start => :monday)
     weeks.start = @now
 
     last_week = weeks.next(:past)
@@ -86,7 +86,7 @@ class TestRepeaterWeek < TestCase
   end
 
   def test_this_future_starting_on_monday
-    weeks = Chronic::RepeaterWeek.new(:week, :week_start => :monday)
+    weeks = Chronic::RepeaterWeek.new(:week, nil, :week_start => :monday)
     weeks.start = @now
 
     this_week = weeks.this(:future)
@@ -95,7 +95,7 @@ class TestRepeaterWeek < TestCase
   end
 
   def test_this_past_starting_on_monday
-    weeks = Chronic::RepeaterWeek.new(:week, :week_start => :monday)
+    weeks = Chronic::RepeaterWeek.new(:week, nil, :week_start => :monday)
     weeks.start = @now
 
     this_week = weeks.this(:past)
@@ -104,7 +104,7 @@ class TestRepeaterWeek < TestCase
   end
 
   def test_offset_starting_on_monday
-    weeks = Chronic::RepeaterWeek.new(:week, :week_start => :monday)
+    weeks = Chronic::RepeaterWeek.new(:week, nil, :week_start => :monday)
 
     span = Chronic::Span.new(@now, @now + 1)
     offset_span = weeks.offset(span, 3, :future)

@@ -2,7 +2,7 @@ module Chronic
   class RepeaterHour < Repeater #:nodoc:
     HOUR_SECONDS = 3600 # 60 * 60
 
-    def initialize(type, options = {})
+    def initialize(type, width = nil, options = {})
       super
       @current_hour_start = nil
     end

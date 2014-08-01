@@ -9,7 +9,7 @@ module Chronic
       :night => (20 * 60 * 60)..(24 * 60 * 60),     # 8pm-12pm
     }
 
-    def initialize(type, options = {})
+    def initialize(type, width = nil, options = {})
       super
       @current_span = nil
 

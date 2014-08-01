@@ -2,7 +2,7 @@ module Chronic
   class RepeaterMinute < Repeater #:nodoc:
     MINUTE_SECONDS = 60
 
-    def initialize(type, options = {})
+    def initialize(type, width = nil, options = {})
       super
       @current_minute_start = nil
     end

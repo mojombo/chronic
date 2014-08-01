@@ -10,23 +10,9 @@ module Chronic
     # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
-        token.tag scan_for_plus(token)
-        token.tag scan_for_minus(token)
+        token.tag scan_for(token, SignPlus, { :+ => :plus })
+        token.tag scan_for(token, SignMinus, { :- => :minus })
       end
-    end
-
-    # token - The Token object we want to scan.
-    #
-    # Returns a new SignPlus object.
-    def self.scan_for_plus(token)
-      scan_for token, SignPlus, { /^\+$/ => :plus }
-    end
-
-    # token - The Token object we want to scan.
-    #
-    # Returns a new SignMinus object.
-    def self.scan_for_minus(token)
-      scan_for token, SignMinus, { /^-$/ => :minus }
     end
 
     def to_s

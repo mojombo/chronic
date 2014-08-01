@@ -2,7 +2,7 @@ module Chronic
   class RepeaterYear < Repeater #:nodoc:
     YEAR_SECONDS =  31536000  # 365 * 24 * 60 * 60
 
-    def initialize(type, options = {})
+    def initialize(type, width = nil, options = {})
       super
       @current_year_start = nil
     end

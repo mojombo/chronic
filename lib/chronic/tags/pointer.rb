@@ -10,18 +10,14 @@ module Chronic
     # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
-        if t = scan_for_all(token) then token.tag(t) end
+        token.tag scan_for(token, self, patterns, options)
       end
     end
 
-    # token - The Token object we want to scan.
-    #
-    # Returns a new Pointer object.
-    def self.scan_for_all(token)
-      scan_for token, self,
-      {
-        /\bpast\b/ => :past,
-        /\b(?:future|in)\b/ => :future,
+    def self.patterns
+      @@patterns ||= {
+        'past' => :past,
+        /^future|in$/i => :future,
       }
     end
 

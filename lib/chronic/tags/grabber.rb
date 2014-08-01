@@ -10,19 +10,15 @@ module Chronic
     # Returns an Array of Token objects.
     def self.scan(tokens, options)
       tokens.each do |token|
-        token.tag scan_for_all(token)
+        token.tag scan_for(token, self, patterns, options)
       end
     end
 
-    # token - The Token object to scan.
-    #
-    # Returns a new Grabber object.
-    def self.scan_for_all(token)
-      scan_for token, self,
-      {
-        /last/ => :last,
-        /this/ => :this,
-        /next/ => :next
+    def self.patterns
+      @@patterns ||= {
+        'last' => :last,
+        'this' => :this,
+        'next' => :next
       }
     end
 
