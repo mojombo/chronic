@@ -1,6 +1,8 @@
+$:.unshift '.'
 require 'helper'
 
-class TestParsingLocalizedRu < TestCase
+# class TestParsing < TestCase
+class TestParsingLocalizedRu < Minitest::Test
   # Wed Aug 16 14:00:00 UTC 2006
   TIME_2006_08_16_14_00_00 = Time.local(2006, 8, 16, 14, 0, 0, 0)
 
@@ -10,22 +12,22 @@ class TestParsingLocalizedRu < TestCase
 
   def test_handle_rmn_sd
     time = parse_now("авг 3")
-    assert_equal Time.local(2007, 8, 3, 12), time
+    assert_equal Time.local(2007, 8, 3, 0), time
 
     time = parse_now("авг. 3")
-    assert_equal Time.local(2007, 8, 3, 12), time
+    assert_equal Time.local(2007, 8, 3, 0), time
 
     time = parse_now("авг 20")
-    assert_equal Time.local(2006, 8, 20, 12), time
+    assert_equal Time.local(2006, 8, 20, 0), time
 
     time = parse_now("авг 20", :context => :future)
-    assert_equal Time.local(2006, 8, 20, 12), time
+    assert_equal Time.local(2006, 8, 20, 0), time
 
     time = parse_now("мая 27")
-    assert_equal Time.local(2007, 5, 27, 12), time
+    assert_equal Time.local(2007, 5, 27, 0), time
 
     time = parse_now("мая 28", :context => :past)
-    assert_equal Time.local(2006, 5, 28, 12), time
+    assert_equal Time.local(2006, 5, 28, 0), time
 
     time = parse_now("мая 28 5 вечера", :context => :past)
     assert_equal Time.local(2006, 5, 28, 17), time
@@ -39,14 +41,17 @@ class TestParsingLocalizedRu < TestCase
     time = parse_now("мая 28 в 5:32:19.764")
     assert_in_delta Time.local(2007, 5, 28, 17, 32, 19, 764000), time, 0.001
 
-    time = parse_now("1 апр 2014", now: nil)
-    assert_equal Time.local(2014, 4, 1, 12), time
+    time = parse_now("1 апр 2014")
+    assert_equal Time.local(2014, 4, 1, 0), time
 
-    time = parse_now("1 апр. 2014", now: nil)
-    assert_equal Time.local(2014, 4, 1, 12), time
+    time = parse_now("1 апр. 2014")
+    assert_equal Time.local(2014, 4, 1, 0), time
 
-    time = parse_now("1 апреля 2014", now: nil)
-    assert_equal Time.local(2014, 4, 1, 12), time
+    time = parse_now("1 апреля 2014")
+    assert_equal Time.local(2014, 4, 1, 0), time
+
+    time = parse_now("16 Июн 2014 г.")
+    assert_equal Time.local(2014, 6, 16, 0), time
   end
 
   def test_handle_rmn_sd_on
@@ -71,9 +76,6 @@ class TestParsingLocalizedRu < TestCase
 
   private
   def parse_now(string, options={})
-    Chronic.parse(string, {:now => TIME_2006_08_16_14_00_00, :locale => :ru }.merge(options))
-  end
-  def pre_normalize(s)
-    Chronic::Parser.new.pre_normalize s
+    Chronic.parse(string, {now: TIME_2006_08_16_14_00_00, locale: :ru, guess: :begin}.merge(options))
   end
 end

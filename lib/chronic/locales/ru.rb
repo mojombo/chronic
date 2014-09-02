@@ -34,6 +34,7 @@ class Chronic::Locale::Ru < Chronic::Locale
           scan_for_units:        {
               /^лет?$/          => :year,
               /^год(а)?$/       => :year,
+              /^г\.$/           => :year,
               /^сезон(ов)?$/    => :season,
               /^месяц(ев)?$/    => :month,
               /^недел(я|ь)$/    => :week,
@@ -79,7 +80,7 @@ class Chronic::Locale::Ru < Chronic::Locale
 
 
   def pre_normalize(text)
-    text = text.to_s.downcase
+    text = text.to_s.mb_chars.downcase
     text.gsub!(/\b(\d{2})\.(\d{2})\.(\d{4})\b/, '\3 / \2 / \1')
     text.gsub!(/(\s+|:\d{2}|:\d{2}\.\d{3})\-(\d{2}:?\d{2})\b/, '\1tzminus\2')
     text.gsub!(/\./, ':')
