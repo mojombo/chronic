@@ -6,7 +6,7 @@ class TestRepeaterQuarter < TestCase
   end
 
   def test_match
-    token = Chronic::Token.new('quarter')
+    token = Chronic::Token.new('Q')
     repeater = Chronic::Repeater.scan_for_units(token)
     assert_equal Chronic::RepeaterQuarter, repeater.class
     assert_equal :quarter, repeater.type
@@ -53,5 +53,18 @@ class TestRepeaterQuarter < TestCase
     time = quarter.next(:past)
     assert_equal Time.local(2005, 10, 1), time.begin
     assert_equal Time.local(2006, 1, 1), time.end
+  end
+
+  def test_offset
+    quarter = Chronic::RepeaterQuarter.new(:quarter)
+    span = Chronic::Span.new(@now, @now + 1)
+
+    time = quarter.offset(span, 1, :future)
+    assert_equal Time.local(2006, 10, 1), time.begin
+    assert_equal Time.local(2007, 1, 1), time.end
+
+    time = quarter.offset(span, 1, :past)
+    assert_equal Time.local(2006, 4, 1), time.begin
+    assert_equal Time.local(2006, 7, 1), time.end
   end
 end

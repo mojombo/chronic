@@ -97,7 +97,7 @@ module Chronic
     def self.scan_for_units(token, options = {})
       {
         /^years?$/ => :year,
-        /^quarters?$/ => :quarter,
+        /^Q$/ => :quarter,
         /^seasons?$/ => :season,
         /^months?$/ => :month,
         /^fortnights?$/ => :fortnight,

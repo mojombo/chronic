@@ -1134,6 +1134,20 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 7, 1), time.end
   end
 
+  def test_quarters_srp
+    time = parse_now("1 quarter ago", :guess => false)
+    assert_equal Time.local(2006, 4, 1), time.begin
+    assert_equal Time.local(2006, 7, 1), time.end
+
+    time = parse_now("2 quarters ago", :guess => false)
+    assert_equal Time.local(2006, 1, 1), time.begin
+    assert_equal Time.local(2006, 4, 1), time.end
+
+    time = parse_now("1 quarter from now", :guess => false)
+    assert_equal Time.local(2006, 10, 1), time.begin
+    assert_equal Time.local(2007, 1, 1), time.end
+  end
+
   # regression
 
   # def test_partial

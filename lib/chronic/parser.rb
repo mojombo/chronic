@@ -102,6 +102,7 @@ module Chronic
       text.gsub!(/,/, ' ')
       text.gsub!(/^second /, '2nd ')
       text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
+      text.gsub!(/quarters?(\s+|$)(?!to|till|past|after|before)/, 'Q\1')
       text = Numerizer.numerize(text)
       text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
       text.gsub!(/(?:^|\s)0(\d+:\d+\s*pm?\b)/, ' \1')
@@ -111,8 +112,7 @@ module Chronic
       text.gsub!(/\bnoon\b/, '12:00pm')
       text.gsub!(/\bmidnight\b/, '24:00')
       text.gsub!(/\bnow\b/, 'this second')
-      text.gsub!('quarter to', '15 to')
-      text.gsub!('quarter past', '15 past')
+      text.gsub!('quarter', '15')
       text.gsub!('half', '30')
       text.gsub!(/(\d{1,2}) (to|till|prior to|before)\b/, '\1 minutes past')
       text.gsub!(/(\d{1,2}) (after|past)\b/, '\1 minutes future')

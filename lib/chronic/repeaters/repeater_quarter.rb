@@ -13,6 +13,11 @@ module Chronic
       @current_span = quarter(@now)
     end
 
+    def offset(span, amount, pointer)
+      direction = pointer == :future ? 1 : -1
+      offset_quarter(span.begin, amount * direction)
+    end
+
     def width
       raise 'No current span' unless @current_span
       @current_span.width
