@@ -166,6 +166,9 @@ class TestParsing < TestCase
 
     time = parse_now("may 32")
     assert_equal Time.local(2032, 5, 16, 12, 0, 0), time
+
+    time = parse_now("may '01")
+    assert_equal Time.local(2001, 5, 16, 12, 0, 0), time
   end
 
   def test_handle_rdn_rmn_sd_t_tz_sy
