@@ -1,7 +1,7 @@
 module Chronic
   class RepeaterQuarter < Repeater #:nodoc:
     MONTHS_PER_QUARTER = 3
-    # QUARTER_SECONDS = 7_776_000 # 3 * 30 * 24 * 60 * 60
+    QUARTER_SECONDS = 7_776_000 # 3 * 30 * 24 * 60 * 60
 
     def next(pointer)
       @current_span ||= quarter(@now)
@@ -19,20 +19,23 @@ module Chronic
     end
 
     def width
-      raise 'No current span' unless @current_span
-      @current_span.width
+      @current_span ? @current_span.width : QUARTER_SECONDS
     end
 
     def to_s
       super << '-quarter'
     end
 
-    private
+    protected
+
+    def quarter_index(month)
+      (month - 1) / MONTHS_PER_QUARTER
+    end
 
     def quarter(time)
       year, month = time.year, time.month
 
-      quarter_index = month / MONTHS_PER_QUARTER
+      quarter_index = quarter_index(month)
       quarter_month_start = (quarter_index * MONTHS_PER_QUARTER) + 1
       quarter_month_end = quarter_month_start + MONTHS_PER_QUARTER
 

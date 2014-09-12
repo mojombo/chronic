@@ -110,6 +110,19 @@ module Chronic
       handle_m_d(month, day, tokens[token_range], options)
     end
 
+    # Handle scalar-year/repeater-quarter-name
+    def handle_sy_rqn(tokens, options)
+      handle_rqn_sy(tokens[0..1].reverse, options)
+    end
+
+    # Handle repeater-quarter-name/scalar-year
+    def handle_rqn_sy(tokens, options)
+      year = tokens[1].get_tag(ScalarYear).type
+      quarter_tag = tokens[0].get_tag(RepeaterQuarterName)
+      quarter_tag.start = Chronic.construct(year)
+      quarter_tag.this(:none)
+    end
+
     # Handle repeater-month-name/scalar-year
     def handle_rmn_sy(tokens, options)
       month = tokens[0].get_tag(RepeaterMonthName).index

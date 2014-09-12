@@ -6,7 +6,7 @@ class TestRepeaterQuarter < TestCase
   end
 
   def test_match
-    token = Chronic::Token.new('Q')
+    token = Chronic::Token.new('q')
     repeater = Chronic::Repeater.scan_for_units(token)
     assert_equal Chronic::RepeaterQuarter, repeater.class
     assert_equal :quarter, repeater.type
