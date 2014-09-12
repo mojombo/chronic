@@ -26,6 +26,7 @@ require 'chronic/tags/time_zone'
 
 require 'chronic/tags/repeater'
 require 'chronic/repeaters/repeater_year'
+require 'chronic/repeaters/repeater_quarter'
 require 'chronic/repeaters/repeater_season'
 require 'chronic/repeaters/repeater_season_name'
 require 'chronic/repeaters/repeater_month'
