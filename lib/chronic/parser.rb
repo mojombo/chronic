@@ -55,6 +55,7 @@ module Chronic
     #                 two digit year is `now + x years` it's assumed to be the
     #                 future, `now - x years` is assumed to be the past.
     def initialize(options = {})
+      validate_options!(options)
       @options = DEFAULT_OPTIONS.merge(options)
       @now = options.delete(:now) || Chronic.time_class.now
     end
@@ -153,6 +154,14 @@ module Chronic
     end
 
     private
+
+
+    def validate_options!(options)
+      given = options.keys.map(&:to_s).sort
+      allowed = DEFAULT_OPTIONS.keys.map(&:to_s).sort
+      non_permitted = given - allowed
+      raise ArgumentError, "Unsupported option(s): #{non_permitted.join(', ')}" if non_permitted.any?
+    end
 
     def tokenize(text, options)
       text = pre_normalize(text)
