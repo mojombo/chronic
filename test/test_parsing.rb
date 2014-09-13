@@ -997,6 +997,11 @@ class TestParsing < TestCase
     # future
   end
 
+  def test_parse_guess_rmn_s_r_p
+    time = parse_now("september 3 years ago", :guess => :start)
+    assert_equal Time.local(2003, 9), time
+  end
+
   def test_parse_guess_o_r_g_r
     time = parse_now("3rd month next year", :guess => false)
     assert_equal Time.local(2007, 3), time.begin

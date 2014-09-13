@@ -78,6 +78,7 @@ module Chronic
   class ArrowDefinitions < SpanDefinitions
     def definitions
       [
+        Handler.new([:repeater_month_name, :scalar, :repeater, :pointer], :handle_rmn_s_r_p),
         Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
         Handler.new([:scalar, :repeater, :separator_and?, :scalar, :repeater, :pointer, :separator_at?, 'anchor'], :handle_s_r_a_s_r_p_a),
         Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),
