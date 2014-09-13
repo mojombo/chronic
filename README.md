@@ -136,6 +136,8 @@ Specific Times (many of the above with an added time)
 * 22nd of june at 8am
 * 1979-05-27 05:00:00
 * 03/01/2012 07:25:09.234567
+* 2013-08-01T19:30:00.345-07:00
+* 2013-08-01T19:30:00.34-07:00
 * etc
 
 
