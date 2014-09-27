@@ -13,7 +13,7 @@ module Chronic
     # returns a hash of each word's Definitions
     def definitions
       defined_items.each_with_object({}) do |word, defs|
-        word_type = "#{word.capitalize.to_s + 'Definitions'}"
+        word_type = "#{word.to_s.split('_').map(&:capitalize).join + 'Definitions'}"
         defs[word] = Chronic.const_get(word_type).new(options).definitions
       end
     end
@@ -23,7 +23,7 @@ module Chronic
     # Collection of SpanDefinitions
     def initialize(options = {})
       super
-      @defined_items = [:time,:date,:anchor,:arrow,:narrow,:endian]
+      @defined_items = [:time, :date, :short_date, :timezone, :date_time, :anchor, :arrow, :narrow, :endian]
     end
 
     # returns the definitions of a specific subclass of SpanDefinitions
