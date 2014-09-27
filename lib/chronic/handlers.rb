@@ -252,7 +252,13 @@ module Chronic
 
       begin
         day_start = Chronic.time_class.local(year, month, day)
-        day_start = Chronic.time_class.local(year + 1, month, day) if options[:context] == :future && day_start < now
+
+        if options[:context] == :future && day_start < now
+          day_start = Chronic.time_class.local(year + 1, month, day)
+        elsif options[:context] == :past && day_start > now
+          day_start = Chronic.time_class.local(year - 1, month, day)
+        end
+
         day_or_time(day_start, time_tokens, options)
       rescue ArgumentError
         nil

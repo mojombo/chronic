@@ -413,6 +413,33 @@ class TestParsing < TestCase
 
     time = parse_now("3/13", :context => :none)
     assert_equal Time.local(2006, 3, 13, 12), time
+
+    time = parse_now("12/1", :context => :past)
+    assert_equal Time.local(2005, 12, 1, 12), time
+
+    time = parse_now("12/1", :context => :future)
+    assert_equal Time.local(2006, 12, 1, 12), time
+
+    time = parse_now("12/1", :context => :none)
+    assert_equal Time.local(2006, 12, 1, 12), time
+
+    time = parse_now("8/1", :context => :past)
+    assert_equal Time.local(2006, 8, 1, 12), time
+
+    time = parse_now("8/1", :context => :future)
+    assert_equal Time.local(2007, 8, 1, 12), time
+
+    time = parse_now("8/1", :context => :none)
+    assert_equal Time.local(2006, 8, 1, 12), time
+
+    time = parse_now("1/1", :context => :past)
+    assert_equal Time.local(2006, 1, 1, 12), time
+
+    time = parse_now("1/1", :context => :future)
+    assert_equal Time.local(2007, 1, 1, 12), time
+
+    time = parse_now("1/1", :context => :none)
+    assert_equal Time.local(2006, 1, 1, 12), time
   end
 
   # def test_handle_sm_sy
