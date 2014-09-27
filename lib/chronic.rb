@@ -7,10 +7,10 @@ require 'chronic/version'
 require 'chronic/parser'
 require 'chronic/date'
 require 'chronic/time'
+require 'chronic/time_zone'
 
 require 'chronic/handler'
 require 'chronic/handlers'
-require 'chronic/mini_date'
 require 'chronic/span'
 require 'chronic/token'
 require 'chronic/tokenizer'
@@ -106,7 +106,7 @@ module Chronic
   # second - Integer second.
   #
   # Returns a new Time object constructed from these params.
-  def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0, offset = nil)
+  def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0, timezone = nil)
     day, hour, minute, second = Time::normalize(day, hour, minute, second)
 
     year, month, day = Date::add_day(year, month, day, 0) if day > 28
@@ -117,7 +117,12 @@ module Chronic
     elsif not Chronic.time_class.respond_to?(:new) or (RUBY_VERSION.to_f < 1.9 and Chronic.time_class.name == 'Time')
       Chronic.time_class.local(year, month, day, hour, minute, second)
     else
-      offset = Time::normalize_offset(offset) if Chronic.time_class.name == 'DateTime'
+      if timezone and timezone.respond_to?(:to_offset)
+        offset = timezone.to_offset(year, month, day, hour, minute, second)
+      else
+        offset = timezone
+      end
+      offset = TimeZone::normalize_offset(offset) if Chronic.time_class.name == 'DateTime'
       Chronic.time_class.new(year, month, day, hour, minute, second, offset)
     end
   end
