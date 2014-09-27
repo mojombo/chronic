@@ -1,9 +1,7 @@
 require 'chronic/dictionary'
-require 'chronic/handlers'
 
 module Chronic
   class Parser
-    include Handlers
 
     # Hash of default configuration options.
     DEFAULT_OPTIONS = {
@@ -63,8 +61,11 @@ module Chronic
     # Parse "text" with the given options
     # Returns either a Time or Chronic::Span, depending on the value of options[:guess]
     def parse(text)
-      tokens = tokenize(text, options)
-      span = tokens_to_span(tokens, options.merge(:text => text))
+      text = pre_normalize(text)
+      puts text.inspect if Chronic.debug
+
+      tokens = Tokenizer::tokenize(' ' + text + ' ')
+      tag(tokens, options)
 
       puts "+#{'-' * 51}\n| #{tokens}\n+#{'-' * 51}" if Chronic.debug
 
@@ -176,47 +177,24 @@ module Chronic
       raise ArgumentError, "Unsupported option(s): #{non_permitted.join(', ')}" if non_permitted.any?
     end
 
-    def tokenize(text, options)
-      text = pre_normalize(text)
-      tokens = Tokenizer::tokenize(text)
-      [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, Sign, TimeZone].each do |tok|
+    def tag(tokens, options)
+      [DayName, MonthName, SeasonName, DaySpecial, TimeSpecial, DayPortion, Grabber, Pointer, Rational, Keyword, Separator, Scalar, Ordinal, Sign, Unit, TimeZoneTag].each do |tok|
         tok.scan(tokens, options)
       end
-      tokens.select { |token| token.tagged? }
+      previous = nil
+      tokens.select! do |token|
+        if token.tagged?
+          if !previous or !token.tags.first.kind_of?(Separator) or token.tags.first.class != previous.class
+            previous = token.tags.first
+            true
+          else
+            false
+          end
+        else
+          false
+        end
+      end
     end
 
-    def tokens_to_span(tokens, options)
-      definitions = definitions(options)
-
-      (definitions[:endian] + definitions[:date]).each do |handler|
-        if handler.match(tokens, definitions)
-          good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return handler.invoke(:date, good_tokens, self, options)
-        end
-      end
-
-      definitions[:anchor].each do |handler|
-        if handler.match(tokens, definitions)
-          good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return handler.invoke(:anchor, good_tokens, self, options)
-        end
-      end
-
-      definitions[:arrow].each do |handler|
-        if handler.match(tokens, definitions)
-          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlash) || o.get_tag(SeparatorDash) || o.get_tag(SeparatorComma) || o.get_tag(SeparatorAnd) }
-          return handler.invoke(:arrow, good_tokens, self, options)
-        end
-      end
-
-      definitions[:narrow].each do |handler|
-        if handler.match(tokens, definitions)
-          return handler.invoke(:narrow, tokens, self, options)
-        end
-      end
-
-      puts '-none' if Chronic.debug
-      return nil
-    end
   end
 end

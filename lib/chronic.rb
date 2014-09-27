@@ -13,9 +13,9 @@ require 'chronic/time'
 require 'chronic/time_zone'
 
 require 'chronic/handler'
-require 'chronic/handlers'
 require 'chronic/span'
 require 'chronic/token'
+require 'chronic/token_group'
 require 'chronic/tokenizer'
 require 'chronic/season'
 
