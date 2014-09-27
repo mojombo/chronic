@@ -464,6 +464,11 @@ module Chronic
       handle_srp(tokens, anchor_span, options)
     end
 
+    # Handle repeater/scalar/repeater/pointer
+    def handle_rmn_s_r_p(tokens, options)
+      handle_s_r_p_a(tokens[1..3] + tokens[0..0], options)
+    end
+
     def handle_s_r_a_s_r_p_a(tokens, options)
       anchor_span = get_anchor(tokens[4..tokens.size - 1], options)
 
