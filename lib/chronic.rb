@@ -107,41 +107,11 @@ module Chronic
   #
   # Returns a new Time object constructed from these params.
   def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0, offset = nil)
-    if second >= 60
-      minute += second / 60
-      second = second % 60
-    end
+    day, hour, minute, second = Time::normalize(day, hour, minute, second)
 
-    if minute >= 60
-      hour += minute / 60
-      minute = minute % 60
-    end
+    year, month, day = Date::add_day(year, month, day, 0) if day > 28
+    year, month = Date::add_month(year, month, 0) if month > 12
 
-    if hour >= 24
-      day += hour / 24
-      hour = hour % 24
-    end
-
-    # determine if there is a day overflow. this is complicated by our crappy calendar
-    # system (non-constant number of days per month)
-    day <= 56 || raise('day must be no more than 56 (makes month resolution easier)')
-    if day > 28 # no month ever has fewer than 28 days, so only do this if necessary
-      days_this_month = ::Date.leap?(year) ? Date::MONTH_DAYS_LEAP[month] : Date::MONTH_DAYS[month]
-      if day > days_this_month
-        month += day / days_this_month
-        day = day % days_this_month
-      end
-    end
-
-    if month > 12
-      if month % 12 == 0
-        year += (month - 12) / 12
-        month = 12
-      else
-        year += month / 12
-        month = month % 12
-      end
-    end
     if Chronic.time_class.name == 'Date'
       Chronic.time_class.new(year, month, day)
     elsif not Chronic.time_class.respond_to?(:new) or (RUBY_VERSION.to_f < 1.9 and Chronic.time_class.name == 'Time')

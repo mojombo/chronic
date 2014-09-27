@@ -1,8 +1,13 @@
 module Chronic
   class Date
-    YEAR_MONTHS = 12
+    YEAR_QUARTERS     = 4
+    YEAR_MONTHS       = 12
+    SEASON_MONTHS     = 3
     MONTH_DAYS        = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     MONTH_DAYS_LEAP   = [nil, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    FORTNIGHT_DAYS    = 14
+    WEEK_DAYS         =  7
+    DAY_HOURS         = 24
     YEAR_SECONDS      = 31_536_000 # 365 * 24 * 60 * 60
     SEASON_SECONDS    =  7_862_400 #  91 * 24 * 60 * 60
     MONTH_SECONDS     =  2_592_000 #  30 * 24 * 60 * 60
@@ -10,6 +15,18 @@ module Chronic
     WEEK_SECONDS      =    604_800 #   7 * 24 * 60 * 60
     WEEKEND_SECONDS   =    172_800 #   2 * 24 * 60 * 60
     DAY_SECONDS       =     86_400 #       24 * 60 * 60
+    SEASONS = [
+      :spring,
+      :summer,
+      :autumn,
+      :winter
+    ]
+    SEASON_DATES = {
+      :spring => [3, 20],
+      :summer => [6, 21],
+      :autumn => [9, 23],
+      :winter => [12, 22]
+    }
     MONTHS = {
       :january => 1,
       :february => 2,
@@ -70,12 +87,55 @@ module Chronic
       full_year
     end
 
+    def self.days_month(year, month)
+      days_month = ::Date.leap?(year) ? Date::MONTH_DAYS_LEAP[month] : Date::MONTH_DAYS[month]
+    end
+
     def self.month_overflow?(year, month, day)
-      if ::Date.leap?(year)
-        day > Date::MONTH_DAYS_LEAP[month]
-      else
-        day > Date::MONTH_DAYS[month]
+      day > days_month(year, month)
+    end
+
+    def self.add_season(year, season, modifier = 1)
+      index = SEASONS.index(season) + modifier
+      year += index / SEASONS.count
+      season = SEASONS[index % SEASONS.count]
+      [year, season]
+    end
+
+    def self.add_month(year, month, amount = 1)
+      month += amount
+      if month > YEAR_MONTHS or month < 1
+        year += (month - 1) / YEAR_MONTHS
+        month = (month - 1) % YEAR_MONTHS + 1
       end
+      [year, month]
+    end
+
+    def self.add_day(year, month, day, amount = 1)
+      day += amount
+      days_month = self.days_month(year, month)
+      while day > days_month
+        day -= days_month
+        year, month = add_month(year, month, 1)
+        days_month = self.days_month(year, month)
+      end
+      days_prev_month = self.days_month(year, (month - 2) % YEAR_MONTHS + 1)
+      while day < 1
+        day += days_prev_month
+        year, month = add_month(year, month, -1)
+        days_prev_month = self.days_month(year, month)
+      end
+      [year, month, day]
+    end
+
+    def self.normalize(year, month, day)
+      year, month = add_month(year, month, 0)
+      year, month, day = add_day(year, month, day, 0)
+      [year, month, day]
+    end
+
+    def self.split(date)
+      [date.year, date.month, date.day]
     end
 
   end
