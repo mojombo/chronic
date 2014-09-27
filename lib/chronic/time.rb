@@ -80,4 +80,62 @@ module Chronic
     end
   end
 
+  module TimeStructure
+    include Comparable
+    attr_accessor :hour
+    attr_accessor :minute
+    attr_accessor :second
+    attr_reader :subsecond
+    attr_reader :subsecond_size
+    attr_reader :precision
+    def update(time)
+      @hour = time.hour
+      @minute = time.min
+      @second = time.sec
+      self
+    end
+
+    def is_equal?(time)
+      @hour == time.hour &&
+      @minute == time.min &&
+      @second == time.sec
+    end
+
+    def <=> (time)
+      to_f <=> time.hour * Time::HOUR_SECONDS + time.min * Time::MINUTE_SECONDS + time.sec
+    end
+
+    def to_a
+      [@hour, @minute, @second]
+    end
+
+    def to_f
+      @hour * Time::HOUR_SECONDS + @minute * Time::MINUTE_SECONDS + @second
+    end
+
+    def get_end
+      [@hour, @minute, @second]
+    end
+
+    def to_span(date, timezone = nil)
+      span_start = Chronic.construct(date.year, date.month, date.day, @hour, @minute, @second, timezone)
+      end_hour, end_minute, end_second = get_end
+      span_end = Chronic.construct(date.year, date.month, date.day, end_hour, end_minute, end_second, timezone)
+      Span.new(span_start, span_end, true)
+    end
+  end
+
+  class TimeInfo
+    include TimeStructure
+    def initialize(now = nil)
+      if now
+        update(now)
+      else
+        @hour = 0
+        @minute = 0
+        @second = 0
+      end
+    end
+  end
+
 end

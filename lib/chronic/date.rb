@@ -138,5 +138,107 @@ module Chronic
       [date.year, date.month, date.day]
     end
 
+    def self.calculate_difference(diff, limit, modifier = 1, context = 0)
+      state = diff <=> 0
+      unless modifier.zero?
+        skew = modifier
+        skew += (modifier <=> 0) * -1 if diff * modifier > 0
+        diff += limit * skew
+      end
+      unless context.zero?
+        if modifier.zero?
+          diff += limit * context if state * context <= 0
+        elsif state.zero?
+          diff += limit * context if modifier * context < 0
+        end
+      end
+      diff
+    end
+
+    # Calculate difference in days between given week day and date day
+    def self.wday_diff(date, wday, modifier = 1, context = 0)
+      self.calculate_difference(wday - date.wday, WEEK_DAYS, modifier, context)
+    end
+
+    # Get day difference for weekday
+    def self.wd_diff(date, modifier = 1)
+      diff = modifier
+      wday = date.wday
+      if modifier == 0 and wday == DAYS[:sunday]
+        diff = 1
+      elsif modifier == 0 and wday == DAYS[:saturday]
+        diff = 2
+      elsif modifier == 1 and wday == DAYS[:friday]
+        diff = 3
+      elsif modifier == 1 and wday == DAYS[:saturday]
+        diff = 2
+      elsif modifier == -1 and wday == DAYS[:sunday]
+        diff = -2
+      elsif modifier == -1 and wday == DAYS[:monday]
+        diff = -3
+      end
+      diff
+    end
+
+    # Calculate difference in months between given month and date month
+    def self.month_diff(date_month, month, modifier = 1, context = 0)
+      self.calculate_difference(month - date_month, YEAR_MONTHS, modifier, context)
+    end
+
   end
+
+  module DateStructure
+    attr_accessor :year
+    attr_accessor :month
+    attr_accessor :day
+    attr_accessor :have_year
+    attr_accessor :have_month
+    attr_accessor :have_day
+    attr_reader :precision
+    def update(date)
+      @year = date.year
+      @month = date.month
+      @day = date.day
+      self
+    end
+
+    def is_equal?(date)
+      @year == date.year &&
+      @month == date.month &&
+      @day == date.day
+    end
+
+    def add_day(amount = 1)
+      @year, @month, @day = Date::add_day(@year, @month, @day, amount)
+    end
+
+    def to_a
+      [@year, @month, @day]
+    end
+
+    def get_end
+      [@year, @month, @day]
+    end
+
+    def to_span(time = nil, timezone = nil)
+      hour = minute = second = 0
+      hour, minute, second = time.to_a if time
+      span_start = Chronic.construct(@year, @month, @day, hour, minute, second, timezone)
+      end_year, end_month, end_day = get_end
+      span_end = Chronic.construct(end_year, end_month, end_day, 0, 0, 0, timezone)
+      span = Span.new(span_start, span_end, true)
+      span.precision = @precision
+      span.precision = time.precision if time and time.precision
+      span
+    end
+  end
+
+  class DateInfo
+    include DateStructure
+    def initialize(now = nil)
+      @now = now ? now : Chronic.time_class.now
+      update(@now)
+    end
+  end
+
 end

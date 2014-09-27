@@ -4,6 +4,9 @@ require 'numerizer'
 
 require 'chronic/version'
 
+require 'tzinfo'
+require 'timezone_parser'
+
 require 'chronic/parser'
 require 'chronic/date'
 require 'chronic/time'
