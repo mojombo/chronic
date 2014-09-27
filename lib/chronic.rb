@@ -13,6 +13,7 @@ require 'chronic/handlers'
 require 'chronic/mini_date'
 require 'chronic/span'
 require 'chronic/token'
+require 'chronic/tokenizer'
 require 'chronic/season'
 
 require 'chronic/tag'

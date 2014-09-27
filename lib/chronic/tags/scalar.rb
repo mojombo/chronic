@@ -14,26 +14,34 @@ module Chronic
         token = tokens[i]
         post_token = tokens[i + 1]
         if token.word =~ /^\d+$/
+            width = token.word.length
             scalar = token.word.to_i
-            token.tag(Scalar.new(scalar))
-            token.tag(ScalarSubsecond.new(scalar)) if Chronic::Time::could_be_subsecond?(scalar)
-            token.tag(ScalarSecond.new(scalar)) if Chronic::Time::could_be_second?(scalar)
-            token.tag(ScalarMinute.new(scalar)) if Chronic::Time::could_be_minute?(scalar)
-            token.tag(ScalarHour.new(scalar)) if Chronic::Time::could_be_hour?(scalar)
+            token.tag(Scalar.new(scalar, width))
+            token.tag(ScalarWide.new(token.word, width)) if width == 4
+            token.tag(ScalarSubsecond.new(scalar, width)) if Chronic::Time::could_be_subsecond?(scalar, width)
+            token.tag(ScalarSecond.new(scalar, width)) if Chronic::Time::could_be_second?(scalar, width)
+            token.tag(ScalarMinute.new(scalar, width)) if Chronic::Time::could_be_minute?(scalar, width)
+            token.tag(ScalarHour.new(scalar, width)) if Chronic::Time::could_be_hour?(scalar, width, options[:hours24] == false)
             unless post_token and DAY_PORTIONS.include?(post_token.word)
-              token.tag(ScalarDay.new(scalar)) if Chronic::Date::could_be_day?(scalar)
-              token.tag(ScalarMonth.new(scalar)) if Chronic::Date::could_be_month?(scalar)
-              if Chronic::Date::could_be_year?(scalar)
+              token.tag(ScalarDay.new(scalar, width)) if Chronic::Date::could_be_day?(scalar, width)
+              token.tag(ScalarMonth.new(scalar, width)) if Chronic::Date::could_be_month?(scalar, width)
+              if Chronic::Date::could_be_year?(scalar, width)
                 year = Chronic::Date::make_year(scalar, options[:ambiguous_year_future_bias])
-                token.tag(ScalarYear.new(year.to_i))
+                token.tag(ScalarYear.new(year.to_i, width))
               end
-            end
+          end
         end
       end
     end
 
     def to_s
       'scalar'
+    end
+  end
+
+  class ScalarWide < Scalar #:nodoc:
+    def to_s
+      super << '-wide-' << @type.to_s
     end
   end
 

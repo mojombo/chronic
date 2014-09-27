@@ -2,7 +2,7 @@ module Chronic
   class RepeaterSecond < Repeater #:nodoc:
     SECOND_SECONDS = 1 # haha, awesome
 
-    def initialize(type, options = {})
+    def initialize(type, width = nil, options = {})
       super
       @second_start = nil
     end
