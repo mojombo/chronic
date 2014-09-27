@@ -24,6 +24,18 @@ module Chronic
       TZInfo::Timezone.get(@zone).current_period.utc_offset
     end
 
+    def self.is_valid_abbr?(abbr)
+      TimezoneParser::Abbreviation.isValid?(abbr)
+    end
+
+    def self.is_valid_name?(name)
+      TimezoneParser::Timezone.isValid?(name)
+    end
+
+    def self.is_valid_zone?(name)
+      false # TODO
+    end
+
     def self.to_offset(hour, minute, sign = 1)
       offset = hour * Time::HOUR_SECONDS + minute * Time::MINUTE_SECONDS
       offset *= sign
