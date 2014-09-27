@@ -37,17 +37,6 @@ module Chronic
       subsecond >= 0 && subsecond <= 99999999 && (width.nil? || width > 0)
     end
 
-    # normalize offset in seconds to offset as string +mm:ss or -mm:ss
-    def self.normalize_offset(offset)
-      return offset if offset.is_a?(String)
-      offset = Chronic.time_class.now.to_time.utc_offset unless offset # get current system's UTC offset if offset is nil
-      sign = '+'
-      sign = '-' if offset < 0
-      hours = (offset.abs / 3600).to_i.to_s.rjust(2,'0')
-      minutes = (offset.abs % 3600).to_s.rjust(2,'0')
-      sign + hours + minutes
-    end
-
     def self.add_second(minute, second, amount = 1)
       second += amount
       if second >= MINUTE_SECONDS or second < 0
