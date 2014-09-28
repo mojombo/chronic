@@ -531,8 +531,8 @@ class TestParsing < TestCase
     time = parse_now("10th wednesday in november")
     assert_equal nil, time
 
-    # time = parse_now("3rd wednesday in 2007")
-    # assert_equal Time.local(2007, 1, 20, 12), time
+    time = parse_now("3rd saturday in 2007")
+    assert_equal Time.local(2007, 1, 20, 12), time
   end
 
   def test_handle_o_r_g_r
@@ -945,8 +945,8 @@ class TestParsing < TestCase
     time = parse_now("3 days ago", :guess => :begin)
     assert_equal Time.local(2006, 8, 13, 14), time
 
-    #time = parse_now("1 monday ago")
-    #assert_equal Time.local(2006, 8, 14, 12), time
+    time = parse_now("1 monday ago", :guess => :begin)
+    assert_equal Time.local(2006, 8, 14, 14), time
 
     time = parse_now("5 mornings ago")
     assert_equal Time.local(2006, 8, 12, 9), time
@@ -1409,13 +1409,11 @@ class TestParsing < TestCase
     t1 = Chronic.parse('1st saturday in november', :now => Time.local(2007))
     assert_equal Time.local(2007, 11, 3, 12), t1
 
-    # t1 = Chronic.parse('1st sunday in november', :now => Time.local(2007))
-    # assert_equal Time.local(2007, 11, 4, 12), t1
+    t1 = Chronic.parse('1st sunday in november', :now => Time.local(2007))
+    assert_equal Time.local(2007, 11, 4, 12), t1
 
-    # Chronic.debug = true
-    #
-    # t1 = Chronic.parse('1st monday in november', :now => Time.local(2007))
-    # assert_equal Time.local(2007, 11, 5, 11), t1
+    t1 = Chronic.parse('1st monday in november', :now => Time.local(2007))
+    assert_equal Time.local(2007, 11, 5, 12), t1
   end
 
   def test_now_changes
