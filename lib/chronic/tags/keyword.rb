@@ -15,6 +15,7 @@ module Chronic
         token.tag scan_for(token, KeywordOn,  { 'on'        => :on  })
         token.tag scan_for(token, KeywordAnd, { 'and'       => :and })
         token.tag scan_for(token, KeywordTo,  { 'to'        => :to  })
+        token.tag scan_for(token, KeywordQ,   { :Q          => :Q   })
       end
     end
 
@@ -50,6 +51,12 @@ module Chronic
   class KeywordTo < Keyword #:nodoc:
     def to_s
       super << '-to'
+    end
+  end
+
+  class KeywordQ < Keyword #:nodoc:
+    def to_s
+      super << '-q'
     end
   end
 

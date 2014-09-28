@@ -53,5 +53,13 @@ module Chronic
       handle_u
     end
 
+    # Handle grabber/keyword-q/scalar
+    # formats: gr Qs
+    def handle_gr_q_s
+      handle_gr
+      next_tag
+      handle_q_s
+    end
+
   end
 end

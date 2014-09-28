@@ -115,5 +115,16 @@ module Chronic
       @precision = :season
     end
 
+    # Handle keyword-q/scalar
+    # formats: Qs
+    def handle_q_s
+      next_tag # Q
+      @quarter = @tokens[@index].get_tag(Scalar).type
+      @number = @quarter
+      @index += 1
+      @precision = :quarter
+      @unit = :quarter
+    end
+
   end
 end

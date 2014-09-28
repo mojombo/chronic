@@ -121,9 +121,11 @@ module Chronic
         [[Grabber, SeparatorSpace, MonthName],   :handle_gr_mn],
         [[Grabber, SeparatorSpace, SeasonName],  :handle_gr_sn],
         [[Grabber, SeparatorSpace, TimeSpecial], :handle_gr_ts],
+        [[Grabber, SeparatorSpace, KeywordQ, Scalar], :handle_gr_q_s],
         [[Grabber, SeparatorSpace, Unit],        :handle_gr_u],
         [[KeywordIn, SeparatorSpace, Scalar, SeparatorSpace, Unit], :handle_in_s_u],
         [[DaySpecial], :handle_ds],
+        [[KeywordQ, Scalar], :handle_q_s],
         [[Unit],       :handle_u]
       ]
     end
@@ -148,6 +150,7 @@ module Chronic
         [[Grabber,  SeparatorSpace, Ordinal, SeparatorSpace, Unit], :handle_gr_o_u],
         [[Ordinal,  SeparatorSpace, Unit], :handle_o_u],
         [[Ordinal,  SeparatorSpace, DayName], :handle_o_dn],
+        [[KeywordQ, Scalar], :handle_q_s]
       ]
     end
   end

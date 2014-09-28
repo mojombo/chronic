@@ -20,7 +20,7 @@ module Chronic
     end
 
     def to_s
-      "grabber #{@grabber.inspect}, unit #{@unit.inspect}, season #{@season.inspect}, month #{@month.inspect}, wday #{@wday.inspect}, day special #{@day_special.inspect}, time special #{@time_special.inspect}, count #{@count.inspect}"
+      "grabber #{@grabber.inspect}, unit #{@unit.inspect}, season #{@season.inspect}, quarter #{@quarter.inspect}, month #{@month.inspect}, wday #{@wday.inspect}, day special #{@day_special.inspect}, time special #{@time_special.inspect}, count #{@count.inspect}"
     end
 
     def to_span(span = nil, time = nil, timezone = nil)
@@ -52,6 +52,15 @@ module Chronic
         day = season.last
         end_year, next_season = Date::add_season(year, @season)
         end_month, end_day = Date::SEASON_DATES[next_season]
+        hour = minute = second = end_hour = end_minute = end_second = 0
+      elsif @quarter
+        quarter = Date::get_quarter_index(month)
+        diff = Date::quarter_diff(quarter, @quarter, modifier, sign)
+        year, quarter = Date::add_quarter(year, quarter, diff)
+        month = Date::QUARTERS[@quarter]
+        end_year, next_quarter = Date::add_quarter(year, @quarter)
+        end_month = Date::QUARTERS[next_quarter]
+        day = end_day = 1
         hour = minute = second = end_hour = end_minute = end_second = 0
       elsif @month
         diff = Date::month_diff(month, @month, modifier, sign)
@@ -112,6 +121,19 @@ module Chronic
           unless modifier.zero? and @context == :past
             end_year = year + 1
             end_month = 1
+            end_day = 1
+            end_hour = end_minute = end_second = 0
+          end
+        when :quarter
+          year, quarter = Date::add_quarter(year, Date::get_quarter_index(month), modifier)
+          month = Date::QUARTERS[quarter]
+          unless modifier.zero? and @context == :future
+            day = 1
+            hour = minute = second = 0
+          end
+          unless modifier.zero? and @context == :past
+            end_year, next_quarter = Date::add_quarter(year, quarter)
+            end_month = Date::QUARTERS[next_quarter]
             end_day = 1
             end_hour = end_minute = end_second = 0
           end

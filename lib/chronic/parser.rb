@@ -91,7 +91,11 @@ module Chronic
     #
     # Returns a new String ready for Chronic to parse.
     def pre_normalize(text)
+      text.gsub!(/\b(quarters?)\b/, '<=\1=>') # workaround for Numerizer
+      text.gsub!(/\b\s+third\b/, ' 3rd')
+      text.gsub!(/\b\s+fourth\b/, ' 4th')
       text = Numerizer.numerize(text)
+      text.gsub!(/<=(quarters?)=>/, '\1')
       text
     end
 
