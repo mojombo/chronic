@@ -54,6 +54,14 @@ module Chronic
       handle_s_u
     end
 
+    # Handle scalar/unit/pointer
+    # formats: su p, s u p
+    def handle_s_u_p
+      handle_s_u
+      next_tag
+      handle_p
+    end
+
     # Handle scalar/day-name
     # formats: s dn
     def handle_s_dn
