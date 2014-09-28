@@ -136,6 +136,7 @@ module Chronic
     def definitions
       [
         [[Pointer, [SeparatorSpace, :optional], Scalar, [SeparatorSpace, :optional], Unit], :handle_p_s_u],
+        [[Scalar,  [SeparatorSpace, :optional], Unit,    SeparatorSpace, Pointer], :handle_s_u_p],
         [[Scalar,  [SeparatorSpace, :optional], DayName, SeparatorSpace, Pointer], :handle_s_dn_p],
         [[Rational, SeparatorSpace, Pointer], :handle_r_p],
         [[Unit,     SeparatorSpace, Pointer], :handle_u_p],
