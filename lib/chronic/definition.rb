@@ -162,14 +162,14 @@ module Chronic
       options[:endian_precedence] ||= [:middle, :little]
 
       middle = [
-        [[ScalarMonth,  SeparatorSlash, ScalarDay,    SeparatorSlash, ScalarYear],  :handle_sm_sd_sy],
-        [[ScalarMonth,  SeparatorDash,  ScalarDay,    SeparatorDash,  ScalarYear],  :handle_sm_sd_sy],
-        [[ScalarMonth, [SeparatorSlash, SeparatorDash, SeparatorDot],  ScalarDay],  :handle_sm_sd]
+        [[ScalarMonth,  SeparatorSlash, ScalarDay,    SeparatorSlash, ScalarYear, [SeparatorDot, Scalar, :none]],  :handle_sm_sd_sy],
+        [[ScalarMonth,  SeparatorDash,  ScalarDay,    SeparatorDash,  ScalarYear, [SeparatorDot, Scalar, :none]],  :handle_sm_sd_sy],
+        [[ScalarMonth, [SeparatorSlash, SeparatorDash, SeparatorDot],  ScalarDay, [SeparatorSlash, :none]],  :handle_sm_sd]
       ]
       little = [
-        [[ScalarDay,   SeparatorDash,  ScalarMonth,   SeparatorDash,  ScalarYear],  :handle_sd_sm_sy],
-        [[ScalarDay,   SeparatorSlash, ScalarMonth,   SeparatorSlash, ScalarYear],  :handle_sd_sm_sy],
-        [[ScalarDay,  [SeparatorSlash, SeparatorDash, SeparatorDot],  ScalarMonth], :handle_sd_sm]
+        [[ScalarDay,   SeparatorDash,  ScalarMonth,   SeparatorDash,  ScalarYear, [SeparatorDot, Scalar, :none]],  :handle_sd_sm_sy],
+        [[ScalarDay,   SeparatorSlash, ScalarMonth,   SeparatorSlash, ScalarYear, [SeparatorDot, Scalar, :none]],  :handle_sd_sm_sy],
+        [[ScalarDay,  [SeparatorSlash, SeparatorDash, SeparatorDot],  ScalarMonth, [SeparatorSlash, :none]], :handle_sd_sm]
       ]
 
       case endian = Array(options[:endian_precedence]).first
