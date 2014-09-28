@@ -3,6 +3,7 @@ module Chronic
     YEAR_QUARTERS     = 4
     YEAR_MONTHS       = 12
     SEASON_MONTHS     = 3
+    QUARTER_MONTHS    = 3
     MONTH_DAYS        = [nil, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     MONTH_DAYS_LEAP   = [nil, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
     FORTNIGHT_DAYS    = 14
@@ -10,6 +11,7 @@ module Chronic
     DAY_HOURS         = 24
     YEAR_SECONDS      = 31_536_000 # 365 * 24 * 60 * 60
     SEASON_SECONDS    =  7_862_400 #  91 * 24 * 60 * 60
+    QUARTER_SECONDS   =  7_776_000 #  90 * 24 * 60 * 60
     MONTH_SECONDS     =  2_592_000 #  30 * 24 * 60 * 60
     FORTNIGHT_SECONDS =  1_209_600 #  14 * 24 * 60 * 60
     WEEK_SECONDS      =    604_800 #   7 * 24 * 60 * 60
@@ -27,6 +29,7 @@ module Chronic
       :autumn => [9, 23],
       :winter => [12, 22]
     }
+    QUARTERS = [nil, 1, 4, 7, 10]
     MONTHS = {
       :january => 1,
       :february => 2,
@@ -102,6 +105,15 @@ module Chronic
       [year, season]
     end
 
+    def self.add_quarter(year, quarter, amount = 1)
+      quarter += amount
+      if quarter > YEAR_QUARTERS or quarter < 1
+        year += (quarter - 1) / YEAR_QUARTERS
+        quarter = (quarter - 1) % YEAR_QUARTERS + 1
+      end
+      [year, quarter]
+    end
+
     def self.add_month(year, month, amount = 1)
       month += amount
       if month > YEAR_MONTHS or month < 1
@@ -126,6 +138,18 @@ module Chronic
         days_prev_month = self.days_month(year, month)
       end
       [year, month, day]
+    end
+
+    def self.get_quarter_index(month)
+      (month - 1) / QUARTER_MONTHS + 1
+    end
+
+    def self.get_quarter_month(month)
+      (get_quarter_index(month) - 1) * QUARTER_MONTHS + 1
+    end
+
+    def self.get_quarter_end(quarter)
+      QUARTERS[(quarter - 1) % YEAR_QUARTERS + 1]
     end
 
     def self.normalize(year, month, day)
@@ -183,6 +207,11 @@ module Chronic
     # Calculate difference in months between given month and date month
     def self.month_diff(date_month, month, modifier = 1, context = 0)
       self.calculate_difference(month - date_month, YEAR_MONTHS, modifier, context)
+    end
+
+    # Calculate difference in quarters between given quarter and date quarter
+    def self.quarter_diff(date_quarter, quarter, modifier = 1, context = 0)
+      self.calculate_difference(quarter - date_quarter, YEAR_QUARTERS, modifier, context)
     end
 
   end

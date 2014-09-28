@@ -22,6 +22,7 @@ module Chronic
       :wdays,
       :weekends,
       :fortnights,
+      :quarters,
       :seasons
     ]
 
@@ -43,6 +44,7 @@ module Chronic
       :weeks,
       :fortnights,
       :months,
+      :quarters,
       :seasons,
       :years
     ]
@@ -116,6 +118,12 @@ module Chronic
         when :seasons
           # TODO
           raise "Not Implemented Arrow #{unit}"
+        when :quarters
+          ds[0], quarter = Date::add_quarter(ds[0], Date::get_quarter_index(ds[1]), sign * count)
+          ds[1] = Date::QUARTERS[quarter]
+          ds[2] = 1
+          ds[3], ds[4], ds[5] = 0, 0, 0
+          precision = PRECISION.index(unit)
         when :fortnights
           ds[0], ds[1], ds[2] = Date::add_day(ds[0], ds[1], ds[2], sign * count * Date::FORTNIGHT_DAYS)
           precision = update_precision(precision, unit)
@@ -187,6 +195,11 @@ module Chronic
         de[3] = de[4] = de[5] = 0
       when :months
         de[0], de[1] = Date::add_month(ds[0], ds[1])
+        de[2] = 1
+        de[3] = de[4] = de[5] = 0
+      when :quarters
+        de[0], quarter = Date::add_quarter(ds[0], Date::get_quarter_index(ds[1]))
+        de[1] = Date::QUARTERS[quarter]
         de[2] = 1
         de[3] = de[4] = de[5] = 0
       when :seasons

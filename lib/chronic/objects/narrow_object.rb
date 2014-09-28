@@ -41,6 +41,16 @@ module Chronic
         when :season
           # TODO
           raise "Not Implemented NarrowObject #{@unit.inspect}"
+        when :quarter
+          this_quarter = Date::get_quarter_index(start.month)
+          diff = Date::quarter_diff(this_quarter, @number, modifier, sign)
+          year, quarter = Date::add_quarter(start.year, this_quarter, diff)
+          year = start.year if span
+          month = Date::QUARTERS[quarter]
+          end_year, next_quarter = Date::add_quarter(year, quarter)
+          end_month = Date::QUARTERS[next_quarter]
+          day = end_day = 1
+          hour = minute = second = 0
         when :month
           day = start.day
           year, month = Date::add_month(start.year, start.month, @number - 1)

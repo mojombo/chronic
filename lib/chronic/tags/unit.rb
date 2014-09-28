@@ -32,6 +32,7 @@ module Chronic
       @@paterns ||= {
         /^years?$/i               => :year,
         /^seasons?$/i             => :season,
+        /^quarters?$/i            => :quarter,
         /^months?$/i              => :month,
         /^fortnights?$/i          => :fortnight,
         /^weeks?$/i               => :week,
