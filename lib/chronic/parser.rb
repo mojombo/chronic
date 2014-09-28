@@ -69,6 +69,8 @@ module Chronic
 
       puts "+#{'-' * 51}\n| #{tokens}\n+#{'-' * 51}" if Chronic.debug
 
+      token_group = TokenGroup.new(tokens, definitions(options), @now, options)
+      span = token_group.to_span
       guess(span, options[:guess]) if span
     end
 
