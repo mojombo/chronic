@@ -15,6 +15,7 @@ module Chronic
         token.tag scan_for(token, SeparatorColon, { ':'.to_sym => :colon })
         token.tag scan_for(token, SeparatorSpace, { ' '.to_sym => :space })
         token.tag scan_for(token, SeparatorSlash, { '/'.to_sym => :slash })
+        token.tag scan_for(token, SeparatorApostrophe, { '\''.to_sym => :apostrophe })
         token.tag scan_for(token, SeparatorDash,  { :- => :dash })
         token.tag scan_for(token, SeparatorAt,    { /^(at|@)$/i => :at })
         token.tag scan_for(token, SeparatorIn,    { 'in' => :in })
