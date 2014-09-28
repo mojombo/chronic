@@ -11,9 +11,9 @@ module Chronic
     # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each_index do |i|
-        token = tokens[i]
-        post_token = tokens[i + 1]
-        if token.word =~ /^\d+$/
+        if is_scalar?(tokens, i)
+            token = tokens[i]
+            post_token = tokens[i + 1]
             width = token.word.length
             scalar = token.word.to_i
             token.tag(Scalar.new(scalar, width))
@@ -25,6 +25,7 @@ module Chronic
             unless post_token and DAY_PORTIONS.include?(post_token.word)
               token.tag(ScalarDay.new(scalar, width)) if Chronic::Date::could_be_day?(scalar, width)
               token.tag(ScalarMonth.new(scalar, width)) if Chronic::Date::could_be_month?(scalar, width)
+              token.tag(ScalarFullYear.new(scalar, width)) if width == 4 and Chronic::Date::could_be_year?(scalar, width)
               if Chronic::Date::could_be_year?(scalar, width)
                 year = Chronic::Date::make_year(scalar, options[:ambiguous_year_future_bias])
                 token.tag(ScalarYear.new(year.to_i, width))
@@ -32,6 +33,10 @@ module Chronic
           end
         end
       end
+    end
+
+    def self.is_scalar?(tokens, i)
+      tokens[i].word =~ /^\d+$/ and (not tokens[i + 1] or not tokens[i + 1].word =~ /^st|nd|rd|th$/)
     end
 
     def to_s
@@ -86,4 +91,11 @@ module Chronic
       super << '-year-' << @type.to_s
     end
   end
+
+  class ScalarFullYear < Scalar #:nodoc:
+    def to_s
+      super << '-fullyear-' << @type.to_s
+    end
+  end
+
 end

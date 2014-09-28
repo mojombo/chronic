@@ -1,7 +1,7 @@
 module Chronic
-  class Pointer < Tag
+  class TimeSpecial < Tag
 
-    # Scan an Array of Token objects and apply any necessary Pointer
+    # Scan an Array of Token objects and apply any necessary TimeSpecial
     # tags to each token.
     #
     # tokens - An Array of tokens to scan.
@@ -16,13 +16,19 @@ module Chronic
 
     def self.patterns
       @@patterns ||= {
-        /^ago|before|prior|till|to$/i     => :past,
-        /^future|hence|from|after|past$/i => :future
+        'now'                 => :now,
+        'morning'             => :morning,
+        'noon'                => :noon,
+        'afternoon'           => :afternoon,
+        'evening'             => :evening,
+        /^(to)?(night|nite)$/ => :night,
+        'midnight'            => :midnight
       }
     end
 
     def to_s
-      'pointer-' << @type.to_s
+      'timespecial-' << @type.to_s
     end
   end
+
 end
