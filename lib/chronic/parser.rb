@@ -61,6 +61,7 @@ module Chronic
     # Parse "text" with the given options
     # Returns either a Time or Chronic::Span, depending on the value of options[:guess]
     def parse(text)
+      text = pre_proccess(text)
       text = pre_normalize(text)
       puts text.inspect if Chronic.debug
 
@@ -71,7 +72,13 @@ module Chronic
 
       token_group = TokenGroup.new(tokens, definitions(options), @now, options)
       span = token_group.to_span
+
       guess(span, options[:guess]) if span
+    end
+
+    # Replace any whitespace characters to single space
+    def pre_proccess(text)
+      text.to_s.strip.gsub(/[[:space:]]+/, ' ').gsub(/\s{2,}/, ' ')
     end
 
     # Clean up the specified text ready for parsing.
