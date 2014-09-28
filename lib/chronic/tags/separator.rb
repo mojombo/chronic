@@ -11,17 +11,17 @@ module Chronic
     def self.scan(tokens, options)
       tokens.each do |token|
         token.tag scan_for(token, SeparatorComma, { ','.to_sym => :comma })
-        token.tag scan_for(token, SeparatorDot, { '.'.to_sym => :dot })
+        token.tag scan_for(token, SeparatorDot,   { '.'.to_sym => :dot })
         token.tag scan_for(token, SeparatorColon, { ':'.to_sym => :colon })
         token.tag scan_for(token, SeparatorSpace, { ' '.to_sym => :space })
         token.tag scan_for(token, SeparatorSlash, { '/'.to_sym => :slash })
-        token.tag scan_for(token, SeparatorDash, { :- => :dash })
-        token.tag scan_for(token, SeparatorAt, { /^(at|@)$/i => :at })
-        token.tag scan_for(token, SeparatorIn, { 'in' => :in })
-        token.tag scan_for(token, SeparatorOn, { 'on' => :on })
-        token.tag scan_for(token, SeparatorAnd, { 'and' => :and })
-        token.tag scan_for(token, SeparatorT, { :T => :T })
-        token.tag scan_for(token, SeparatorW, { :W => :W })
+        token.tag scan_for(token, SeparatorDash,  { :- => :dash })
+        token.tag scan_for(token, SeparatorAt,    { /^(at|@)$/i => :at })
+        token.tag scan_for(token, SeparatorIn,    { 'in' => :in })
+        token.tag scan_for(token, SeparatorOn,    { 'on' => :on })
+        token.tag scan_for(token, SeparatorAnd,   { 'and' => :and })
+        token.tag scan_for(token, SeparatorT,     { :T => :T })
+        token.tag scan_for(token, SeparatorW,     { :W => :W })
         token.tag scan_for_quote(token)
       end
     end
@@ -81,6 +81,12 @@ module Chronic
   class SeparatorQuote < Separator #:nodoc:
     def to_s
       super << '-quote-' << @type.to_s
+    end
+  end
+
+  class SeparatorApostrophe < Separator #:nodoc:
+    def to_s
+      super << '-apostrophe-' << @type.to_s
     end
   end
 

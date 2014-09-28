@@ -13,11 +13,6 @@ module Chronic
       @options = options
     end
 
-    # time - Set the start Time for this Tag.
-    def start=(time)
-      @now = time
-    end
-
     class << self
       # Public: Scan an Array of Token objects.
       #

@@ -10,9 +10,9 @@ module Chronic
     # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each_index do |i|
-        if tokens[i].word =~ /^(\d+)(st|nd|rd|th|\.)$/
-          width = $1.length
-          ordinal = $1.to_i
+        if tokens[i].word =~ /^\d+$/ and tokens[i + 1] and tokens[i + 1].word =~ /^st|nd|rd|th|\.$/
+          width = tokens[i].word.length
+          ordinal = tokens[i].word.to_i
           tokens[i].tag(Ordinal.new(ordinal, width))
           tokens[i].tag(OrdinalDay.new(ordinal, width)) if Chronic::Date::could_be_day?(ordinal, width)
           tokens[i].tag(OrdinalMonth.new(ordinal, width)) if Chronic::Date::could_be_month?(ordinal, width)

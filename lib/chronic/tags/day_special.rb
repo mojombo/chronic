@@ -1,7 +1,7 @@
 module Chronic
-  class Pointer < Tag
+  class DaySpecial < Tag
 
-    # Scan an Array of Token objects and apply any necessary Pointer
+    # Scan an Array of Token objects and apply any necessary SeasonName
     # tags to each token.
     #
     # tokens - An Array of tokens to scan.
@@ -16,13 +16,15 @@ module Chronic
 
     def self.patterns
       @@patterns ||= {
-        /^ago|before|prior|till|to$/i     => :past,
-        /^future|hence|from|after|past$/i => :future
+        /^yesterday$/i => :yesterday,
+        /^today$/i     => :today,
+        /^tomorrow$/i  => :tomorrow
       }
     end
 
     def to_s
-      'pointer-' << @type.to_s
+      'dayspecial-' << @type.to_s
     end
   end
+
 end
