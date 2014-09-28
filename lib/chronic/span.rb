@@ -23,7 +23,7 @@ module Chronic
 
     # Prints this span in a nice fashion
     def to_s
-      '(' << self.begin.to_s << '..' << self.end.to_s << ')'
+      '(' << self.begin.to_s << '...' << self.end.to_s << ')'
     end
 
     alias :cover? :include? if RUBY_VERSION =~ /^1.8/
