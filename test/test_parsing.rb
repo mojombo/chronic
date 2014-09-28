@@ -73,10 +73,10 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 5, 28, 12), time
 
     time = parse_now("may 28 5pm", :context => :past)
-    assert_equal Time.local(2006, 5, 28, 17), time
+    assert_equal Time.local(2006, 5, 28, 17, 30), time
 
     time = parse_now("may 28 at 5pm", :context => :past)
-    assert_equal Time.local(2006, 5, 28, 17), time
+    assert_equal Time.local(2006, 5, 28, 17, 30), time
 
     time = parse_now("may 28 at 5:32.19pm", :context => :past)
     assert_equal Time.local(2006, 5, 28, 17, 32, 19), time
@@ -87,13 +87,13 @@ class TestParsing < TestCase
 
   def test_handle_rmn_sd_on
     time = parse_now("5pm on may 28")
-    assert_equal Time.local(2007, 5, 28, 17), time
+    assert_equal Time.local(2007, 5, 28, 17, 30), time
 
     time = parse_now("5pm may 28")
-    assert_equal Time.local(2007, 5, 28, 17), time
+    assert_equal Time.local(2007, 5, 28, 17, 30), time
 
     time = parse_now("5 on may 28", :ambiguous_time_range => :none)
-    assert_equal Time.local(2007, 5, 28, 05), time
+    assert_equal Time.local(2007, 5, 28, 05, 30), time
   end
 
   def test_handle_rmn_od
@@ -104,13 +104,13 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 5, 27, 12), time
 
     time = parse_now("may 27th 5:00 pm", :context => :past)
-    assert_equal Time.local(2006, 5, 27, 17), time
+    assert_equal Time.local(2006, 5, 27, 17, 0, 30), time
 
     time = parse_now("may 27th at 5pm", :context => :past)
-    assert_equal Time.local(2006, 5, 27, 17), time
+    assert_equal Time.local(2006, 5, 27, 17, 30), time
 
     time = parse_now("may 27th at 5", :ambiguous_time_range => :none)
-    assert_equal Time.local(2007, 5, 27, 5), time
+    assert_equal Time.local(2007, 5, 27, 5, 30), time
   end
 
   def test_handle_od_rm
@@ -123,10 +123,10 @@ class TestParsing < TestCase
     assert_equal Time.local(2007, 2, 22, 12), time
 
     time = parse_now("31st of may at 6:30pm")
-    assert_equal Time.local(2007, 5, 31, 18, 30), time
+    assert_equal Time.local(2007, 5, 31, 18, 30, 30), time
 
     time = parse_now("11th december 8am")
-    assert_equal Time.local(2006, 12, 11, 8), time
+    assert_equal Time.local(2006, 12, 11, 8, 30), time
   end
 
   def test_handle_sy_rmn_od
@@ -145,24 +145,24 @@ class TestParsing < TestCase
     assert_equal Time.local(2007, 2, 22, 12), time
 
     time = parse_now("31 of may at 6:30pm")
-    assert_equal Time.local(2007, 5, 31, 18, 30), time
+    assert_equal Time.local(2007, 5, 31, 18, 30, 30), time
 
     time = parse_now("11 december 8am")
-    assert_equal Time.local(2006, 12, 11, 8), time
+    assert_equal Time.local(2006, 12, 11, 8, 30), time
   end
 
   def test_handle_rmn_od_on
     time = parse_now("5:00 pm may 27th", :context => :past)
-    assert_equal Time.local(2006, 5, 27, 17), time
+    assert_equal Time.local(2006, 5, 27, 17, 0, 30), time
 
     time = parse_now("05:00 pm may 27th", :context => :past)
-    assert_equal Time.local(2006, 5, 27, 17), time
+    assert_equal Time.local(2006, 5, 27, 17, 0, 30), time
 
     time = parse_now("5pm on may 27th", :context => :past)
-    assert_equal Time.local(2006, 5, 27, 17), time
+    assert_equal Time.local(2006, 5, 27, 17, 30), time
 
     time = parse_now("5 on may 27th", :ambiguous_time_range => :none)
-    assert_equal Time.local(2007, 5, 27, 5), time
+    assert_equal Time.local(2007, 5, 27, 5, 30), time
   end
 
   def test_handle_rmn_sy
@@ -221,7 +221,7 @@ class TestParsing < TestCase
     assert_equal Time.local(2010, 1, 4, 0), time
 
     time = parse_now("jan 3 2010 at 4", :ambiguous_time_range => :none)
-    assert_equal Time.local(2010, 1, 3, 4), time
+    assert_equal Time.local(2010, 1, 3, 4, 30), time
 
     time = parse_now("may 27, 1979")
     assert_equal Time.local(1979, 5, 27, 12), time
@@ -230,16 +230,16 @@ class TestParsing < TestCase
     assert_equal Time.local(1979, 5, 27, 12), time
 
     time = parse_now("may 27 79 4:30")
-    assert_equal Time.local(1979, 5, 27, 16, 30), time
+    assert_equal Time.local(1979, 5, 27, 16, 30, 30), time
 
     time = parse_now("may 27 79 at 4:30", :ambiguous_time_range => :none)
-    assert_equal Time.local(1979, 5, 27, 4, 30), time
+    assert_equal Time.local(1979, 5, 27, 4, 30, 30), time
 
     time = parse_now("may 27 32")
     assert_equal Time.local(2032, 5, 27, 12, 0, 0), time
 
     time = parse_now("oct 5 2012 1045pm")
-    assert_equal Time.local(2012, 10, 5, 22, 45), time
+    assert_equal Time.local(2012, 10, 5, 22, 45, 30), time
   end
 
   def test_handle_rmn_od_sy
@@ -259,10 +259,10 @@ class TestParsing < TestCase
     assert_equal Time.local(2010, 11, 19, 0), time
 
     time = parse_now("November 18th 2010 at 4")
-    assert_equal Time.local(2010, 11, 18, 16), time
+    assert_equal Time.local(2010, 11, 18, 16, 30), time
 
     time = parse_now("November 18th 2010 at 4", :ambiguous_time_range => :none)
-    assert_equal Time.local(2010, 11, 18, 4), time
+    assert_equal Time.local(2010, 11, 18, 4, 30), time
 
     time = parse_now("March 30th, 1979")
     assert_equal Time.local(1979, 3, 30, 12), time
@@ -271,10 +271,10 @@ class TestParsing < TestCase
     assert_equal Time.local(1979, 3, 30, 12), time
 
     time = parse_now("March 30th 79 4:30")
-    assert_equal Time.local(1979, 3, 30, 16, 30), time
+    assert_equal Time.local(1979, 3, 30, 16, 30, 30), time
 
     time = parse_now("March 30th 79 at 4:30", :ambiguous_time_range => :none)
-    assert_equal Time.local(1979, 3, 30, 4, 30), time
+    assert_equal Time.local(1979, 3, 30, 4, 30, 30), time
   end
 
   def test_handle_od_rmn_sy
@@ -290,10 +290,10 @@ class TestParsing < TestCase
     assert_equal Time.local(2010, 1, 3, 12), time
 
     time = parse_now("3 jan 2010 4pm")
-    assert_equal Time.local(2010, 1, 3, 16), time
+    assert_equal Time.local(2010, 1, 3, 16, 30), time
 
     time = parse_now("27 Oct 2006 7:30pm")
-    assert_equal Time.local(2006, 10, 27, 19, 30), time
+    assert_equal Time.local(2006, 10, 27, 19, 30, 30), time
 
     time = parse_now("3 jan 10")
     assert_equal Time.local(2010, 1, 3, 12), time
@@ -310,7 +310,7 @@ class TestParsing < TestCase
     assert_equal Time.local(1979, 5, 27, 12), time
 
     time = parse_now("5/27/1979 4am")
-    assert_equal Time.local(1979, 5, 27, 4), time
+    assert_equal Time.local(1979, 5, 27, 4, 30), time
 
     time = parse_now("7/12/11")
     assert_equal Time.local(2011, 7, 12, 12), time
@@ -334,10 +334,10 @@ class TestParsing < TestCase
     assert_equal Time.local(1979, 5, 27, 12), time
 
     time = parse_now("27/5/1979 @ 0700")
-    assert_equal Time.local(1979, 5, 27, 7), time
+    assert_equal Time.local(1979, 5, 27, 7, 0, 30), time
 
     time = parse_now("03/18/2012 09:26 pm")
-    assert_equal Time.local(2012, 3, 18, 21, 26), time
+    assert_equal Time.local(2012, 3, 18, 21, 26, 30), time
 
     time = parse_now("30.07.2013 16:34:22")
     assert_equal Time.local(2013, 7, 30, 16, 34, 22), time
@@ -357,10 +357,10 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 8, 20, 12), time
 
     time = parse_now("2006-08-20 7pm")
-    assert_equal Time.local(2006, 8, 20, 19), time
+    assert_equal Time.local(2006, 8, 20, 19, 30), time
 
     time = parse_now("2006-08-20 03:00")
-    assert_equal Time.local(2006, 8, 20, 3), time
+    assert_equal Time.local(2006, 8, 20, 3, 0, 30), time
 
     time = parse_now("2006-08-20 03:30:30")
     assert_equal Time.local(2006, 8, 20, 3, 30, 30), time
@@ -463,7 +463,7 @@ class TestParsing < TestCase
 
   def test_handle_r
     time = parse_now("9am on Saturday")
-    assert_equal Time.local(2006, 8, 19, 9), time
+    assert_equal Time.local(2006, 8, 19, 9, 30), time
 
     time = parse_now("on Tuesday")
     assert_equal Time.local(2006, 8, 22, 12), time
@@ -571,22 +571,22 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 8, 22, 12), time
 
     time = parse_now("5")
-    assert_equal Time.local(2006, 8, 16, 17), time
+    assert_equal Time.local(2006, 8, 16, 17, 30), time
 
     time = Chronic.parse("5", :now => Time.local(2006, 8, 16, 3, 0, 0, 0), :ambiguous_time_range => :none, :guess => :begin)
     assert_equal Time.local(2006, 8, 16, 5), time
 
     time = parse_now("13:00")
-    assert_equal Time.local(2006, 8, 17, 13), time
+    assert_equal Time.local(2006, 8, 17, 13, 0, 30), time
 
     time = parse_now("13:45")
-    assert_equal Time.local(2006, 8, 17, 13, 45), time
+    assert_equal Time.local(2006, 8, 17, 13, 45, 30), time
 
     time = parse_now("1:01pm", :context => :past)
-    assert_equal Time.local(2006, 8, 16, 13, 01), time
+    assert_equal Time.local(2006, 8, 16, 13, 01, 30), time
 
     time = parse_now("2:01pm", :context => :none)
-    assert_equal Time.local(2006, 8, 16, 14, 01), time
+    assert_equal Time.local(2006, 8, 16, 14, 01, 30), time
 
     time = parse_now("november")
     assert_equal Time.local(2006, 11, 16), time
@@ -597,37 +597,37 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 8, 18, 13), time
 
     time = parse_now("monday 4:00")
-    assert_equal Time.local(2006, 8, 21, 16), time
+    assert_equal Time.local(2006, 8, 21, 16, 0, 30), time
 
     time = parse_now("sat 4:00", :ambiguous_time_range => :none, :guess => :begin)
     assert_equal Time.local(2006, 8, 19, 4), time
 
     time = parse_now("sunday 4:20", :ambiguous_time_range => :none)
-    assert_equal Time.local(2006, 8, 20, 4, 20), time
+    assert_equal Time.local(2006, 8, 20, 4, 20, 30), time
 
     time = parse_now("4 pm")
-    assert_equal Time.local(2006, 8, 16, 16), time
+    assert_equal Time.local(2006, 8, 16, 16, 30), time
 
     time = parse_now("4 am", :ambiguous_time_range => :none)
-    assert_equal Time.local(2006, 8, 16, 4), time
+    assert_equal Time.local(2006, 8, 17, 4, 30), time
 
     time = parse_now("12 pm")
-    assert_equal Time.local(2006, 8, 16, 12), time
+    assert_equal Time.local(2006, 8, 17, 12, 30), time
 
     time = parse_now("12:01 pm")
-    assert_equal Time.local(2006, 8, 16, 12, 1), time
+    assert_equal Time.local(2006, 8, 17, 12, 1, 30), time
 
     time = parse_now("12:01 am")
-    assert_equal Time.local(2006, 8, 16, 0, 1), time
+    assert_equal Time.local(2006, 8, 17, 0, 1, 30), time
 
     time = parse_now("12 am")
-    assert_equal Time.local(2006, 8, 16), time
+    assert_equal Time.local(2006, 8, 17, 0, 30), time
 
     time = parse_now("4:00 in the morning")
-    assert_equal Time.local(2006, 8, 16, 4), time
+    assert_equal Time.local(2006, 8, 17, 4, 0, 30), time
 
     time = parse_now("0:10")
-    assert_equal Time.local(2006, 8, 17, 0, 10), time
+    assert_equal Time.local(2006, 8, 17, 0, 10, 30), time
 
     time = parse_now("november 4")
     assert_equal Time.local(2006, 11, 4, 12), time
@@ -638,19 +638,19 @@ class TestParsing < TestCase
 
   def test_parse_guess_rrr
     time = parse_now("friday 1 pm")
-    assert_equal Time.local(2006, 8, 18, 13), time
+    assert_equal Time.local(2006, 8, 18, 13, 30), time
 
     time = parse_now("friday 11 at night")
-    assert_equal Time.local(2006, 8, 18, 23), time
+    assert_equal Time.local(2006, 8, 18, 23, 30), time
 
     time = parse_now("friday 11 in the evening")
-    assert_equal Time.local(2006, 8, 18, 23), time
+    assert_equal Time.local(2006, 8, 18, 23, 30), time
 
     time = parse_now("sunday 6am")
-    assert_equal Time.local(2006, 8, 20, 6), time
+    assert_equal Time.local(2006, 8, 20, 6, 30), time
 
     time = parse_now("friday evening at 7")
-    assert_equal Time.local(2006, 8, 18, 19), time
+    assert_equal Time.local(2006, 8, 18, 19, 30), time
   end
 
   def test_parse_guess_gr
@@ -665,10 +665,10 @@ class TestParsing < TestCase
     # month
 
     time = parse_now("this month")
-    assert_equal Time.local(2006, 8, 24, 12), time
+    assert_equal Time.local(2006, 8, 24, 7), time
 
     time = parse_now("this month", :context => :past)
-    assert_equal Time.local(2006, 8, 8, 12), time
+    assert_equal Time.local(2006, 8, 8, 19), time
 
     time = Chronic.parse("next month", :now => Time.local(2006, 11, 15))
     assert_equal Time.local(2006, 12, 16, 12), time
@@ -681,15 +681,15 @@ class TestParsing < TestCase
     # fortnight
 
     time = parse_now("this fortnight")
-    assert_equal Time.local(2006, 8, 21, 19, 30), time
+    assert_equal Time.local(2006, 8, 21, 19), time
 
     time = parse_now("this fortnight", :context => :past)
-    assert_equal Time.local(2006, 8, 14, 19), time
+    assert_equal Time.local(2006, 8, 11, 7), time
 
     # week
 
     time = parse_now("this week")
-    assert_equal Time.local(2006, 8, 18, 7, 30), time
+    assert_equal Time.local(2006, 8, 18, 7, 0), time
 
     time = parse_now("this week", :context => :past)
     assert_equal Time.local(2006, 8, 14, 19), time
@@ -830,28 +830,28 @@ class TestParsing < TestCase
 
   def test_parse_guess_grr
     time = parse_now("yesterday at 4:00")
-    assert_equal Time.local(2006, 8, 15, 16), time
+    assert_equal Time.local(2006, 8, 15, 16, 0, 30), time
 
-    time = parse_now("today at 9:00")
-    assert_equal Time.local(2006, 8, 16, 9), time
+    time = parse_now("today at 9:00", :hours24 => true)
+    assert_equal Time.local(2006, 8, 16, 9, 0, 30), time
 
     time = parse_now("today at 2100")
-    assert_equal Time.local(2006, 8, 16, 21), time
+    assert_equal Time.local(2006, 8, 16, 21, 0, 30), time
 
     time = parse_now("this day at 0900", :guess => :begin)
     assert_equal Time.local(2006, 8, 16, 9), time
 
     time = parse_now("tomorrow at 0900")
-    assert_equal Time.local(2006, 8, 17, 9), time
+    assert_equal Time.local(2006, 8, 17, 9, 0, 30), time
 
     time = parse_now("yesterday at 4:00", :ambiguous_time_range => :none)
-    assert_equal Time.local(2006, 8, 15, 4), time
+    assert_equal Time.local(2006, 8, 15, 4, 0, 30), time
 
     time = parse_now("last friday at 4:00")
-    assert_equal Time.local(2006, 8, 11, 16), time
+    assert_equal Time.local(2006, 8, 11, 16, 0, 30), time
 
     time = parse_now("next wed 4:00")
-    assert_equal Time.local(2006, 8, 23, 16), time
+    assert_equal Time.local(2006, 8, 23, 16, 0, 30), time
 
     time = parse_now("yesterday afternoon")
     assert_equal Time.local(2006, 8, 15, 15), time
@@ -860,43 +860,43 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 8, 8, 12), time
 
     time = parse_now("tonight at 7")
-    assert_equal Time.local(2006, 8, 16, 19), time
+    assert_equal Time.local(2006, 8, 16, 19, 30), time
 
     time = parse_now("tonight 7")
-    assert_equal Time.local(2006, 8, 16, 19), time
+    assert_equal Time.local(2006, 8, 16, 19, 30), time
 
     time = parse_now("7 tonight")
-    assert_equal Time.local(2006, 8, 16, 19), time
+    assert_equal Time.local(2006, 8, 16, 19, 30), time
   end
 
   def test_parse_guess_grrr
     time = parse_now("today at 6:00pm")
-    assert_equal Time.local(2006, 8, 16, 18), time
+    assert_equal Time.local(2006, 8, 16, 18, 0, 30), time
 
     time = parse_now("today at 6:00am")
-    assert_equal Time.local(2006, 8, 16, 6), time
+    assert_equal Time.local(2006, 8, 16, 6, 0, 30), time
 
     time = parse_now("this day 1800")
-    assert_equal Time.local(2006, 8, 16, 18), time
+    assert_equal Time.local(2006, 8, 16, 18, 0, 30), time
 
     time = parse_now("yesterday at 4:00pm")
-    assert_equal Time.local(2006, 8, 15, 16), time
+    assert_equal Time.local(2006, 8, 15, 16, 0, 30), time
 
     time = parse_now("tomorrow evening at 7")
-    assert_equal Time.local(2006, 8, 17, 19), time
+    assert_equal Time.local(2006, 8, 17, 19, 30), time
 
     time = parse_now("tomorrow morning at 5:30")
-    assert_equal Time.local(2006, 8, 17, 5, 30), time
+    assert_equal Time.local(2006, 8, 17, 5, 30, 30), time
 
     time = parse_now("next monday at 12:01 am")
-    assert_equal Time.local(2006, 8, 21, 00, 1), time
+    assert_equal Time.local(2006, 8, 21, 00, 1, 30), time
 
     time = parse_now("next monday at 12:01 pm")
-    assert_equal Time.local(2006, 8, 21, 12, 1), time
+    assert_equal Time.local(2006, 8, 21, 12, 1, 30), time
 
     # with context
     time = parse_now("sunday at 8:15pm", :context => :past)
-    assert_equal Time.local(2006, 8, 13, 20, 15), time
+    assert_equal Time.local(2006, 8, 13, 20, 15, 30), time
   end
 
   def test_parse_guess_rgr
@@ -1024,7 +1024,7 @@ class TestParsing < TestCase
     assert_equal Time.local(2003, 8, 22, 12), time
 
     time = parse_now("3 months ago saturday at 5:00 pm")
-    assert_equal Time.local(2006, 5, 19, 17), time
+    assert_equal Time.local(2006, 5, 19, 17, 0, 30), time
 
     time = parse_now("2 days from this second")
     assert_equal Time.local(2006, 8, 18, 14), time
@@ -1106,13 +1106,13 @@ class TestParsing < TestCase
 
   def test_relative_to_an_hour_before
     # example prenormalization "10 to 2" becomes "10 minutes past 2"
-    assert_equal Time.local(2006, 8, 16, 13, 50), parse_now("10 to 2")
-    assert_equal Time.local(2006, 8, 16, 13, 50), parse_now("10 till 2")
-    assert_equal Time.local(2006, 8, 16, 13, 50), parse_now("10 before 2")
+    assert_equal Time.local(2006, 8, 16, 13, 50, 30), parse_now("10 to 2")
+    assert_equal Time.local(2006, 8, 16, 13, 50, 30), parse_now("10 till 2")
     assert_equal Time.local(2006, 8, 16, 13, 50), parse_now("10 prior to 2", :guess => :begin)
+    assert_equal Time.local(2006, 8, 16, 13, 50, 30), parse_now("10 before 2")
 
     # uses the current hour, so 2006-08-16 13:50:00, not 14:50
-    assert_equal Time.local(2006, 8, 16, 13, 50), parse_now("10 to")
+    assert_equal Time.local(2006, 8, 16, 13, 50, 30), parse_now("10 to")
     assert_equal Time.local(2006, 8, 16, 13, 50), parse_now("10 till", :guess => :begin)
 
     assert_equal Time.local(2006, 8, 16, 15, 45), parse_now("quarter to 4", :guess => :begin)
@@ -1132,13 +1132,13 @@ class TestParsing < TestCase
   end
 
   def test_am_pm
-    assert_equal Time.local(2006, 8, 16), parse_now("8/16/2006 at 12am")
-    assert_equal Time.local(2006, 8, 16, 12), parse_now("8/16/2006 at 12pm")
+    assert_equal Time.local(2006, 8, 16, 0, 30), parse_now("8/16/2006 at 12am")
+    assert_equal Time.local(2006, 8, 16, 12, 30), parse_now("8/16/2006 at 12pm")
   end
 
   def test_a_p
-    assert_equal Time.local(2006, 8, 16, 0, 15), parse_now("8/16/2006 at 12:15a")
-    assert_equal Time.local(2006, 8, 16, 18, 30), parse_now("8/16/2006 at 6:30p")
+    assert_equal Time.local(2006, 8, 16, 0, 15, 30), parse_now("8/16/2006 at 12:15a")
+    assert_equal Time.local(2006, 8, 16, 18, 30, 30), parse_now("8/16/2006 at 6:30p")
   end
 
   def test_seasons
@@ -1443,29 +1443,29 @@ class TestParsing < TestCase
 
   def test_handle_rdn_rmn_sd_rt
     time = parse_now("Thu Aug 10 4pm")
-    assert_equal Time.local(2006, 8, 10, 16), time
+    assert_equal Time.local(2006, 8, 10, 16, 30), time
 
     time = parse_now("Thu Aug 10 at 4pm")
-    assert_equal Time.local(2006, 8, 10, 16), time
+    assert_equal Time.local(2006, 8, 10, 16, 30), time
   end
 
   def test_handle_rdn_rmn_od_rt
     time = parse_now("Thu Aug 10th at 4pm")
-    assert_equal Time.local(2006, 8, 10, 16), time
+    assert_equal Time.local(2006, 8, 10, 16, 30), time
   end
 
   def test_handle_rdn_od_rt
     time = parse_now("Thu 17th at 4pm")
-    assert_equal Time.local(2006, 8, 17, 16), time
+    assert_equal Time.local(2006, 8, 17, 16, 30), time
 
     time = parse_now("Sat 16th at 4pm", :guess => :begin)
     assert_equal Time.local(2006, 9, 16, 16), time
 
     time = parse_now("Thu 1st at 4pm")
-    assert_equal Time.local(2006, 9, 1, 16), time
+    assert_equal Time.local(2007, 2, 1, 16, 30), time
 
     time = parse_now("Tue 1st at 4pm", :context => :past)
-    assert_equal Time.local(2006, 8, 1, 16), time
+    assert_equal Time.local(2006, 8, 1, 16, 30), time
   end
 
   def test_handle_rdn_od
