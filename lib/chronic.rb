@@ -7,6 +7,9 @@ require 'chronic/version'
 require 'chronic/parser'
 require 'chronic/date'
 require 'chronic/time'
+require 'chronic/locale'
+require 'chronic/locales/en'
+require 'chronic/locales/ru'
 
 require 'chronic/handler'
 require 'chronic/handlers'
@@ -74,10 +77,12 @@ module Chronic
     #
     # Returns The Time class Chronic uses internally.
     attr_accessor :time_class
+    attr_accessor :locale
   end
 
   self.debug = false
   self.time_class = ::Time
+  self.locale = :en
 
 
   # Parses a string containing a natural language date or time.
@@ -89,7 +94,8 @@ module Chronic
   # text - The String text to parse.
   # opts - An optional Hash of configuration options passed to Parser::new.
   def self.parse(text, options = {})
-    Parser.new(options).parse(text)
+    locale_class = Locale.by_name(options.delete(:locale) || locale)
+    Parser.new({locale: locale_class}.merge(options)).parse(text)
   end
 
   # Construct a new time object determining possible month overflows

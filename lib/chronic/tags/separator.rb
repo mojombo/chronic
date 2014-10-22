@@ -10,115 +10,111 @@ module Chronic
     # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
-        token.tag scan_for_commas(token)
-        token.tag scan_for_dots(token)
-        token.tag scan_for_colon(token)
-        token.tag scan_for_space(token)
-        token.tag scan_for_slash(token)
-        token.tag scan_for_dash(token)
-        token.tag scan_for_quote(token)
-        token.tag scan_for_at(token)
-        token.tag scan_for_in(token)
-        token.tag scan_for_on(token)
-        token.tag scan_for_and(token)
-        token.tag scan_for_t(token)
-        token.tag scan_for_w(token)
+        token.tag scan_for_commas(token, options)
+        token.tag scan_for_dots(token, options)
+        token.tag scan_for_colon(token, options)
+        token.tag scan_for_space(token, options)
+        token.tag scan_for_slash(token, options)
+        token.tag scan_for_dash(token, options)
+        token.tag scan_for_quote(token, options)
+        token.tag scan_for_at(token, options)
+        token.tag scan_for_in(token, options)
+        token.tag scan_for_on(token, options)
+        token.tag scan_for_and(token, options)
+        token.tag scan_for_t(token, options)
+        token.tag scan_for_w(token, options)
       end
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorComma object.
-    def self.scan_for_commas(token)
-      scan_for token, SeparatorComma, { /^,$/ => :comma }
+    def self.scan_for_commas(token, options={})
+      scan_for token, SeparatorComma, { options[:locale]['separator.comma'] => :comma }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorDot object.
-    def self.scan_for_dots(token)
-      scan_for token, SeparatorDot, { /^\.$/ => :dot }
+    def self.scan_for_dots(token, options={})
+      scan_for token, SeparatorDot, { options[:locale]['separator.dot'] => :dot }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorColon object.
-    def self.scan_for_colon(token)
-      scan_for token, SeparatorColon, { /^:$/ => :colon }
+    def self.scan_for_colon(token, options={})
+      scan_for token, SeparatorColon, { options[:locale]['separator.colon'] => :colon }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorSpace object.
-    def self.scan_for_space(token)
-      scan_for token, SeparatorSpace, { /^ $/ => :space }
+    def self.scan_for_space(token, options={})
+      scan_for token, SeparatorSpace, { options[:locale]['separator.space'] => :space }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorSlash object.
-    def self.scan_for_slash(token)
-      scan_for token, SeparatorSlash, { /^\/$/ => :slash }
+    def self.scan_for_slash(token, options={})
+      scan_for token, SeparatorSlash, { options[:locale]['separator.slash'] => :slash }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorDash object.
-    def self.scan_for_dash(token)
-      scan_for token, SeparatorDash, { /^-$/ => :dash }
+    def self.scan_for_dash(token, options={})
+      scan_for token, SeparatorDash, { options[:locale]['separator.dash'] => :dash }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorQuote object.
-    def self.scan_for_quote(token)
-      scan_for token, SeparatorQuote,
-      {
-        /^'$/ => :single_quote,
-        /^"$/ => :double_quote
-      }
+    def self.scan_for_quote(token, options={})
+      scan_for token, SeparatorQuote, options[:locale]['separator.scan_for_quote']
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorAt object.
-    def self.scan_for_at(token)
-      scan_for token, SeparatorAt, { /^(at|@)$/ => :at }
+    def self.scan_for_at(token, options={})
+      scan_for token, SeparatorAt, { options[:locale]['separator.at'] => :at }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorIn object.
-    def self.scan_for_in(token)
-      scan_for token, SeparatorIn, { /^in$/ => :in }
+    def self.scan_for_in(token, options={})
+      scan_for token, SeparatorIn, { options[:locale]['separator.in'] => :in }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeparatorOn object.
-    def self.scan_for_on(token)
-      scan_for token, SeparatorOn, { /^on$/ => :on }
+    def self.scan_for_on(token, options={})
+      scan_for token, SeparatorOn, { options[:locale]['separator.on'] => :on }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeperatorAnd Object object.
-    def self.scan_for_and(token)
-      scan_for token, SeparatorAnd, { /^and$/ => :and }
+    def self.scan_for_and(token, options={})
+      scan_for token, SeparatorAnd, { options[:locale]['separator.and'] => :and }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeperatorT Object object.
-    def self.scan_for_t(token)
-      scan_for token, SeparatorT, { /^t$/ => :T }
+    def self.scan_for_t(token, options={})
+      scan_for token, SeparatorT, { options[:locale]['separator.t'] => :T }
     end
 
     # token - The Token object we want to scan.
     #
     # Returns a new SeperatorW Object object.
-    def self.scan_for_w(token)
-      scan_for token, SeparatorW, { /^w$/ => :W }
+    def self.scan_for_w(token, options={})
+      scan_for token, SeparatorW, { options[:locale]['separator.w'] => :W }
     end
 
     def to_s
