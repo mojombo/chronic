@@ -7,13 +7,51 @@ class TestChronic < TestCase
     @now = Time.local(2006, 8, 16, 14, 0, 0, 0)
   end
 
-  def test_pre_normalize
-    assert_equal Chronic::Parser.new.pre_normalize('12:55 pm'), Chronic::Parser.new.pre_normalize('12.55 pm')
+  def test_pre_normalize_am_pm
+    assert_equal '12:55 pm', Chronic::Parser.new.pre_normalize('12:55 pm')
+    assert_equal '12:55 am', Chronic::Parser.new.pre_normalize('12.55 am')
+    assert_equal '12:55 pm', Chronic::Parser.new.pre_normalize('12:55p')
   end
 
   def test_pre_normalize_numerized_string
     string = 'two and a half years'
     assert_equal Numerizer.numerize(string), Chronic::Parser.new.pre_normalize(string)
+    assert_equal '36 days future this second', Chronic::Parser.new.pre_normalize('thirty six days from now')
+    assert_equal '1 hour', Chronic::Parser.new.pre_normalize('an hour')
+    assert_equal '1st day in may', Chronic::Parser.new.pre_normalize('first day in May')
+  end
+
+  def test_pre_normalize_quarters
+    assert_equal 'the q3', Chronic::Parser.new.pre_normalize('the third quarter')
+    assert_equal '3 q until the report comes in', Chronic::Parser.new.pre_normalize('three quarters until the report comes in')
+    assert_equal '3 / 4 minutes past the report comes in', Chronic::Parser.new.pre_normalize('three quarters till the report comes in') # this might be a bug
+  end
+
+  def test_pre_normalize_detect_years
+    assert_equal 'summer of 1969', Chronic::Parser.new.pre_normalize('summer of \'69')
+  end
+
+  def test_pre_normalize_time_words
+    assert_equal 'this day', Chronic::Parser.new.pre_normalize('today')
+    assert_equal 'this night', Chronic::Parser.new.pre_normalize('tonight')
+    assert_equal 'next day', Chronic::Parser.new.pre_normalize('tomorrow')
+    assert_equal '12:00 pm', Chronic::Parser.new.pre_normalize('noon')
+    assert_equal '12:00 pm', Chronic::Parser.new.pre_normalize('midday')
+    assert_equal '24:00', Chronic::Parser.new.pre_normalize('midnight')
+    assert_equal 'this second', Chronic::Parser.new.pre_normalize('now')
+    assert_equal '3 morning', Chronic::Parser.new.pre_normalize('three in the morning')
+  end
+
+  def test_pre_normalize_time_distance
+    assert_equal 'next day future 12:00 pm', Chronic::Parser.new.pre_normalize('tomorrow after noon') # this also seems strange
+    assert_equal '1 / 4 minutes past 6', Chronic::Parser.new.pre_normalize('a quarter to six') # this also seems strange
+    assert_equal '30 minutes future 10', Chronic::Parser.new.pre_normalize('half past ten')
+    assert_equal '10 minutes past', Chronic::Parser.new.pre_normalize('ten minutes ago')
+  end
+
+  def test_pre_normalize_dates
+    assert_equal '2014 / 10 / 29', Chronic::Parser.new.pre_normalize('2014:10:29')
+    assert_equal '3:10:29 am', Chronic::Parser.new.pre_normalize('03:10:29 am')
   end
 
   def test_post_normalize_am_pm_aliases
