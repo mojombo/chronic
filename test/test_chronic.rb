@@ -18,12 +18,13 @@ class TestChronic < TestCase
     assert_equal Numerizer.numerize(string), Chronic::Parser.new.pre_normalize(string)
     assert_equal '36 days future this second', Chronic::Parser.new.pre_normalize('thirty six days from now')
     assert_equal '1 hour', Chronic::Parser.new.pre_normalize('an hour')
+    assert_equal '1st day in may', Chronic::Parser.new.pre_normalize('first day in May')
   end
 
   def test_pre_normalize_quarters
     assert_equal 'the q3', Chronic::Parser.new.pre_normalize('the third quarter')
-    assert_equal '3 q until the end of the year', Chronic::Parser.new.pre_normalize('three quarters until the end of the year')
-    assert_equal '3 / 4 minutes past the end of the year', Chronic::Parser.new.pre_normalize('three quarters till the end of the year') # this might be a bug
+    assert_equal '3 q until the report comes in', Chronic::Parser.new.pre_normalize('three quarters until the report comes in')
+    assert_equal '3 / 4 minutes past the report comes in', Chronic::Parser.new.pre_normalize('three quarters till the report comes in') # this might be a bug
   end
 
   def test_pre_normalize_detect_years
@@ -42,6 +43,7 @@ class TestChronic < TestCase
   end
 
   def test_pre_normalize_time_distance
+    assert_equal 'next day future 12:00 pm', Chronic::Parser.new.pre_normalize('tomorrow after noon') # this also seems strange
     assert_equal '1 / 4 minutes past 6', Chronic::Parser.new.pre_normalize('a quarter to six') # this also seems strange
     assert_equal '30 minutes future 10', Chronic::Parser.new.pre_normalize('half past ten')
     assert_equal '10 minutes past', Chronic::Parser.new.pre_normalize('ten minutes ago')
