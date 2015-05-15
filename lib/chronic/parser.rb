@@ -14,7 +14,8 @@ module Chronic
       :guess => true,
       :ambiguous_time_range => 6,
       :endian_precedence    => [:middle, :little],
-      :ambiguous_year_future_bias => 50
+      :ambiguous_year_future_bias => 50,
+      :today => false
     }
 
     attr_accessor :now
@@ -54,6 +55,11 @@ module Chronic
     #                 look x amount of years into the future and past. If the
     #                 two digit year is `now + x years` it's assumed to be the
     #                 future, `now - x years` is assumed to be the past.
+    #        :today - When true is given, Chronic will parse day name as current
+    #                 date if they are ambigious. For example, Chronic.parse("monday")
+    #                 on 02/09/2015 will give "2015-02-16 12:00:00" without :today flag,
+    #                 and "2015-02-09 12:00:00" with `today: true`.
+
     def initialize(options = {})
       @options = DEFAULT_OPTIONS.merge(options)
       @now = options.delete(:now) || Chronic.time_class.now
