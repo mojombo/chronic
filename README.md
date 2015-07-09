@@ -95,6 +95,8 @@ Complex
 * 7 days from now
 * 1 week hence
 * in 3 hours
+* in an hour
+* in a day
 * 1 year ago tomorrow
 * 3 months ago saturday at 5:00 pm
 * 7 hours before tomorrow at noon

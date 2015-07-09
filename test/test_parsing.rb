@@ -1243,6 +1243,12 @@ class TestParsing < TestCase
     assert_equal pre_normalize("8:00 pm February 11"), pre_normalize("8:00 p.m. February 11")
   end
 
+  def test_normalizing_prepositions
+    assert_equal pre_normalize("in an hour"), pre_normalize("in 1 hour")
+    assert_equal pre_normalize("in a hour"), pre_normalize("in 1 hour")
+    assert_equal pre_normalize("in a day"), pre_normalize("in 1 day")
+  end
+
   private
   def parse_now(string, options={})
     Chronic.parse(string, {:now => TIME_2006_08_16_14_00_00 }.merge(options))

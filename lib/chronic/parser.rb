@@ -117,6 +117,7 @@ module Chronic
       text.gsub!(/(\d{1,2}) (after|past)\b/, '\1 minutes future')
       text.gsub!(/\b(?:ago|before(?: now)?)\b/, 'past')
       text.gsub!(/\bthis (?:last|past)\b/, 'last')
+      text.gsub!(/\bin an?\b/, 'in 1')
       text.gsub!(/\b(?:in|during) the (morning)\b/, '\1')
       text.gsub!(/\b(?:in the|during the|at) (afternoon|evening|night)\b/, '\1')
       text.gsub!(/\btonight\b/, 'this night')
