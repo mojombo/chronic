@@ -13,9 +13,9 @@ module Chronic
       unless @current_hour_start
         case pointer
         when :future
-          @current_hour_start = Chronic.construct(@now.year, @now.month, @now.day, @now.hour + 1)
+          @current_hour_start = construct(@now.year, @now.month, @now.day, @now.hour + 1)
         when :past
-          @current_hour_start = Chronic.construct(@now.year, @now.month, @now.day, @now.hour - 1)
+          @current_hour_start = construct(@now.year, @now.month, @now.day, @now.hour - 1)
         end
       else
         direction = pointer == :future ? 1 : -1
@@ -30,13 +30,13 @@ module Chronic
 
       case pointer
       when :future
-        hour_start = Chronic.construct(@now.year, @now.month, @now.day, @now.hour, @now.min + 1)
-        hour_end = Chronic.construct(@now.year, @now.month, @now.day, @now.hour + 1)
+        hour_start = construct(@now.year, @now.month, @now.day, @now.hour, @now.min + 1)
+        hour_end = construct(@now.year, @now.month, @now.day, @now.hour + 1)
       when :past
-        hour_start = Chronic.construct(@now.year, @now.month, @now.day, @now.hour)
-        hour_end = Chronic.construct(@now.year, @now.month, @now.day, @now.hour, @now.min)
+        hour_start = construct(@now.year, @now.month, @now.day, @now.hour)
+        hour_end = construct(@now.year, @now.month, @now.day, @now.hour, @now.min)
       when :none
-        hour_start = Chronic.construct(@now.year, @now.month, @now.day, @now.hour)
+        hour_start = construct(@now.year, @now.month, @now.day, @now.hour)
         hour_end = hour_start + HOUR_SECONDS
       end
 

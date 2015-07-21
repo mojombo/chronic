@@ -1245,7 +1245,13 @@ class TestParsing < TestCase
 
   private
   def parse_now(string, options={})
-    Chronic.parse(string, {:now => TIME_2006_08_16_14_00_00 }.merge(options))
+    begin
+      old = Chronic.time_class
+      Chronic.time_class = ::Date
+      Chronic.parse(string, {:now => TIME_2006_08_16_14_00_00, :time_class => old }.merge(options))
+    ensure
+      Chronic.time_class = old
+    end
   end
   def pre_normalize(s)
     Chronic::Parser.new.pre_normalize s

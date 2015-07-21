@@ -26,9 +26,9 @@ module Chronic
     end
 
     # normalize offset in seconds to offset as string +mm:ss or -mm:ss
-    def self.normalize_offset(offset)
+    def self.normalize_offset(offset, time_class = Chronic.time_class)
       return offset if offset.is_a?(String)
-      offset = Chronic.time_class.now.to_time.utc_offset unless offset # get current system's UTC offset if offset is nil
+      offset = time_class.now.to_time.utc_offset unless offset # get current system's UTC offset if offset is nil
       sign = '+'
       sign = '-' if offset < 0
       hours = (offset.abs / 3600).to_i.to_s.rjust(2,'0')

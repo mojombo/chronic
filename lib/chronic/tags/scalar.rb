@@ -24,7 +24,7 @@ module Chronic
               token.tag(ScalarDay.new(scalar)) if Chronic::Date::could_be_day?(scalar)
               token.tag(ScalarMonth.new(scalar)) if Chronic::Date::could_be_month?(scalar)
               if Chronic::Date::could_be_year?(scalar)
-                year = Chronic::Date::make_year(scalar, options[:ambiguous_year_future_bias])
+                year = Chronic::Date::make_year(scalar, options[:ambiguous_year_future_bias], options[:time_class])
                 token.tag(ScalarYear.new(year.to_i))
               end
             end

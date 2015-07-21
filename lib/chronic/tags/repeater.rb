@@ -141,5 +141,13 @@ module Chronic
     def to_s
       'repeater'
     end
+
+    def time_class
+      @options.fetch(:time_class, Chronic.time_class)
+    end
+
+    def construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0, offset = nil)
+      Chronic.construct(year, month, day, hour, minute, second, offset, time_class)
+    end
   end
 end

@@ -16,7 +16,7 @@ module Chronic
             tokens[i].tag(OrdinalDay.new(ordinal)) if Chronic::Date::could_be_day?(ordinal)
             tokens[i].tag(OrdinalMonth.new(ordinal)) if Chronic::Date::could_be_month?(ordinal)
             if Chronic::Date::could_be_year?(ordinal)
-                year = Chronic::Date::make_year(ordinal, options[:ambiguous_year_future_bias])
+                year = Chronic::Date::make_year(ordinal, options[:ambiguous_year_future_bias], options[:time_class])
                 tokens[i].tag(OrdinalYear.new(year.to_i))
             end
         end
