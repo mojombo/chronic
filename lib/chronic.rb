@@ -103,7 +103,7 @@ module Chronic
   # second - Integer second.
   #
   # Returns a new Time object constructed from these params.
-  def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0, offset = nil)
+  def self.construct(year, month = 1, day = 1, hour = 0, minute = 0, second = 0, offset = nil, time_class = Chronic.time_class)
     if second >= 60
       minute += second / 60
       second = second % 60
@@ -139,13 +139,14 @@ module Chronic
         month = month % 12
       end
     end
-    if Chronic.time_class.name == 'Date'
-      Chronic.time_class.new(year, month, day)
-    elsif not Chronic.time_class.respond_to?(:new) or (RUBY_VERSION.to_f < 1.9 and Chronic.time_class.name == 'Time')
-      Chronic.time_class.local(year, month, day, hour, minute, second)
+
+    if time_class.name == 'Date'
+      time_class.new(year, month, day)
+    elsif not time_class.respond_to?(:new) or (RUBY_VERSION.to_f < 1.9 and time_class.name == 'Time')
+      time_class.local(year, month, day, hour, minute, second)
     else
-      offset = Time::normalize_offset(offset) if Chronic.time_class.name == 'DateTime'
-      Chronic.time_class.new(year, month, day, hour, minute, second, offset)
+      offset = Time::normalize_offset(offset, time_class) if time_class.name == 'DateTime'
+      time_class.new(year, month, day, hour, minute, second, offset)
     end
   end
 

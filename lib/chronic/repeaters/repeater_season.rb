@@ -28,7 +28,7 @@ module Chronic
 
       direction = pointer == :future ? 1 : -1
 
-      today = Chronic.construct(@now.year, @now.month, @now.day)
+      today = construct(@now.year, @now.month, @now.day)
       this_ssn = find_current_season(MiniDate.from_time(@now))
       case pointer
       when :past
@@ -66,8 +66,8 @@ module Chronic
 
     def find_next_season_span(direction, next_season)
       unless @next_season_start || @next_season_end
-        @next_season_start = Chronic.construct(@now.year, @now.month, @now.day)
-        @next_season_end = Chronic.construct(@now.year, @now.month, @now.day)
+        @next_season_start = construct(@now.year, @now.month, @now.day)
+        @next_season_end = construct(@now.year, @now.month, @now.day)
       end
 
       @next_season_start += direction * num_seconds_til_start(next_season, direction)
@@ -83,7 +83,7 @@ module Chronic
     end
 
     def num_seconds_til(goal, direction)
-      start = Chronic.construct(@now.year, @now.month, @now.day)
+      start = construct(@now.year, @now.month, @now.day)
       seconds = 0
 
       until MiniDate.from_time(start + direction * seconds).equals?(goal)
@@ -103,8 +103,8 @@ module Chronic
 
     def construct_season(start, finish)
       Span.new(
-        Chronic.construct(start.year, start.month, start.day),
-        Chronic.construct(finish.year, finish.month, finish.day)
+        construct(start.year, start.month, start.day),
+        construct(finish.year, finish.month, finish.day)
       )
     end
   end

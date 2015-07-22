@@ -76,7 +76,7 @@ module Chronic
 
       unless @current_time
         first = true
-        midnight = Chronic.time_class.local(@now.year, @now.month, @now.day)
+        midnight = time_class.local(@now.year, @now.month, @now.day)
 
         yesterday_midnight = midnight - full_day
         tomorrow_midnight = midnight + full_day

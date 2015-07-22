@@ -11,7 +11,7 @@ module Chronic
       super
 
       unless @current_day_start
-        @current_day_start = Chronic.time_class.local(@now.year, @now.month, @now.day)
+        @current_day_start = time_class.local(@now.year, @now.month, @now.day)
       end
 
       direction = pointer == :future ? 1 : -1
@@ -25,14 +25,14 @@ module Chronic
 
       case pointer
       when :future
-        day_begin = Chronic.construct(@now.year, @now.month, @now.day, @now.hour)
-        day_end = Chronic.construct(@now.year, @now.month, @now.day) + DAY_SECONDS
+        day_begin = construct(@now.year, @now.month, @now.day, @now.hour)
+        day_end = construct(@now.year, @now.month, @now.day) + DAY_SECONDS
       when :past
-        day_begin = Chronic.construct(@now.year, @now.month, @now.day)
-        day_end = Chronic.construct(@now.year, @now.month, @now.day, @now.hour)
+        day_begin = construct(@now.year, @now.month, @now.day)
+        day_end = construct(@now.year, @now.month, @now.day, @now.hour)
       when :none
-        day_begin = Chronic.construct(@now.year, @now.month, @now.day)
-        day_end = Chronic.construct(@now.year, @now.month, @now.day) + DAY_SECONDS
+        day_begin = construct(@now.year, @now.month, @now.day)
+        day_end = construct(@now.year, @now.month, @now.day) + DAY_SECONDS
       end
 
       Span.new(day_begin, day_end)

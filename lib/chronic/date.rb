@@ -61,9 +61,9 @@ module Chronic
     #   make_year(00, 50) #=> 2000
     #
     # Returns The Integer 4 digit year.
-    def self.make_year(year, bias)
+    def self.make_year(year, bias, time_class = Chronic.time_class)
       return year if year.to_s.size > 2
-      start_year = Chronic.time_class.now.year - bias
+      start_year = time_class.now.year - bias
       century = (start_year / 100) * 100
       full_year = century + year
       full_year += 100 if full_year < start_year

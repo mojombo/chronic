@@ -13,12 +13,12 @@ module Chronic
       unless @current_week_start
         case pointer
         when :future
-          saturday_repeater = RepeaterDayName.new(:saturday)
+          saturday_repeater = RepeaterDayName.new(:saturday, @options)
           saturday_repeater.start = @now
           next_saturday_span = saturday_repeater.next(:future)
           @current_week_start = next_saturday_span.begin
         when :past
-          saturday_repeater = RepeaterDayName.new(:saturday)
+          saturday_repeater = RepeaterDayName.new(:saturday, @options)
           saturday_repeater.start = (@now + RepeaterDay::DAY_SECONDS)
           last_saturday_span = saturday_repeater.next(:past)
           @current_week_start = last_saturday_span.begin
@@ -36,12 +36,12 @@ module Chronic
 
       case pointer
       when :future, :none
-        saturday_repeater = RepeaterDayName.new(:saturday)
+        saturday_repeater = RepeaterDayName.new(:saturday, @options)
         saturday_repeater.start = @now
         this_saturday_span = saturday_repeater.this(:future)
         Span.new(this_saturday_span.begin, this_saturday_span.begin + WEEKEND_SECONDS)
       when :past
-        saturday_repeater = RepeaterDayName.new(:saturday)
+        saturday_repeater = RepeaterDayName.new(:saturday, @options)
         saturday_repeater.start = @now
         last_saturday_span = saturday_repeater.this(:past)
         Span.new(last_saturday_span.begin, last_saturday_span.begin + WEEKEND_SECONDS)
@@ -50,7 +50,7 @@ module Chronic
 
     def offset(span, amount, pointer)
       direction = pointer == :future ? 1 : -1
-      weekend = RepeaterWeekend.new(:weekend)
+      weekend = RepeaterWeekend.new(:weekend, @options)
       weekend.start = span.begin
       start = weekend.next(pointer).begin + (amount - 1) * direction * RepeaterWeek::WEEK_SECONDS
       Span.new(start, start + (span.end - span.begin))

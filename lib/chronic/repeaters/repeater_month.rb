@@ -14,12 +14,12 @@ module Chronic
       super
 
       unless @current_month_start
-        @current_month_start = offset_by(Chronic.construct(@now.year, @now.month), 1, pointer)
+        @current_month_start = offset_by(construct(@now.year, @now.month), 1, pointer)
       else
-        @current_month_start = offset_by(Chronic.construct(@current_month_start.year, @current_month_start.month), 1, pointer)
+        @current_month_start = offset_by(construct(@current_month_start.year, @current_month_start.month), 1, pointer)
       end
 
-      Span.new(@current_month_start, Chronic.construct(@current_month_start.year, @current_month_start.month + 1))
+      Span.new(@current_month_start, construct(@current_month_start.year, @current_month_start.month + 1))
     end
 
     def this(pointer = :future)
@@ -27,14 +27,14 @@ module Chronic
 
       case pointer
       when :future
-        month_start = Chronic.construct(@now.year, @now.month, @now.day + 1)
-        month_end = self.offset_by(Chronic.construct(@now.year, @now.month), 1, :future)
+        month_start = construct(@now.year, @now.month, @now.day + 1)
+        month_end = self.offset_by(construct(@now.year, @now.month), 1, :future)
       when :past
-        month_start = Chronic.construct(@now.year, @now.month)
-        month_end = Chronic.construct(@now.year, @now.month, @now.day)
+        month_start = construct(@now.year, @now.month)
+        month_end = construct(@now.year, @now.month, @now.day)
       when :none
-        month_start = Chronic.construct(@now.year, @now.month)
-        month_end = self.offset_by(Chronic.construct(@now.year, @now.month), 1, :future)
+        month_start = construct(@now.year, @now.month)
+        month_end = self.offset_by(construct(@now.year, @now.month), 1, :future)
       end
 
       Span.new(month_start, month_end)
@@ -60,7 +60,7 @@ module Chronic
       days = month_days(new_year, new_month)
       new_day = time.day > days ? days : time.day
 
-      Chronic.construct(new_year, new_month, new_day, time.hour, time.min, time.sec)
+      construct(new_year, new_month, new_day, time.hour, time.min, time.sec)
     end
 
     def width

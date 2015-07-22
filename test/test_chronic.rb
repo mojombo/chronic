@@ -181,4 +181,8 @@ class TestChronic < TestCase
     end
 =end
   end
+
+  def test_time_class_option
+    assert_equal DateTime.new(2013, 8, 27, 20, 30, 40, '-08:00'), Chronic.construct(2013, 8, 27, 20, 30, 40, -28800, ::DateTime)
+  end
 end
