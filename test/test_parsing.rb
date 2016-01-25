@@ -392,13 +392,13 @@ class TestParsing < TestCase
     time = parse_now("05/06")
     assert_equal Time.local(2007, 5, 6, 12), time
 
-    time = parse_now("05/06", :endian_precedence => [:little, :medium])
+    time = parse_now("05/06", :endian_precedence => [:little, :middle])
     assert_equal Time.local(2007, 6, 5, 12), time
 
     time = parse_now("05/06 6:05:57 PM")
     assert_equal Time.local(2007, 5, 6, 18, 05, 57), time
 
-    time = parse_now("05/06 6:05:57 PM", :endian_precedence => [:little, :medium])
+    time = parse_now("05/06 6:05:57 PM", :endian_precedence => [:little, :middle])
     assert_equal Time.local(2007, 6, 5, 18, 05, 57), time
 
     time = parse_now("13/09")
