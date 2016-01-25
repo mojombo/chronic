@@ -163,28 +163,37 @@ module Chronic
       prefered_endian
     end
 
-    def prefered_endian
-      options[:endian_precedence] ||= [:middle, :little]
-
-      middle = [
+    def self.middle
+      [
         [[ScalarMonth,  SeparatorSlash, ScalarDay,    SeparatorSlash, ScalarYear, [SeparatorDot, Scalar, :none]],  :handle_sm_sd_sy],
         [[ScalarMonth,  SeparatorDash,  ScalarDay,    SeparatorDash,  ScalarYear, [SeparatorDot, Scalar, :none]],  :handle_sm_sd_sy],
         [[ScalarMonth, [SeparatorSlash, SeparatorDash, SeparatorDot],  ScalarDay, [SeparatorSlash, :none]],  :handle_sm_sd]
       ]
-      little = [
+    end
+
+    def self.little
+      [
         [[ScalarDay,   SeparatorDash,  ScalarMonth,   SeparatorDash,  ScalarYear, [SeparatorDot, Scalar, :none]],  :handle_sd_sm_sy],
         [[ScalarDay,   SeparatorSlash, ScalarMonth,   SeparatorSlash, ScalarYear, [SeparatorDot, Scalar, :none]],  :handle_sd_sm_sy],
         [[ScalarDay,  [SeparatorSlash, SeparatorDash, SeparatorDot],  ScalarMonth, [SeparatorSlash, :none]], :handle_sd_sm]
       ]
+     end
 
-      case endian = Array(options[:endian_precedence]).first
-      when :little
-        little + middle
-      when :middle
-        middle + little
-      else
-        raise ArgumentError, "Unknown endian option '#{endian}'"
+    def prefered_endian
+      options[:endian_precedence] ||= [:middle, :little]
+      options[:endian_precedence] = [options[:endian_precedence]] unless options[:endian_precedence].is_a?(Array)
+      definition_list = []
+      options[:endian_precedence].each do |endian|
+        case endian
+        when :little
+          definition_list += self.class.little
+        when :middle
+          definition_list += self.class.middle
+        else
+          raise ArgumentError, "Unknown endian option '#{endian}'"
+        end
       end
+      definition_list
     end
   end
 
