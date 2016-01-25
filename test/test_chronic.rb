@@ -8,7 +8,10 @@ class TestChronic < TestCase
   end
 
   def test_pre_normalize
-    assert_equal Chronic::Parser.new.pre_normalize('12:55 pm'), Chronic::Parser.new.pre_normalize('12.55 pm')
+    assert_equal Chronic::Parser.new.pre_normalize('three quarters'), Chronic::Parser.new.pre_normalize('3 quarters')
+    assert_equal Chronic::Parser.new.pre_normalize('one second'), Chronic::Parser.new.pre_normalize('1 second')
+    assert_equal Chronic::Parser.new.pre_normalize('third'), Chronic::Parser.new.pre_normalize('3rd')
+    assert_equal Chronic::Parser.new.pre_normalize('fourth'), Chronic::Parser.new.pre_normalize('4th')
   end
 
   def test_pre_normalize_numerized_string
@@ -19,28 +22,21 @@ class TestChronic < TestCase
   def test_post_normalize_am_pm_aliases
     # affect wanted patterns
 
-    tokens = [Chronic::Token.new("5:00"), Chronic::Token.new("morning")]
-    tokens[0].tag(Chronic::RepeaterTime.new("5:00"))
-    tokens[1].tag(Chronic::RepeaterDayPortion.new(:morning))
+    tokens = [Chronic::Token.new("5"), Chronic::Token.new("morning")]
+    tokens[0].tag(Chronic::ScalarHour.new("5", 1))
+    tokens[1].tag(Chronic::TimeSpecial.new(:morning))
 
     assert_equal :morning, tokens[1].tags[0].type
-
-    tokens = Chronic::Handlers.dealias_and_disambiguate_times(tokens, {})
-
-    assert_equal :am, tokens[1].tags[0].type
     assert_equal 2, tokens.size
 
     # don't affect unwanted patterns
 
     tokens = [Chronic::Token.new("friday"), Chronic::Token.new("morning")]
-    tokens[0].tag(Chronic::RepeaterDayName.new(:friday))
-    tokens[1].tag(Chronic::RepeaterDayPortion.new(:morning))
+    tokens[0].tag(Chronic::DayName.new(:friday))
+    tokens[1].tag(Chronic::TimeSpecial.new(:morning))
 
     assert_equal :morning, tokens[1].tags[0].type
 
-    tokens = Chronic::Handlers.dealias_and_disambiguate_times(tokens, {})
-
-    assert_equal :morning, tokens[1].tags[0].type
     assert_equal 2, tokens.size
   end
 
@@ -78,7 +74,7 @@ class TestChronic < TestCase
     Chronic.debug = true
 
     Chronic.parse 'now'
-    assert $stdout.string.include?('this(grabber-this)')
+    assert $stdout.string.include?('now(timespecial-now)')
   ensure
     $stdout = STDOUT
     Chronic.debug = false
@@ -113,10 +109,7 @@ class TestChronic < TestCase
     assert_equal Time.local(2006, 3, 5), Chronic.construct(2006, 2, 33)
     assert_equal Time.local(2004, 3, 4), Chronic.construct(2004, 2, 33)
     assert_equal Time.local(2000, 3, 4), Chronic.construct(2000, 2, 33)
-
-    assert_raises(RuntimeError) do
-      Chronic.construct(2006, 1, 57)
-    end
+    assert_equal Time.local(2006, 2, 26), Chronic.construct(2006, 1, 57)
   end
 
   def test_month_overflow
