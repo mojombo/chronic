@@ -2,6 +2,19 @@ module Chronic
   # Tokens are tagged with subclassed instances of this class when
   # they match specific criteria.
   class Tag
+    SNAKE_TO_CAMEL_MAP = {}
+
+    def self.inherited(subclass)
+      subclass_string = subclass.name[(subclass.name.rindex('::')+2)..-1]
+      subclass_string.gsub!(/([A-Z\d]+)([A-Z][a-z])/, '\1_\2'.freeze)
+      subclass_string.gsub!(/([a-z\d])([A-Z])/, '\1_\2'.freeze)
+      subclass_string.downcase!
+      SNAKE_TO_CAMEL_MAP[subclass_string] = subclass
+    end
+
+    def self.find_by_snake_name(underscore_string)
+      SNAKE_TO_CAMEL_MAP[underscore_string]
+    end
 
     attr_accessor :type
 
