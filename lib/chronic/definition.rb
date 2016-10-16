@@ -23,7 +23,7 @@ module Chronic
   class TimeDefinitions < SpanDefinitions
     def definitions
       [
-        Handler.new([:repeater_time, :repeater_day_portion?], nil)
+        Handler.new([:RepeaterTime, :RepeaterDayPortion?], nil)
       ]
     end
   end
@@ -31,36 +31,36 @@ module Chronic
   class DateDefinitions < SpanDefinitions
     def definitions
       [
-        Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :repeater_time, [:separator_slash?, :separator_dash?], :time_zone, :scalar_year], :handle_generic),
-        Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day], :handle_rdn_rmn_sd),
-        Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :scalar_year], :handle_rdn_rmn_sd_sy),
-        Handler.new([:repeater_day_name, :repeater_month_name, :ordinal_day], :handle_rdn_rmn_od),
-        Handler.new([:repeater_day_name, :repeater_month_name, :ordinal_day, :scalar_year], :handle_rdn_rmn_od_sy),
-        Handler.new([:repeater_day_name, :repeater_month_name, :scalar_day, :separator_at?, 'time?'], :handle_rdn_rmn_sd),
-        Handler.new([:repeater_day_name, :repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rdn_rmn_od),
-        Handler.new([:repeater_day_name, :ordinal_day, :separator_at?, 'time?'], :handle_rdn_od),
-        Handler.new([:scalar_year, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar_day, :repeater_time, :time_zone], :handle_generic),
-        Handler.new([:ordinal_day], :handle_generic),
-        Handler.new([:repeater_month_name, :scalar_day, :scalar_year], :handle_rmn_sd_sy),
-        Handler.new([:repeater_month_name, :ordinal_day, :scalar_year], :handle_rmn_od_sy),
-        Handler.new([:repeater_month_name, :scalar_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_sd_sy),
-        Handler.new([:repeater_month_name, :ordinal_day, :scalar_year, :separator_at?, 'time?'], :handle_rmn_od_sy),
-        Handler.new([:repeater_month_name, [:separator_slash?, :separator_dash?], :scalar_day, :separator_at?, 'time?'], :handle_rmn_sd),
-        Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :scalar_day], :handle_rmn_sd_on),
-        Handler.new([:repeater_month_name, :ordinal_day, :separator_at?, 'time?'], :handle_rmn_od),
-        Handler.new([:ordinal_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_od_rmn_sy),
-        Handler.new([:ordinal_day, :repeater_month_name, :separator_at?, 'time?'], :handle_od_rmn),
-        Handler.new([:ordinal_day, :grabber?, :repeater_month, :separator_at?, 'time?'], :handle_od_rm),
-        Handler.new([:scalar_year, :repeater_month_name, :ordinal_day], :handle_sy_rmn_od),
-        Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :ordinal_day], :handle_rmn_od_on),
-        Handler.new([:repeater_month_name, :scalar_year], :handle_rmn_sy),
-        Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy),
-        Handler.new([:scalar_day, [:separator_slash?, :separator_dash?], :repeater_month_name, :separator_at?, 'time?'], :handle_sd_rmn),
-        Handler.new([:scalar_year, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
-        Handler.new([:scalar_year, [:separator_slash, :separator_dash], :scalar_month], :handle_sy_sm),
-        Handler.new([:scalar_month, [:separator_slash, :separator_dash], :scalar_year], :handle_sm_sy),
-        Handler.new([:scalar_day, [:separator_slash, :separator_dash], :repeater_month_name, [:separator_slash, :separator_dash], :scalar_year, :repeater_time?], :handle_sm_rmn_sy),
-        Handler.new([:scalar_year, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar?, :time_zone], :handle_generic),
+        Handler.new([:RepeaterDayName, :RepeaterMonthName, :ScalarDay, :RepeaterTime, [:SeparatorSlash?, :SeparatorDash?], :TimeZone, :ScalarYear], :handle_generic),
+        Handler.new([:RepeaterDayName, :RepeaterMonthName, :ScalarDay], :handle_rdn_rmn_sd),
+        Handler.new([:RepeaterDayName, :RepeaterMonthName, :ScalarDay, :ScalarYear], :handle_rdn_rmn_sd_sy),
+        Handler.new([:RepeaterDayName, :RepeaterMonthName, :OrdinalDay], :handle_rdn_rmn_od),
+        Handler.new([:RepeaterDayName, :RepeaterMonthName, :OrdinalDay, :ScalarYear], :handle_rdn_rmn_od_sy),
+        Handler.new([:RepeaterDayName, :RepeaterMonthName, :ScalarDay, :SeparatorAt?, "time?"], :handle_rdn_rmn_sd),
+        Handler.new([:RepeaterDayName, :RepeaterMonthName, :OrdinalDay, :SeparatorAt?, "time?"], :handle_rdn_rmn_od),
+        Handler.new([:RepeaterDayName, :OrdinalDay, :SeparatorAt?, "time?"], :handle_rdn_od),
+        Handler.new([:ScalarYear, [:SeparatorSlash, :SeparatorDash], :ScalarMonth, [:SeparatorSlash, :SeparatorDash], :ScalarDay, :RepeaterTime, :TimeZone], :handle_generic),
+        Handler.new([:OrdinalDay], :handle_generic),
+        Handler.new([:RepeaterMonthName, :ScalarDay, :ScalarYear], :handle_rmn_sd_sy),
+        Handler.new([:RepeaterMonthName, :OrdinalDay, :ScalarYear], :handle_rmn_od_sy),
+        Handler.new([:RepeaterMonthName, :ScalarDay, :ScalarYear, :SeparatorAt?, "time?"], :handle_rmn_sd_sy),
+        Handler.new([:RepeaterMonthName, :OrdinalDay, :ScalarYear, :SeparatorAt?, "time?"], :handle_rmn_od_sy),
+        Handler.new([:RepeaterMonthName, [:SeparatorSlash?, :SeparatorDash?], :ScalarDay, :SeparatorAt?, "time?"], :handle_rmn_sd),
+        Handler.new([:RepeaterTime, :RepeaterDayPortion?, :SeparatorOn?, :RepeaterMonthName, :ScalarDay], :handle_rmn_sd_on),
+        Handler.new([:RepeaterMonthName, :OrdinalDay, :SeparatorAt?, "time?"], :handle_rmn_od),
+        Handler.new([:OrdinalDay, :RepeaterMonthName, :ScalarYear, :SeparatorAt?, "time?"], :handle_od_rmn_sy),
+        Handler.new([:OrdinalDay, :RepeaterMonthName, :SeparatorAt?, "time?"], :handle_od_rmn),
+        Handler.new([:OrdinalDay, :Grabber?, :RepeaterMonth, :SeparatorAt?, "time?"], :handle_od_rm),
+        Handler.new([:ScalarYear, :RepeaterMonthName, :OrdinalDay], :handle_sy_rmn_od),
+        Handler.new([:RepeaterTime, :RepeaterDayPortion?, :SeparatorOn?, :RepeaterMonthName, :OrdinalDay], :handle_rmn_od_on),
+        Handler.new([:RepeaterMonthName, :ScalarYear], :handle_rmn_sy),
+        Handler.new([:ScalarDay, :RepeaterMonthName, :ScalarYear, :SeparatorAt?, "time?"], :handle_sd_rmn_sy),
+        Handler.new([:ScalarDay, [:SeparatorSlash?, :SeparatorDash?], :RepeaterMonthName, :SeparatorAt?, "time?"], :handle_sd_rmn),
+        Handler.new([:ScalarYear, [:SeparatorSlash, :SeparatorDash], :ScalarMonth, [:SeparatorSlash, :SeparatorDash], :ScalarDay, :SeparatorAt?, "time?"], :handle_sy_sm_sd),
+        Handler.new([:ScalarYear, [:SeparatorSlash, :SeparatorDash], :ScalarMonth], :handle_sy_sm),
+        Handler.new([:ScalarMonth, [:SeparatorSlash, :SeparatorDash], :ScalarYear], :handle_sm_sy),
+        Handler.new([:ScalarDay, [:SeparatorSlash, :SeparatorDash], :RepeaterMonthName, [:SeparatorSlash, :SeparatorDash], :ScalarYear, :RepeaterTime?], :handle_sm_rmn_sy),
+        Handler.new([:ScalarYear, [:SeparatorSlash, :SeparatorDash], :ScalarMonth, [:SeparatorSlash, :SeparatorDash], :Scalar?, :TimeZone], :handle_generic)
       ]
     end
   end
@@ -68,20 +68,21 @@ module Chronic
   class AnchorDefinitions < SpanDefinitions
     def definitions
       [
-        Handler.new([:separator_on?, :grabber?, :repeater, :separator_at?, :repeater?, :repeater?], :handle_r),
-        Handler.new([:grabber?, :repeater, :repeater, :separator?, :repeater?, :repeater?], :handle_r),
-        Handler.new([:repeater, :grabber, :repeater], :handle_r_g_r)
+        Handler.new([:SeparatorOn?, :Grabber?, :Repeater, :SeparatorAt?, :Repeater?, :Repeater?], :handle_r),
+        Handler.new([:Grabber?, :Repeater, :Repeater, :Separator?, :Repeater?, :Repeater?], :handle_r),
+        Handler.new([:Repeater, :Grabber, :Repeater], :handle_r_g_r)
       ]
     end
   end
 
+
   class ArrowDefinitions < SpanDefinitions
     def definitions
       [
-        Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
-        Handler.new([:scalar, :repeater, :separator_and?, :scalar, :repeater, :pointer, :separator_at?, 'anchor'], :handle_s_r_a_s_r_p_a),
-        Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),
-        Handler.new([:scalar, :repeater, :pointer, :separator_at?, 'anchor'], :handle_s_r_p_a)
+        Handler.new([:Scalar, :Repeater, :Pointer], :handle_s_r_p),
+        Handler.new([:Scalar, :Repeater, :SeparatorAnd?, :Scalar, :Repeater, :Pointer, :SeparatorAt?, "anchor"], :handle_s_r_a_s_r_p_a),
+        Handler.new([:Pointer, :Scalar, :Repeater], :handle_p_s_r),
+        Handler.new([:Scalar, :Repeater, :Pointer, :SeparatorAt?, "anchor"], :handle_s_r_p_a)
       ]
     end
   end
@@ -89,8 +90,8 @@ module Chronic
   class NarrowDefinitions < SpanDefinitions
     def definitions
       [
-        Handler.new([:ordinal, :repeater, :separator_in, :repeater], :handle_o_r_s_r),
-        Handler.new([:ordinal, :repeater, :grabber, :repeater], :handle_o_r_g_r)
+        Handler.new([:Ordinal, :Repeater, :SeparatorIn, :Repeater], :handle_o_r_s_r),
+        Handler.new([:Ordinal, :Repeater, :Grabber, :Repeater], :handle_o_r_g_r),
       ]
     end
   end
@@ -104,11 +105,11 @@ module Chronic
       options[:endian_precedence] ||= [:middle, :little]
 
       definitions = [
-        Handler.new([:scalar_month, [:separator_slash, :separator_dash], :scalar_day, [:separator_slash, :separator_dash], :scalar_year, :separator_at?, 'time?'], :handle_sm_sd_sy),
-        Handler.new([:scalar_month, [:separator_slash, :separator_dash], :scalar_day, :separator_at?, 'time?'], :handle_sm_sd),
-        Handler.new([:scalar_day, [:separator_slash, :separator_dash], :scalar_month, :separator_at?, 'time?'], :handle_sd_sm),
-        Handler.new([:scalar_day, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar_year, :separator_at?, 'time?'], :handle_sd_sm_sy),
-        Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy)
+        Handler.new([:ScalarMonth, [:SeparatorSlash, :SeparatorDash], :ScalarDay, [:SeparatorSlash, :SeparatorDash], :ScalarYear, :SeparatorAt?, "time?"], :handle_sm_sd_sy),
+        Handler.new([:ScalarMonth, [:SeparatorSlash, :SeparatorDash], :ScalarDay, :SeparatorAt?, "time?"], :handle_sm_sd),
+        Handler.new([:ScalarDay, [:SeparatorSlash, :SeparatorDash], :ScalarMonth, :SeparatorAt?, "time?"], :handle_sd_sm),
+        Handler.new([:ScalarDay, [:SeparatorSlash, :SeparatorDash], :ScalarMonth, [:SeparatorSlash, :SeparatorDash], :ScalarYear, :SeparatorAt?, "time?"], :handle_sd_sm_sy),
+        Handler.new([:ScalarDay, :RepeaterMonthName, :ScalarYear, :SeparatorAt?, "time?"], :handle_sd_rmn_sy)
       ]
 
       case endian = Array(options[:endian_precedence]).first

@@ -86,7 +86,7 @@ module Chronic
     private
 
     def tags_match?(name, tokens, token_index)
-      klass = Chronic.const_get(name.to_s.gsub(/(?:^|_)(.)/) { $1.upcase })
+      klass = Chronic.const_get(name)
 
       if tokens[token_index]
         !tokens[token_index].tags.select { |o| o.kind_of?(klass) }.empty?
