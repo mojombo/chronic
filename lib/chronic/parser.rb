@@ -14,7 +14,8 @@ module Chronic
       :guess => true,
       :ambiguous_time_range => 6,
       :endian_precedence    => [:middle, :little],
-      :ambiguous_year_future_bias => 50
+      :ambiguous_year_future_bias => 50,
+      :numerize => true
     }
 
     attr_accessor :now
@@ -54,6 +55,10 @@ module Chronic
     #                 look x amount of years into the future and past. If the
     #                 two digit year is `now + x years` it's assumed to be the
     #                 future, `now - x years` is assumed to be the past.
+    #        :numerize - Attempt to parse numbers written in natural language
+    #                 (ex "twenty third" becomes "23rd"). Default is true (on).
+    #                 Disabling this option saves significant memory.
+
     def initialize(options = {})
       @options = DEFAULT_OPTIONS.merge(options)
       @now = options.delete(:now) || Chronic.time_class.now
@@ -102,7 +107,7 @@ module Chronic
       text.gsub!(/,/, ' ')
       text.gsub!(/^second /, '2nd ')
       text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
-      text = Numerizer.numerize(text)
+      text = Numerizer.numerize(text) if @options[:numerize]
       text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
       text.gsub!(/(?:^|\s)0(\d+:\d+\s*pm?\b)/, ' \1')
       text.gsub!(/\btoday\b/, 'this day')
