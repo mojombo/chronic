@@ -1239,6 +1239,11 @@ class TestParsing < TestCase
     assert_equal Time.local(2005, 12, 30, 12), time
   end
 
+  def test_handle_numerize_disabled
+    time = parse_now("aug 3", :numerize => false)
+    assert_equal Time.local(2007, 8, 3, 12), time
+  end
+
   def test_normalizing_day_portions
     assert_equal pre_normalize("8:00 pm February 11"), pre_normalize("8:00 p.m. February 11")
   end
