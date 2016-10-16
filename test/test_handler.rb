@@ -12,7 +12,7 @@ class TestHandler < TestCase
   end
 
   def test_handler_class_1
-    handler = Chronic::Handler.new([:repeater], :handler)
+    handler = Chronic::Handler.new([:Repeater], :handler)
 
     tokens = [Chronic::Token.new('friday')]
     tokens[0].tag(Chronic::RepeaterDayName.new(:friday))
@@ -26,7 +26,7 @@ class TestHandler < TestCase
   end
 
   def test_handler_class_2
-    handler = Chronic::Handler.new([:repeater, :repeater?], :handler)
+    handler = Chronic::Handler.new([:Repeater, :Repeater?], :handler)
 
     tokens = [Chronic::Token.new('friday')]
     tokens[0].tag(Chronic::RepeaterDayName.new(:friday))
@@ -45,7 +45,7 @@ class TestHandler < TestCase
   end
 
   def test_handler_class_3
-    handler = Chronic::Handler.new([:repeater, 'time?'], :handler)
+    handler = Chronic::Handler.new([:Repeater, 'time?'], :handler)
 
     tokens = [Chronic::Token.new('friday')]
     tokens[0].tag(Chronic::RepeaterDayName.new(:friday))
@@ -59,7 +59,7 @@ class TestHandler < TestCase
   end
 
   def test_handler_class_4
-    handler = Chronic::Handler.new([:repeater_month_name, :scalar_day, 'time?'], :handler)
+    handler = Chronic::Handler.new([:RepeaterMonthName, :ScalarDay, 'time?'], :handler)
 
     tokens = [Chronic::Token.new('may')]
     tokens[0].tag(Chronic::RepeaterMonthName.new(:may))
@@ -73,7 +73,7 @@ class TestHandler < TestCase
   end
 
   def test_handler_class_5
-    handler = Chronic::Handler.new([:repeater, 'time?'], :handler)
+    handler = Chronic::Handler.new([:Repeater, 'time?'], :handler)
 
     tokens = [Chronic::Token.new('friday')]
     tokens[0].tag(Chronic::RepeaterDayName.new(:friday))
@@ -92,7 +92,7 @@ class TestHandler < TestCase
   end
 
   def test_handler_class_6
-    handler = Chronic::Handler.new([:scalar, :repeater, :pointer], :handler)
+    handler = Chronic::Handler.new([:Scalar, :Repeater, :Pointer], :handler)
 
     tokens = [Chronic::Token.new('3'),
               Chronic::Token.new('years'),
@@ -106,7 +106,7 @@ class TestHandler < TestCase
   end
 
   def test_handler_class_7
-    handler = Chronic::Handler.new([[:separator_on, :separator_at], :scalar], :handler)
+    handler = Chronic::Handler.new([[:SeparatorOn, :SeparatorAt], :Scalar], :handler)
 
     tokens = [Chronic::Token.new('at'),
               Chronic::Token.new('14')]
