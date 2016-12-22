@@ -55,6 +55,7 @@ module Chronic
     #                 two digit year is `now + x years` it's assumed to be the
     #                 future, `now - x years` is assumed to be the past.
     def initialize(options = {})
+      validate_options!(options)
       @options = DEFAULT_OPTIONS.merge(options)
       @now = options.delete(:now) || Chronic.time_class.now
     end
@@ -95,20 +96,33 @@ module Chronic
       text = text.to_s.downcase
       text.gsub!(/\b(\d{2})\.(\d{2})\.(\d{4})\b/, '\3 / \2 / \1')
       text.gsub!(/\b([ap])\.m\.?/, '\1m')
-      text.gsub!(/(\s+|:\d{2}|:\d{2}\.\d{3})\-(\d{2}:?\d{2})\b/, '\1tzminus\2')
+      text.gsub!(/(\s+|:\d{2}|:\d{2}\.\d+)\-(\d{2}:?\d{2})\b/, '\1tzminus\2')
       text.gsub!(/\./, ':')
       text.gsub!(/([ap]):m:?/, '\1m')
+      text.gsub!(/'(\d{2})\b/) do
+        number = $1.to_i
+
+        if Chronic::Date::could_be_year?(number)
+          Chronic::Date::make_year(number, options[:ambiguous_year_future_bias])
+        else
+          number
+        end
+      end
       text.gsub!(/['"]/, '')
       text.gsub!(/,/, ' ')
       text.gsub!(/^second /, '2nd ')
-      text.gsub!(/\bsecond (of|day|month|hour|minute|second)\b/, '2nd \1')
+      text.gsub!(/\bsecond (of|day|month|hour|minute|second|quarter)\b/, '2nd \1')
+      text.gsub!(/\bthird quarter\b/, '3rd q')
+      text.gsub!(/\bfourth quarter\b/, '4th q')
+      text.gsub!(/quarters?(\s+|$)(?!to|till|past|after|before)/, 'q\1')
       text = Numerizer.numerize(text)
+      text.gsub!(/\b(\d)(?:st|nd|rd|th)\s+q\b/, 'q\1')
       text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
       text.gsub!(/(?:^|\s)0(\d+:\d+\s*pm?\b)/, ' \1')
       text.gsub!(/\btoday\b/, 'this day')
       text.gsub!(/\btomm?orr?ow\b/, 'next day')
       text.gsub!(/\byesterday\b/, 'last day')
-      text.gsub!(/\bnoon\b/, '12:00pm')
+      text.gsub!(/\bnoon|midday\b/, '12:00pm')
       text.gsub!(/\bmidnight\b/, '24:00')
       text.gsub!(/\bnow\b/, 'this second')
       text.gsub!('quarter', '15')
@@ -154,9 +168,17 @@ module Chronic
 
     private
 
+
+    def validate_options!(options)
+      given = options.keys.map(&:to_s).sort
+      allowed = DEFAULT_OPTIONS.keys.map(&:to_s).sort
+      non_permitted = given - allowed
+      raise ArgumentError, "Unsupported option(s): #{non_permitted.join(', ')}" if non_permitted.any?
+    end
+
     def tokenize(text, options)
       text = pre_normalize(text)
-      tokens = text.split(' ').map { |word| Token.new(word) }
+      tokens = Tokenizer::tokenize(text)
       [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, Sign, TimeZone].each do |tok|
         tok.scan(tokens, options)
       end

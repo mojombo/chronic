@@ -4,9 +4,18 @@ module Chronic
     attr_accessor :word
     attr_accessor :tags
 
-    def initialize(word)
+    attr_reader :text
+    attr_reader :position
+
+    def initialize(word, text = nil, position = 0)
       @word = word
       @tags = []
+      @text = text
+      @position = position
+    end
+
+    def ==(token)
+      token.word == @word.downcase
     end
 
     # Tag this token with the specified tag.
@@ -48,4 +57,5 @@ module Chronic
       to_s
     end
   end
+
 end

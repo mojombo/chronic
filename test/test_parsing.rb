@@ -22,6 +22,14 @@ class TestParsing < TestCase
     time2 = Time.parse("2013-08-01 019:30:00.345-07:00")
     assert_in_delta time, time2, 0.001
 
+    time = Chronic.parse("2013-08-01T19:30:00.34-07:00")
+    time2 = Time.parse("2013-08-01T19:30:00.34-07:00")
+    assert_in_delta time, time2, 0.001
+
+    time = Chronic.parse("2013-08-01T19:30:00.3456789-07:00")
+    time2 = Time.parse("2013-08-01T19:30:00.3456789-07:00")
+    assert_in_delta time, time2, 0.001
+
     time = Chronic.parse("2012-08-02T12:00:00Z")
     assert_equal Time.utc(2012, 8, 2, 12), time
 
@@ -166,6 +174,9 @@ class TestParsing < TestCase
 
     time = parse_now("may 32")
     assert_equal Time.local(2032, 5, 16, 12, 0, 0), time
+
+    time = parse_now("may '01")
+    assert_equal Time.local(2001, 5, 16, 12, 0, 0), time
   end
 
   def test_handle_rdn_rmn_sd_t_tz_sy
@@ -402,6 +413,33 @@ class TestParsing < TestCase
 
     time = parse_now("3/13", :context => :none)
     assert_equal Time.local(2006, 3, 13, 12), time
+
+    time = parse_now("12/1", :context => :past)
+    assert_equal Time.local(2005, 12, 1, 12), time
+
+    time = parse_now("12/1", :context => :future)
+    assert_equal Time.local(2006, 12, 1, 12), time
+
+    time = parse_now("12/1", :context => :none)
+    assert_equal Time.local(2006, 12, 1, 12), time
+
+    time = parse_now("8/1", :context => :past)
+    assert_equal Time.local(2006, 8, 1, 12), time
+
+    time = parse_now("8/1", :context => :future)
+    assert_equal Time.local(2007, 8, 1, 12), time
+
+    time = parse_now("8/1", :context => :none)
+    assert_equal Time.local(2006, 8, 1, 12), time
+
+    time = parse_now("1/1", :context => :past)
+    assert_equal Time.local(2006, 1, 1, 12), time
+
+    time = parse_now("1/1", :context => :future)
+    assert_equal Time.local(2007, 1, 1, 12), time
+
+    time = parse_now("1/1", :context => :none)
+    assert_equal Time.local(2006, 1, 1, 12), time
   end
 
   # def test_handle_sm_sy
@@ -997,6 +1035,11 @@ class TestParsing < TestCase
     # future
   end
 
+  def test_parse_guess_rmn_s_r_p
+    time = parse_now("september 3 years ago", :guess => :start)
+    assert_equal Time.local(2003, 9), time
+  end
+
   def test_parse_guess_o_r_g_r
     time = parse_now("3rd month next year", :guess => false)
     assert_equal Time.local(2007, 3), time.begin
@@ -1120,6 +1163,236 @@ class TestParsing < TestCase
     assert_equal Time.local(2007, 6, 20), t.end
   end
 
+  def test_quarters
+    time = parse_now("this quarter", :guess => false)
+    assert_equal Time.local(2006, 7, 1), time.begin
+    assert_equal Time.local(2006, 10, 1), time.end
+
+    time = parse_now("next quarter", :guess => false)
+    assert_equal Time.local(2006, 10, 1), time.begin
+    assert_equal Time.local(2007, 1, 1), time.end
+
+    time = parse_now("last quarter", :guess => false)
+    assert_equal Time.local(2006, 4, 1), time.begin
+    assert_equal Time.local(2006, 7, 1), time.end
+  end
+
+  def test_quarters_srp
+    time = parse_now("1 quarter ago", :guess => false)
+    assert_equal Time.local(2006, 4, 1), time.begin
+    assert_equal Time.local(2006, 7, 1), time.end
+
+    time = parse_now("2 quarters ago", :guess => false)
+    assert_equal Time.local(2006, 1, 1), time.begin
+    assert_equal Time.local(2006, 4, 1), time.end
+
+    time = parse_now("1 quarter from now", :guess => false)
+    assert_equal Time.local(2006, 10, 1), time.begin
+    assert_equal Time.local(2007, 1, 1), time.end
+  end
+
+  def test_quarters_named
+    ["Q1", "first quarter", "1st quarter"].each do |string|
+      time = parse_now(string, :guess => false, :context => :none)
+      assert_equal Time.local(2006, 1, 1), time.begin
+      assert_equal Time.local(2006, 4, 1), time.end
+
+      time = parse_now(string, :guess => false, :context => :future)
+      assert_equal Time.local(2007, 1, 1), time.begin
+      assert_equal Time.local(2007, 4, 1), time.end
+
+      time = parse_now(string, :guess => false, :context => :past)
+      assert_equal Time.local(2006, 1, 1), time.begin
+      assert_equal Time.local(2006, 4, 1), time.end
+
+      time = parse_now("#{string} 2005", :guess => false)
+      assert_equal Time.local(2005, 1, 1), time.begin
+      assert_equal Time.local(2005, 4, 1), time.end
+
+      time = parse_now("2005 #{string}", :guess => false)
+      assert_equal Time.local(2005, 1, 1), time.begin
+      assert_equal Time.local(2005, 4, 1), time.end
+
+      time = parse_now("#{string} this year", :guess => false)
+      assert_equal Time.local(2006, 1, 1), time.begin
+      assert_equal Time.local(2006, 4, 1), time.end
+
+      time = parse_now("this year #{string}", :guess => false)
+      assert_equal Time.local(2006, 1, 1), time.begin
+      assert_equal Time.local(2006, 4, 1), time.end
+
+      time = parse_now("#{string} next year", :guess => false)
+      assert_equal Time.local(2007, 1, 1), time.begin
+      assert_equal Time.local(2007, 4, 1), time.end
+
+      time = parse_now("next year #{string}", :guess => false)
+      assert_equal Time.local(2007, 1, 1), time.begin
+      assert_equal Time.local(2007, 4, 1), time.end
+
+      time = parse_now("this #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2006, 1, 1), time.begin
+      assert_equal Time.local(2006, 4, 1), time.end
+
+      time = parse_now("last #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2006, 1, 1), time.begin
+      assert_equal Time.local(2006, 4, 1), time.end
+
+      time = parse_now("next #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2007, 1, 1), time.begin
+      assert_equal Time.local(2007, 4, 1), time.end
+    end
+
+    ["Q2", "second quarter", "2nd quarter"].each do |string|
+      time = parse_now(string, :guess => false, :context => :none)
+      assert_equal Time.local(2006, 4, 1), time.begin
+      assert_equal Time.local(2006, 7, 1), time.end
+
+      time = parse_now(string, :guess => false, :context => :future)
+      assert_equal Time.local(2007, 4, 1), time.begin
+      assert_equal Time.local(2007, 7, 1), time.end
+
+      time = parse_now(string, :guess => false, :context => :past)
+      assert_equal Time.local(2006, 4, 1), time.begin
+      assert_equal Time.local(2006, 7, 1), time.end
+
+      time = parse_now("#{string} 2005", :guess => false)
+      assert_equal Time.local(2005, 4, 1), time.begin
+      assert_equal Time.local(2005, 7, 1), time.end
+
+      time = parse_now("2005 #{string}", :guess => false)
+      assert_equal Time.local(2005, 4, 1), time.begin
+      assert_equal Time.local(2005, 7, 1), time.end
+
+      time = parse_now("#{string} this year", :guess => false)
+      assert_equal Time.local(2006, 4, 1), time.begin
+      assert_equal Time.local(2006, 7, 1), time.end
+
+      time = parse_now("this year #{string}", :guess => false)
+      assert_equal Time.local(2006, 4, 1), time.begin
+      assert_equal Time.local(2006, 7, 1), time.end
+
+      time = parse_now("#{string} next year", :guess => false)
+      assert_equal Time.local(2007, 4, 1), time.begin
+      assert_equal Time.local(2007, 7, 1), time.end
+
+      time = parse_now("next year #{string}", :guess => false)
+      assert_equal Time.local(2007, 4, 1), time.begin
+      assert_equal Time.local(2007, 7, 1), time.end
+
+      time = parse_now("this #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2006, 4, 1), time.begin
+      assert_equal Time.local(2006, 7, 1), time.end
+
+      time = parse_now("last #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2006, 4, 1), time.begin
+      assert_equal Time.local(2006, 7, 1), time.end
+
+      time = parse_now("next #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2007, 4, 1), time.begin
+      assert_equal Time.local(2007, 7, 1), time.end
+    end
+
+    ["Q3", "third quarter", "3rd quarter"].each do |string|
+      time = parse_now(string, :guess => false, :context => :none)
+      assert_equal Time.local(2006, 7, 1), time.begin
+      assert_equal Time.local(2006, 10, 1), time.end
+
+      time = parse_now(string, :guess => false, :context => :future)
+      assert_equal Time.local(2007, 7, 1), time.begin
+      assert_equal Time.local(2007, 10, 1), time.end
+
+      time = parse_now(string, :guess => false, :context => :past)
+      assert_equal Time.local(2005, 7, 1), time.begin
+      assert_equal Time.local(2005, 10, 1), time.end
+
+      time = parse_now("#{string} 2005", :guess => false)
+      assert_equal Time.local(2005, 7, 1), time.begin
+      assert_equal Time.local(2005, 10, 1), time.end
+
+      time = parse_now("2005 #{string}", :guess => false)
+      assert_equal Time.local(2005, 7, 1), time.begin
+      assert_equal Time.local(2005, 10, 1), time.end
+
+      time = parse_now("#{string} this year", :guess => false)
+      assert_equal Time.local(2006, 7, 1), time.begin
+      assert_equal Time.local(2006, 10, 1), time.end
+
+      time = parse_now("this year #{string}", :guess => false)
+      assert_equal Time.local(2006, 7, 1), time.begin
+      assert_equal Time.local(2006, 10, 1), time.end
+
+      time = parse_now("#{string} next year", :guess => false)
+      assert_equal Time.local(2007, 7, 1), time.begin
+      assert_equal Time.local(2007, 10, 1), time.end
+
+      time = parse_now("next year #{string}", :guess => false)
+      assert_equal Time.local(2007, 7, 1), time.begin
+      assert_equal Time.local(2007, 10, 1), time.end
+
+      time = parse_now("this #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2006, 7, 1), time.begin
+      assert_equal Time.local(2006, 10, 1), time.end
+
+      time = parse_now("last #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2005, 7, 1), time.begin
+      assert_equal Time.local(2005, 10, 1), time.end
+
+      time = parse_now("next #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2007, 7, 1), time.begin
+      assert_equal Time.local(2007, 10, 1), time.end
+    end
+
+    ["Q4", "fourth quarter", "4th quarter"].each do |string|
+      time = parse_now(string, :guess => false, :context => :none)
+      assert_equal Time.local(2006, 10, 1), time.begin
+      assert_equal Time.local(2007, 1, 1), time.end
+
+      time = parse_now(string, :guess => false, :context => :future)
+      assert_equal Time.local(2006, 10, 1), time.begin
+      assert_equal Time.local(2007, 1, 1), time.end
+
+      time = parse_now(string, :guess => false, :context => :past)
+      assert_equal Time.local(2005, 10, 1), time.begin
+      assert_equal Time.local(2006, 1, 1), time.end
+
+      time = parse_now("#{string} 2005", :guess => false)
+      assert_equal Time.local(2005, 10, 1), time.begin
+      assert_equal Time.local(2006, 1, 1), time.end
+
+      time = parse_now("2005 #{string}", :guess => false)
+      assert_equal Time.local(2005, 10, 1), time.begin
+      assert_equal Time.local(2006, 1, 1), time.end
+
+      time = parse_now("#{string} this year", :guess => false)
+      assert_equal Time.local(2006, 10, 1), time.begin
+      assert_equal Time.local(2007, 1, 1), time.end
+
+      time = parse_now("this year #{string}", :guess => false)
+      assert_equal Time.local(2006, 10, 1), time.begin
+      assert_equal Time.local(2007, 1, 1), time.end
+
+      time = parse_now("#{string} next year", :guess => false)
+      assert_equal Time.local(2007, 10, 1), time.begin
+      assert_equal Time.local(2008, 1, 1), time.end
+
+      time = parse_now("next year #{string}", :guess => false)
+      assert_equal Time.local(2007, 10, 1), time.begin
+      assert_equal Time.local(2008, 1, 1), time.end
+
+      time = parse_now("this #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2006, 10, 1), time.begin
+      assert_equal Time.local(2007, 1, 1), time.end
+
+      time = parse_now("last #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2005, 10, 1), time.begin
+      assert_equal Time.local(2006, 1, 1), time.end
+
+      time = parse_now("next #{string}", :guess => false, context: :none)
+      assert_equal Time.local(2006, 10, 1), time.begin
+      assert_equal Time.local(2007, 1, 1), time.end
+    end
+  end
+
   # regression
 
   # def test_partial
@@ -1241,6 +1514,10 @@ class TestParsing < TestCase
 
   def test_normalizing_day_portions
     assert_equal pre_normalize("8:00 pm February 11"), pre_normalize("8:00 p.m. February 11")
+  end
+
+  def test_normalizing_time_of_day_phrases
+    assert_equal pre_normalize("midday February 11"), pre_normalize("12:00 p.m. February 11")
   end
 
   private

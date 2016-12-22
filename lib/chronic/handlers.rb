@@ -110,6 +110,19 @@ module Chronic
       handle_m_d(month, day, tokens[token_range], options)
     end
 
+    # Handle scalar-year/repeater-quarter-name
+    def handle_sy_rqn(tokens, options)
+      handle_rqn_sy(tokens[0..1].reverse, options)
+    end
+
+    # Handle repeater-quarter-name/scalar-year
+    def handle_rqn_sy(tokens, options)
+      year = tokens[1].get_tag(ScalarYear).type
+      quarter_tag = tokens[0].get_tag(RepeaterQuarterName)
+      quarter_tag.start = Chronic.construct(year)
+      quarter_tag.this(:none)
+    end
+
     # Handle repeater-month-name/scalar-year
     def handle_rmn_sy(tokens, options)
       month = tokens[0].get_tag(RepeaterMonthName).index
@@ -239,7 +252,13 @@ module Chronic
 
       begin
         day_start = Chronic.time_class.local(year, month, day)
-        day_start = Chronic.time_class.local(year + 1, month, day) if options[:context] == :future && day_start < now
+
+        if options[:context] == :future && day_start < now
+          day_start = Chronic.time_class.local(year + 1, month, day)
+        elsif options[:context] == :past && day_start > now
+          day_start = Chronic.time_class.local(year - 1, month, day)
+        end
+
         day_or_time(day_start, time_tokens, options)
       rescue ArgumentError
         nil
@@ -449,6 +468,11 @@ module Chronic
     def handle_s_r_p_a(tokens, options)
       anchor_span = get_anchor(tokens[3..tokens.size - 1], options)
       handle_srp(tokens, anchor_span, options)
+    end
+
+    # Handle repeater/scalar/repeater/pointer
+    def handle_rmn_s_r_p(tokens, options)
+      handle_s_r_p_a(tokens[1..3] + tokens[0..0], options)
     end
 
     def handle_s_r_a_s_r_p_a(tokens, options)

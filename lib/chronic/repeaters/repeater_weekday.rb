@@ -11,7 +11,7 @@ module Chronic
       :saturday => 6
     }
 
-    def initialize(type, options = {})
+    def initialize(type, width = nil, options = {})
       super
       @current_weekday_start = nil
     end

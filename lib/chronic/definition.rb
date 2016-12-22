@@ -54,6 +54,8 @@ module Chronic
         Handler.new([:scalar_year, :repeater_month_name, :ordinal_day], :handle_sy_rmn_od),
         Handler.new([:repeater_time, :repeater_day_portion?, :separator_on?, :repeater_month_name, :ordinal_day], :handle_rmn_od_on),
         Handler.new([:repeater_month_name, :scalar_year], :handle_rmn_sy),
+        Handler.new([:repeater_quarter_name, :scalar_year], :handle_rqn_sy),
+        Handler.new([:scalar_year, :repeater_quarter_name], :handle_sy_rqn),
         Handler.new([:scalar_day, :repeater_month_name, :scalar_year, :separator_at?, 'time?'], :handle_sd_rmn_sy),
         Handler.new([:scalar_day, [:separator_slash?, :separator_dash?], :repeater_month_name, :separator_at?, 'time?'], :handle_sd_rmn),
         Handler.new([:scalar_year, [:separator_slash, :separator_dash], :scalar_month, [:separator_slash, :separator_dash], :scalar_day, :separator_at?, 'time?'], :handle_sy_sm_sd),
@@ -78,6 +80,7 @@ module Chronic
   class ArrowDefinitions < SpanDefinitions
     def definitions
       [
+        Handler.new([:repeater_month_name, :scalar, :repeater, :pointer], :handle_rmn_s_r_p),
         Handler.new([:scalar, :repeater, :pointer], :handle_s_r_p),
         Handler.new([:scalar, :repeater, :separator_and?, :scalar, :repeater, :pointer, :separator_at?, 'anchor'], :handle_s_r_a_s_r_p_a),
         Handler.new([:pointer, :scalar, :repeater], :handle_p_s_r),

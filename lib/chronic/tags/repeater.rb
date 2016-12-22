@@ -10,6 +10,7 @@ module Chronic
     # Returns an Array of tokens.
     def self.scan(tokens, options)
       tokens.each do |token|
+        token.tag scan_for_quarter_names(token, options)
         token.tag scan_for_season_names(token, options)
         token.tag scan_for_month_names(token, options)
         token.tag scan_for_day_names(token, options)
@@ -17,6 +18,19 @@ module Chronic
         token.tag scan_for_times(token, options)
         token.tag scan_for_units(token, options)
       end
+    end
+
+    # token - The Token object we want to scan.
+    #
+    # Returns a new Repeater object.
+    def self.scan_for_quarter_names(token, options = {})
+      scan_for token, RepeaterQuarterName,
+      {
+        /^q1$/ => :q1,
+        /^q2$/ => :q2,
+        /^q3$/ => :q3,
+        /^q4$/ => :q4
+      }, options
     end
 
     # token - The Token object we want to scan.
@@ -97,6 +111,7 @@ module Chronic
     def self.scan_for_units(token, options = {})
       {
         /^years?$/ => :year,
+        /^q$/ => :quarter,
         /^seasons?$/ => :season,
         /^months?$/ => :month,
         /^fortnights?$/ => :fortnight,
@@ -114,7 +129,7 @@ module Chronic
         if item =~ token.word
           klass_name = 'Repeater' + symbol.to_s.capitalize
           klass = Chronic.const_get(klass_name)
-          return klass.new(symbol, options)
+          return klass.new(symbol, nil, options)
         end
       end
       return nil

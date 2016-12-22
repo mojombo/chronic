@@ -26,7 +26,7 @@ module Chronic
 
     end
 
-    def initialize(time, options = {})
+    def initialize(time, width = nil, options = {})
       @current_time = nil
       @options = options
       time_parts = time.split(':')

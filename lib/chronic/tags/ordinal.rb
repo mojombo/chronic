@@ -11,14 +11,17 @@ module Chronic
     def self.scan(tokens, options)
       tokens.each_index do |i|
         if tokens[i].word =~ /^(\d+)(st|nd|rd|th|\.)$/
-            ordinal = $1.to_i
-            tokens[i].tag(Ordinal.new(ordinal))
-            tokens[i].tag(OrdinalDay.new(ordinal)) if Chronic::Date::could_be_day?(ordinal)
-            tokens[i].tag(OrdinalMonth.new(ordinal)) if Chronic::Date::could_be_month?(ordinal)
-            if Chronic::Date::could_be_year?(ordinal)
-                year = Chronic::Date::make_year(ordinal, options[:ambiguous_year_future_bias])
-                tokens[i].tag(OrdinalYear.new(year.to_i))
-            end
+          width = $1.length
+          ordinal = $1.to_i
+          tokens[i].tag(Ordinal.new(ordinal, width))
+          tokens[i].tag(OrdinalDay.new(ordinal, width)) if Chronic::Date::could_be_day?(ordinal, width)
+          tokens[i].tag(OrdinalMonth.new(ordinal, width)) if Chronic::Date::could_be_month?(ordinal, width)
+          if Chronic::Date::could_be_year?(ordinal, width)
+            year = Chronic::Date::make_year(ordinal, options[:ambiguous_year_future_bias])
+            tokens[i].tag(OrdinalYear.new(year.to_i, width))
+          end
+        elsif tokens[i].word =~ /^second$/
+          tokens[i].tag(Ordinal.new(2, 1))
         end
       end
     end

@@ -8,7 +8,7 @@ module Chronic
       :winter => Season.new(MiniDate.new(12,22), MiniDate.new(3,19))
     }
 
-    def initialize(type, options = {})
+    def initialize(type, width = nil, options = {})
       super
       @next_season_start = nil
       @next_season_end = nil

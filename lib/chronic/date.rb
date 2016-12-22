@@ -35,18 +35,18 @@ module Chronic
     }
 
     # Checks if given number could be day
-    def self.could_be_day?(day)
-      day >= 1 && day <= 31
+    def self.could_be_day?(day, width = nil)
+      day >= 1 && day <= 31 && (width.nil? || width <= 2)
     end
 
     # Checks if given number could be month
-    def self.could_be_month?(month)
-      month >= 1 && month <= 12
+    def self.could_be_month?(month, width = nil)
+      month >= 1 && month <= 12 && (width.nil? || width <= 2)
     end
 
     # Checks if given number could be year
-    def self.could_be_year?(year)
-      year >= 1 && year <= 9999
+    def self.could_be_year?(year, width = nil)
+      year >= 1 && year <= 9999 && (width.nil? || width == 2 || width == 4)
     end
 
     # Build a year from a 2 digit suffix.

@@ -162,6 +162,25 @@ class TestChronic < TestCase
     end
   end
 
+  def test_valid_options
+    options = {
+      :context => :future,
+      :now => nil,
+      :hours24 => nil,
+      :week_start => :sunday,
+      :guess => true,
+      :ambiguous_time_range => 6,
+      :endian_precedence    => [:middle, :little],
+      :ambiguous_year_future_bias => 50
+    }
+    refute_nil Chronic.parse('now', options)
+  end
+
+  def test_invalid_options
+    assert_raises(ArgumentError) { Chronic.parse('now', foo: 'boo') }
+    assert_raises(ArgumentError) { Chronic.parse('now', time_class: Time) }
+  end
+
   def test_activesupport
 =begin
     # ActiveSupport needs MiniTest '~> 4.2' which conflicts with '~> 5.0'
