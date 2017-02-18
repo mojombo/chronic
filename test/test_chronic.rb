@@ -131,6 +131,7 @@ class TestChronic < TestCase
   end
 
   def test_time
+    skip "Test syntax not supported in ruby-1.8" if RUBY_VERSION.split('.')[0..1].join('.') == '1.8'
     org = Chronic.time_class
     begin
       Chronic.time_class = ::Time
