@@ -46,9 +46,8 @@ module Chronic
 
     # Checks if given number could be year
     def self.could_be_year?(year, width = nil)
-      year >= 1 && year <= 9999 && (width.nil? || width == 2 || width == 4)
+      year >= 0 && year <= 9999 && (width.nil? || width == 2 || width == 4)
     end
-
     # Build a year from a 2 digit suffix.
     #
     # year - The two digit Integer year to build from.
