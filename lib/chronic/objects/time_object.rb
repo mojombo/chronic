@@ -32,7 +32,7 @@ module Chronic
           @hour += 12 if @hour < 12
           @ambiguous = false
         end
-        @hour += 12 if @ambiguous and @hour != 12 and @hour <= @options[:ambiguous_time_range]
+        @hour += 12 if @ambiguous and @options[:context] != :none and @hour != 12 and @hour <= @options[:ambiguous_time_range]
       elsif @time_special
         if @time_special == :now
           set_time
