@@ -194,7 +194,14 @@ module Chronic
       @precision = :month
     end
 
-
+    # Handle scalar-month/scalar-year
+    # formats: mm/yy
+    def handle_sm_sy
+      handle_sm
+      next_tag
+      handle_sy
+      @precision = :month
+    end
 
     # Handle scalar-month/scalar-day
     # formats: mm/dd

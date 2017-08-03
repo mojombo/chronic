@@ -73,7 +73,7 @@ module Chronic
         [[MonthName, [SeparatorSpace, SeparatorDash], ScalarDay, [SeparatorSpace, Unit, :none]], :handle_mn_sd],
         [[MonthName,  SeparatorSpace, SeparatorApostrophe, ScalarYear], :handle_mn_sy],
         [[MonthName,  SeparatorSpace, ScalarYear], :handle_mn_sy],
-        [[ScalarYear, [SeparatorDash, SeparatorSlash],   ScalarMonth], :handle_sy_sm],
+        [[ScalarFullYear, [SeparatorDash, SeparatorSlash],   ScalarMonth], :handle_sy_sm],
         [[ScalarFullYear, SeparatorSpace, MonthName], :handle_sy_mn],
         [[OrdinalDay, SeparatorSpace, MonthName], :handle_od_mn],
         [[ScalarDay, [SeparatorSpace, SeparatorDash, :optional], MonthName], :handle_sd_mn],
@@ -177,7 +177,13 @@ module Chronic
         [[ScalarDay,   SeparatorSlash, ScalarMonth,   SeparatorSlash, ScalarYear, [SeparatorDot, Scalar, :none]],  :handle_sd_sm_sy],
         [[ScalarDay,  [SeparatorSlash, SeparatorDash, SeparatorDot],  ScalarMonth, [SeparatorSlash, :none]], :handle_sd_sm]
       ]
-     end
+    end
+
+    def self.month_year
+      [
+        [[ScalarMonth, SeparatorSlash, ScalarYear], :handle_sm_sy]
+      ]
+    end
 
     def prefered_endian
       options[:endian_precedence] ||= [:middle, :little]
@@ -189,6 +195,8 @@ module Chronic
           definition_list += self.class.little
         when :middle
           definition_list += self.class.middle
+        when :month_year
+          definition_list += self.class.month_year
         else
           raise ArgumentError, "Unknown endian option '#{endian}'"
         end

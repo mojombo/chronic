@@ -442,16 +442,16 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 1, 1, 12), time
   end
 
-  # def test_handle_sm_sy
-  #   time = parse_now("05/06")
-  #   assert_equal Time.local(2006, 5, 16, 12), time
-  #
-  #   time = parse_now("12/06")
-  #   assert_equal Time.local(2006, 12, 16, 12), time
-  #
-  #   time = parse_now("13/06")
-  #   assert_nil time
-  # end
+  def test_handle_sm_sy
+    time = parse_now("05/06", :endian_precedence => :month_year)
+    assert_equal Time.local(2006, 5, 16, 12), time
+
+    time = parse_now("12/06", :endian_precedence => :month_year)
+    assert_equal Time.local(2006, 12, 16, 12), time
+
+    time = parse_now("13/06", :endian_precedence => :month_year)
+    assert_nil time
+  end
 
   def test_handle_sy_sm
     time = parse_now("2012-06")
