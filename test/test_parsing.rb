@@ -450,7 +450,7 @@ class TestParsing < TestCase
   #   assert_equal Time.local(2006, 12, 16, 12), time
   #
   #   time = parse_now("13/06")
-  #   assert_equal nil, time
+  #   assert_nil time
   # end
 
   def test_handle_sy_sm
@@ -513,7 +513,7 @@ class TestParsing < TestCase
     assert_equal Time.local(2007, 01, 30, 12), time
 
     time = parse_now("5th tuesday in february")
-    assert_equal nil, time
+    assert_nil time
 
     %W(jan feb march april may june july aug sep oct nov dec).each_with_index do |month, index|
       time = parse_now("5th tuesday in #{month}")
@@ -529,7 +529,7 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 11, 15, 12), time
 
     time = parse_now("10th wednesday in november")
-    assert_equal nil, time
+    assert_nil time
 
     # time = parse_now("3rd wednesday in 2007")
     # assert_equal Time.local(2007, 1, 20, 12), time
@@ -1060,13 +1060,13 @@ class TestParsing < TestCase
 
   def test_parse_guess_nonsense
     time = parse_now("some stupid nonsense")
-    assert_equal nil, time
+    assert_nil time
 
     time = parse_now("Ham Sandwich")
-    assert_equal nil, time
+    assert_nil time
 
     time = parse_now("t")
-    assert_equal nil, time
+    assert_nil time
   end
 
   def test_parse_span
