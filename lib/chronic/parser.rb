@@ -55,6 +55,12 @@ module Chronic
     #                 look x amount of years into the future and past. If the
     #                 two digit year is `now + x years` it's assumed to be the
     #                 future, `now - x years` is assumed to be the past.
+    #        :default_time_now - By default, if no time is explicitly passed in,
+    #                 the parser will set the time to be either at the beginning,
+    #                 middle, or end of the day (depending on the :guess option).
+    #                 Set this to true to make the parser return the current time
+    #                 on the requested date if only a date is passed in. If a time
+    #                 is passed in, this setting will be ignored.
     def initialize(options = {})
       validate_options!(options)
       @options = DEFAULT_OPTIONS.merge(options)
