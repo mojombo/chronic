@@ -44,8 +44,8 @@ module Chronic
   class DateDefinitions < SpanDefinitions
     def definitions
       [
-        [[DayName,    SeparatorSpace, MonthName,   SeparatorSpace, OrdinalDay, SeparatorSpace, ScalarYear], :handle_dn_mn_od_sy],
-        [[DayName,    SeparatorSpace, MonthName,   SeparatorSpace, ScalarDay, SeparatorSpace, ScalarYear], :handle_dn_mn_sd_sy],
+        [[DayName,    [SeparatorComma, :optional], SeparatorSpace, MonthName,   SeparatorSpace, OrdinalDay, [SeparatorComma, :optional], SeparatorSpace, ScalarYear], :handle_dn_mn_od_sy],
+        [[DayName,    [SeparatorComma, :optional], SeparatorSpace, MonthName,   SeparatorSpace, ScalarDay,  [SeparatorComma, :optional], SeparatorSpace, ScalarYear], :handle_dn_mn_sd_sy],
         [[DayName,    SeparatorSpace, MonthName,   SeparatorSpace, OrdinalDay], :handle_dn_mn_od],
         [[DayName,    SeparatorSpace, MonthName,   SeparatorSpace, ScalarDay], :handle_dn_mn_sd],
         [[MonthName,  SeparatorSpace, OrdinalDay, [SeparatorComma, SeparatorSpace], [SeparatorSpace, :optional], ScalarYear], :handle_mn_od_sy],
