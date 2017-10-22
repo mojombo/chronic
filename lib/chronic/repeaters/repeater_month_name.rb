@@ -29,7 +29,7 @@ module Chronic
         when :future
           if @now.month < index
             @current_month_begin = Chronic.construct(@now.year, index)
-          elsif @now.month > index
+          elsif @now.month >= index
             @current_month_begin = Chronic.construct(@now.year + 1, index)
           end
         when :none

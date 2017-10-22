@@ -28,6 +28,14 @@ class TestRepeaterMonthName < TestCase
     assert_equal Time.local(2006, 12), next_december.begin
     assert_equal Time.local(2007, 1), next_december.end
 
+    now_month = Date::MONTHNAMES[@now.month].downcase.to_sym
+    now_months = Chronic::RepeaterMonthName.new(now_month)
+    now_months.start = @now
+
+    next_now_month = now_months.next(:future)
+    assert_equal Time.local(2007, 8), next_now_month.begin
+    assert_equal Time.local(2007, 9), next_now_month.end
+
     # past
 
     mays = Chronic::RepeaterMonthName.new(:may)
