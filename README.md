@@ -54,7 +54,7 @@ Chronic can parse a huge variety of date and time formats. Following is a
 small sample of strings that will be properly parsed. Parsing is case
 insensitive and will handle common abbreviations and misspellings.
 
-Simple
+#### Simple
 
 * thursday
 * november
@@ -86,7 +86,7 @@ Simple
 * afternoon yesterday
 * thursday last week
 
-Complex
+#### Complex
 
 * 3 years ago
 * a year ago
@@ -105,7 +105,7 @@ Complex
 * fourteenth of june 2010 at eleven o'clock in the evening
 * may seventh '97 at three in the morning
 
-Specific Dates
+#### Specific Dates
 
 * January 5
 * 22nd of june
@@ -130,7 +130,7 @@ Specific Dates
 * 17:00
 * 0800
 
-Specific Times (many of the above with an added time)
+#### Specific Times (many of the above with an added time)
 
 * January 5 at 7pm
 * 22nd of june at 8am
@@ -160,7 +160,7 @@ class to get full time zone support.
 
 Chronic uses Ruby's built in Time class for all time storage and computation.
 Because of this, only times that the Time class can handle will be properly
-parsed. Parsing for times outside of this range will simply return nil.
+parsed. Parsing for times outside of this range will simply return `nil`.
 Support for a wider range of times is planned for a future release.
 
 
