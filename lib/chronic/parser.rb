@@ -1,9 +1,7 @@
 require 'chronic/dictionary'
-require 'chronic/handlers'
 
 module Chronic
   class Parser
-    include Handlers
 
     # Hash of default configuration options.
     DEFAULT_OPTIONS = {
@@ -63,84 +61,41 @@ module Chronic
     # Parse "text" with the given options
     # Returns either a Time or Chronic::Span, depending on the value of options[:guess]
     def parse(text)
-      tokens = tokenize(text, options)
-      span = tokens_to_span(tokens, options.merge(:text => text))
+      text = pre_proccess(text)
+      text = pre_normalize(text)
+      puts text.inspect if Chronic.debug
+
+      tokens = Tokenizer::tokenize(' ' + text + ' ')
+      tag(tokens, options)
 
       puts "+#{'-' * 51}\n| #{tokens}\n+#{'-' * 51}" if Chronic.debug
+
+      token_group = TokenGroup.new(tokens, definitions(options), @now, options)
+      span = token_group.to_span
 
       guess(span, options[:guess]) if span
     end
 
+    # Replace any whitespace characters to single space
+    def pre_proccess(text)
+      text.to_s.strip.gsub(/[[:space:]]+/, ' ').gsub(/\s{2,}/, ' ')
+    end
+
     # Clean up the specified text ready for parsing.
     #
-    # Clean up the string by stripping unwanted characters, converting
-    # idioms to their canonical form, converting number words to numbers
-    # (three => 3), and converting ordinal words to numeric
+    # Clean up the string, convert number words to numbers
+    # (three => 3), and convert ordinal words to numeric
     # ordinals (third => 3rd)
     #
     # text - The String text to normalize.
     #
-    # Examples:
-    #
-    #   Chronic.pre_normalize('first day in May')
-    #     #=> "1st day in may"
-    #
-    #   Chronic.pre_normalize('tomorrow after noon')
-    #     #=> "next day future 12:00"
-    #
-    #   Chronic.pre_normalize('one hundred and thirty six days from now')
-    #     #=> "136 days future this second"
-    #
     # Returns a new String ready for Chronic to parse.
     def pre_normalize(text)
-      text = text.to_s.downcase
-      text.gsub!(/\b(\d{2})\.(\d{2})\.(\d{4})\b/, '\3 / \2 / \1')
-      text.gsub!(/\b([ap])\.m\.?/, '\1m')
-      text.gsub!(/(\s+|:\d{2}|:\d{2}\.\d+)\-(\d{2}:?\d{2})\b/, '\1tzminus\2')
-      text.gsub!(/\./, ':')
-      text.gsub!(/([ap]):m:?/, '\1m')
-      text.gsub!(/'(\d{2})\b/) do
-        number = $1.to_i
-
-        if Chronic::Date::could_be_year?(number)
-          Chronic::Date::make_year(number, options[:ambiguous_year_future_bias])
-        else
-          number
-        end
-      end
-      text.gsub!(/['"]/, '')
-      text.gsub!(/,/, ' ')
-      text.gsub!(/^second /, '2nd ')
-      text.gsub!(/\bsecond (of|day|month|hour|minute|second|quarter)\b/, '2nd \1')
-      text.gsub!(/\bthird quarter\b/, '3rd q')
-      text.gsub!(/\bfourth quarter\b/, '4th q')
-      text.gsub!(/quarters?(\s+|$)(?!to|till|past|after|before)/, 'q\1')
+      text.gsub!(/\b(quarters?)\b/, '<=\1=>') # workaround for Numerizer
+      text.gsub!(/\b\s+third\b/, ' 3rd')
+      text.gsub!(/\b\s+fourth\b/, ' 4th')
       text = Numerizer.numerize(text)
-      text.gsub!(/\b(\d)(?:st|nd|rd|th)\s+q\b/, 'q\1')
-      text.gsub!(/([\/\-\,\@])/) { ' ' + $1 + ' ' }
-      text.gsub!(/(?:^|\s)0(\d+:\d+\s*pm?\b)/, ' \1')
-      text.gsub!(/\btoday\b/, 'this day')
-      text.gsub!(/\btomm?orr?ow\b/, 'next day')
-      text.gsub!(/\byesterday\b/, 'last day')
-      text.gsub!(/\bnoon|midday\b/, '12:00pm')
-      text.gsub!(/\bmidnight\b/, '24:00')
-      text.gsub!(/\bnow\b/, 'this second')
-      text.gsub!('quarter', '15')
-      text.gsub!('half', '30')
-      text.gsub!(/(\d{1,2}) (to|till|prior to|before)\b/, '\1 minutes past')
-      text.gsub!(/(\d{1,2}) (after|past)\b/, '\1 minutes future')
-      text.gsub!(/\b(?:ago|before(?: now)?)\b/, 'past')
-      text.gsub!(/\bthis (?:last|past)\b/, 'last')
-      text.gsub!(/\b(?:in|during) the (morning)\b/, '\1')
-      text.gsub!(/\b(?:in the|during the|at) (afternoon|evening|night)\b/, '\1')
-      text.gsub!(/\btonight\b/, 'this night')
-      text.gsub!(/\b\d+:?\d*[ap]\b/,'\0m')
-      text.gsub!(/\b(\d{2})(\d{2})(am|pm)\b/, '\1:\2\3')
-      text.gsub!(/(\d)([ap]m|oclock)\b/, '\1 \2')
-      text.gsub!(/\b(hence|after|from)\b/, 'future')
-      text.gsub!(/^\s?an? /i, '1 ')
-      text.gsub!(/\b(\d{4}):(\d{2}):(\d{2})\b/, '\1 / \2 / \3') # DTOriginal
-      text.gsub!(/\b0(\d+):(\d{2}):(\d{2}) ([ap]m)\b/, '\1:\2:\3 \4')
+      text.gsub!(/<=(quarters?)=>/, '\1')
       text
     end
 
@@ -176,47 +131,24 @@ module Chronic
       raise ArgumentError, "Unsupported option(s): #{non_permitted.join(', ')}" if non_permitted.any?
     end
 
-    def tokenize(text, options)
-      text = pre_normalize(text)
-      tokens = Tokenizer::tokenize(text)
-      [Repeater, Grabber, Pointer, Scalar, Ordinal, Separator, Sign, TimeZone].each do |tok|
+    def tag(tokens, options)
+      [DayName, MonthName, SeasonName, DaySpecial, TimeSpecial, DayPortion, Grabber, Pointer, Rational, Keyword, Separator, Scalar, Ordinal, Sign, Unit, TimeZoneTag].each do |tok|
         tok.scan(tokens, options)
       end
-      tokens.select { |token| token.tagged? }
+      previous = nil
+      tokens.select! do |token|
+        if token.tagged?
+          if !previous or !token.tags.first.kind_of?(Separator) or token.tags.first.class != previous.class
+            previous = token.tags.first
+            true
+          else
+            false
+          end
+        else
+          false
+        end
+      end
     end
 
-    def tokens_to_span(tokens, options)
-      definitions = definitions(options)
-
-      (definitions[:endian] + definitions[:date]).each do |handler|
-        if handler.match(tokens, definitions)
-          good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return handler.invoke(:date, good_tokens, self, options)
-        end
-      end
-
-      definitions[:anchor].each do |handler|
-        if handler.match(tokens, definitions)
-          good_tokens = tokens.select { |o| !o.get_tag Separator }
-          return handler.invoke(:anchor, good_tokens, self, options)
-        end
-      end
-
-      definitions[:arrow].each do |handler|
-        if handler.match(tokens, definitions)
-          good_tokens = tokens.reject { |o| o.get_tag(SeparatorAt) || o.get_tag(SeparatorSlash) || o.get_tag(SeparatorDash) || o.get_tag(SeparatorComma) || o.get_tag(SeparatorAnd) }
-          return handler.invoke(:arrow, good_tokens, self, options)
-        end
-      end
-
-      definitions[:narrow].each do |handler|
-        if handler.match(tokens, definitions)
-          return handler.invoke(:narrow, tokens, self, options)
-        end
-      end
-
-      puts '-none' if Chronic.debug
-      return nil
-    end
   end
 end

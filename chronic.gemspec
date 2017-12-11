@@ -17,6 +17,8 @@ Gem::Specification.new do |s|
   s.test_files = `git ls-files -- test`.split($/)
 
   s.add_runtime_dependency 'numerizer', '~> 0.2'
+  s.add_runtime_dependency 'tzinfo'
+  s.add_runtime_dependency 'TimezoneParser'
 
   s.add_development_dependency 'rake', '~> 10'
   s.add_development_dependency 'simplecov', '~> 0'

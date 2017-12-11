@@ -1,7 +1,7 @@
 module Chronic
-  class TimeZone < Tag
+  class TimeZoneTag < Tag
 
-    # Scan an Array of Token objects and apply any necessary TimeZone
+    # Scan an Array of Token objects and apply any necessary TimeZoneTag
     # tags to each token.
     #
     # tokens - An Array of tokens to scan.
@@ -9,24 +9,48 @@ module Chronic
     #
     # Returns an Array of tokens.
     def self.scan(tokens, options)
-      tokens.each do |token|
-        token.tag scan_for_all(token)
+      tokens.each_index do |i|
+        token = tokens[i]
+        token.tag scan_for(token, TimeZoneGeneric, patterns)
+        token.tag TimeZoneAbbreviation.new(token.word, nil, options) if TimeZone::is_valid_abbr?(token.word)
       end
     end
 
-    # token - The Token object we want to scan.
-    #
-    # Returns a new Pointer object.
-    def self.scan_for_all(token)
-      scan_for token, self,
-      {
-        /[PMCE][DS]T|UTC/i => :tz,
-        /(tzminus)?\d{2}:?\d{2}/ => :tz
+    def self.patterns
+      @@patterns ||= {
+        :UTC => 0,
+        :Z   => 0
       }
     end
 
     def to_s
       'timezone'
     end
+
   end
+
+  class TimeZoneGeneric < TimeZoneTag #:nodoc:
+    def to_s
+      super + '-generic-' + @type.to_s
+    end
+  end
+
+  class TimeZoneAbbreviation < TimeZoneTag #:nodoc:
+    def to_s
+      super + '-abbr-' + @type.to_s
+    end
+  end
+
+  class TimeZoneName < TimeZoneTag #:nodoc:
+    def to_s
+      super + '-name-' + @type.to_s
+    end
+  end
+
+  class TimeZoneTZ < TimeZoneTag #:nodoc:
+    def to_s
+      super + '-tz-' + @type.to_s
+    end
+  end
+
 end

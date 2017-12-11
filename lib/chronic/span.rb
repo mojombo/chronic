@@ -3,6 +3,7 @@ module Chronic
   # Range, you can use #begin and #end to get the beginning and
   # ending times of the span (they will be of class Time)
   class Span < Range
+    attr_accessor :precision
     # Returns the width of this span in seconds
     def width
       (self.end - self.begin).to_i
@@ -22,7 +23,7 @@ module Chronic
 
     # Prints this span in a nice fashion
     def to_s
-      '(' << self.begin.to_s << '..' << self.end.to_s << ')'
+      '(' << self.begin.to_s << '...' << self.end.to_s << ')'
     end
 
     alias :cover? :include? if RUBY_VERSION =~ /^1.8/

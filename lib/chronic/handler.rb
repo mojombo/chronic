@@ -1,96 +1,43 @@
 module Chronic
   class Handler
-
-    attr_reader :pattern
-
-    attr_reader :handler_method
-
-    # pattern        - An Array of patterns to match tokens against.
-    # handler_method - A Symbol representing the method to be invoked
-    #   when a pattern matches.
-    def initialize(pattern, handler_method)
-      @pattern = pattern
-      @handler_method = handler_method
-    end
-
     # tokens - An Array of tokens to process.
-    # definitions - A Hash of definitions to check against.
+    # token_index - Index from which token to start matching from.
+    # pattern - An Array of patterns to check against. (eg. [ScalarDay, [SeparatorSpace, SeparatorDash, nil], MonthName])
     #
     # Returns true if a match is found.
-    def match(tokens, definitions)
-      token_index = 0
-      @pattern.each do |elements|
-        was_optional = false
+    def self.match(tokens, token_index, pattern)
+      count = 0
+      index = 0
+      pattern.each do |elements|
         elements = [elements] unless elements.is_a?(Array)
-
+        optional = elements.include?(:optional)
+        dont_match = elements.include?(:none)
+        count += 1
+        match = 0
         elements.each_index do |i|
-          name = elements[i].to_s
-          optional = name[-1, 1] == '?'
-          name = name.chop if optional
-
-          case elements[i]
-          when Symbol
-            if tags_match?(name, tokens, token_index)
-              token_index += 1
-              break
-            else
-              if optional
-                was_optional = true
-                next
-              elsif i + 1 < elements.count
-                next
-              else
-                return false unless was_optional
-              end
-            end
-
-          when String
-            return true if optional && token_index == tokens.size
-
-            if definitions.key?(name.to_sym)
-              sub_handlers = definitions[name.to_sym]
-            else
-              raise "Invalid subset #{name} specified"
-            end
-
-            sub_handlers.each do |sub_handler|
-              return true if sub_handler.match(tokens[token_index..tokens.size], definitions)
-            end
+          if elements[i].is_a?(Class) and self.tags_match?(elements[i], tokens, token_index + index)
+            match += 1
+            index += 1
+            break unless dont_match
+          elsif i + 1 < elements.count
+            next
           else
-            raise "Invalid match type: #{elements[i].class}"
+            if optional or (dont_match and match < elements.count - 1)
+              count -= 1
+              index -= match
+            else
+              return false
+            end
           end
         end
-
       end
-
-      return false if token_index != tokens.size
-      return true
+      return false if index != count
+      true
     end
 
-    def invoke(type, tokens, parser, options)
-      if Chronic.debug
-        puts "-#{type}"
-        puts "Handler: #{@handler_method}"
-      end
-
-      parser.send(@handler_method, tokens, options)
-    end
-
-    # other - The other Handler object to compare.
-    #
-    # Returns true if these Handlers match.
-    def ==(other)
-      @pattern == other.pattern
-    end
-
-    private
-
-    def tags_match?(name, tokens, token_index)
-      klass = Chronic.const_get(name.to_s.gsub(/(?:^|_)(.)/) { $1.upcase })
-
-      if tokens[token_index]
-        !tokens[token_index].tags.select { |o| o.kind_of?(klass) }.empty?
-      end
+    def self.tags_match?(klass, tokens, token_index)
+      return !tokens[token_index].get_tag(klass).nil? if tokens[token_index]
+      false
     end
 
   end
