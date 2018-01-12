@@ -1,3 +1,20 @@
+# 0.10.x / unreleased
+* `Chronic.parse('t')` returns `nil` instead of rasing `NoMethodError` (#243)
+* Intepret dates without years as next year if the date has
+  already passed in the current year (#270)
+* Interpret "MM/DD" as the previous year if `context` is set to `:past` and the date hasn't passed in the current year (#276)
+* `Chronic.parse('09/01/00')` no longer returns nil (#359)
+* Raise `ArgumentError` if unsupported `options` are passed in (#269)
+* Don't modify the `options` hash, in case it's reused between calls (#279)
+* Add `week_start` option to specify which day weeks start on. This can be set to `:sunday` (default) or `:monday` (#216)
+* Recognise "midday" as an alternative for "noon" (#369)
+* Parse subseconds even if they're not 3 digits long (#265)
+* Parse "1st September 2 years ago" pattern (#275)
+* Parse shorthand year notation, like `'05` (#274)
+* Parse quarter names, like `q1` (#273)
+
+* Parse dates with missing separators, like "2 Nov 10" (#260)
+
 # 0.10.2 / 2013-09-09
 
 * Fix 1.8.7 support (due to be dropped in 0.11.0)
