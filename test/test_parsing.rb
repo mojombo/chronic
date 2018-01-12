@@ -345,6 +345,9 @@ class TestParsing < TestCase
     time = parse_now("09.08.2013")
     assert_equal Time.local(2013, 8, 9, 12), time
 
+    time = parse_now("9.8.2013")
+    assert_equal Time.local(2013, 8, 9, 12), time
+
     time = parse_now("30-07-2013 21:53:49")
     assert_equal Time.local(2013, 7, 30, 21, 53, 49), time
   end
