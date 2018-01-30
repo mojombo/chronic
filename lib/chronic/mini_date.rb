@@ -7,7 +7,7 @@ module Chronic
     end
 
     def initialize(month, day)
-      unless (1..12).include?(month)
+      unless (1..12).cover?(month)
         raise ArgumentError, '1..12 are valid months'
       end
 
