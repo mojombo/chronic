@@ -40,6 +40,12 @@ Chronic.parse('6/4/2012', :endian_precedence => :little)
 
 Chronic.parse('INVALID DATE')
   #=> nil
+
+Chronic.parse('sunday')
+  #=> Sun Sep 03 12:00:00 PDT 2006
+
+Chronic.parse('sunday', today: true)
+  #=> Sun Aug 27 12:00:00 PDT 2006
 ```
 
 If the parser can find a date or time, either a Time or Chronic::Span
