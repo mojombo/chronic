@@ -518,13 +518,22 @@ module Chronic
     # support methods
 
     def day_or_time(day_start, time_tokens, options)
-      outer_span = Span.new(day_start, day_start + (24 * 60 * 60))
+      outer_span = span_from_day_start(day_start, time_tokens, options)
 
       unless time_tokens.empty?
         self.now = outer_span.begin
         get_anchor(dealias_and_disambiguate_times(time_tokens, options), options.merge(:context => :future))
       else
         outer_span
+      end
+    end
+
+    def span_from_day_start(day_start, time_tokens, options)
+      if time_tokens.empty? && options[:default_time_now]
+        exact_date_time = day_start + now.hour * 60 * 60 + now.min * 60 + now.sec
+        Span.new(exact_date_time, exact_date_time)
+      else
+        Span.new(day_start, day_start + (24 * 60 * 60))
       end
     end
 

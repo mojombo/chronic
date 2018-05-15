@@ -32,6 +32,9 @@ Chronic.parse('this tuesday 5:00', :ambiguous_time_range => :none)
 Chronic.parse('may 27th', :now => Time.local(2000, 1, 1))
   #=> Sat May 27 12:00:00 PDT 2000
 
+Chronic.parse('may 27th', :default_time_now => true)
+  #=> Sun May 27 23:18:25 PDT 2007
+
 Chronic.parse('may 27th', :guess => false)
   #=> Sun May 27 00:00:00 PDT 2007..Mon May 28 00:00:00 PDT 2007
 

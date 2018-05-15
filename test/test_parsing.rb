@@ -1523,6 +1523,26 @@ class TestParsing < TestCase
     assert_equal pre_normalize("midday February 11"), pre_normalize("12:00 p.m. February 11")
   end
 
+  def test_default_time_now
+    time = parse_now("may 27", :default_time_now => true)
+    assert_equal Time.local(2007, 5, 27, 14), time
+
+    time = parse_now("may 27 at 5pm", :default_time_now => true)
+    assert_equal Time.local(2007, 5, 27, 17), time
+
+    time = parse_now("1 week from now", :default_time_now => true)
+    assert_equal Time.local(2006, 8, 23, 14), time
+
+    time = parse_now("September 19 2017", :default_time_now => true)
+    assert_equal Time.local(2017, 9, 19, 14), time
+
+    time = parse_now("September 19 2017 at 2:00am", :default_time_now => true)
+    assert_equal Time.local(2017, 9, 19, 2), time
+
+    time = parse_now("may 27th", :default_time_now => true, :now => Time.local(2006, 8, 27, 23, 18, 25, 0))
+    assert_equal Time.local(2007, 5, 27, 23, 18, 25), time
+  end
+
   private
   def parse_now(string, options={})
     Chronic.parse(string, {:now => TIME_2006_08_16_14_00_00 }.merge(options))
