@@ -3,6 +3,12 @@ module Chronic
     MONTHS_PER_QUARTER = 3
     QUARTER_SECONDS = 7_776_000 # 3 * 30 * 24 * 60 * 60
 
+    def initialize(type, width = nil, options = {})
+      @current_span = nil
+
+      super
+    end
+
     def next(pointer)
       @current_span ||= quarter(@now)
       offset_quarter_amount = pointer == :future ? 1 : -1
