@@ -1128,6 +1128,11 @@ class TestParsing < TestCase
     assert_equal Time.local(2006, 8, 16, 14, 30), parse_now("half past 2")
   end
 
+  def test_relative_to_a_date_after
+    assert_equal Time.local(2023, 7, 2, 17, 30),
+                 parse_now('five years after 11 May 2017')
+  end
+
   def test_parse_only_complete_pointers
     assert_equal parse_now("eat pasty buns today at 2pm"), @time_2006_08_16_14_00_00
     assert_equal parse_now("futuristically speaking today at 2pm"), @time_2006_08_16_14_00_00
