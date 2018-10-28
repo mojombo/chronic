@@ -974,6 +974,9 @@ class TestParsing < TestCase
     time = parse_now("3 fortnights hence")
     assert_equal Time.local(2006, 9, 27, 14), time
 
+    time = parse_now("in a week")
+    assert_equal Time.local(2006, 8, 23, 14, 0, 0), time
+
     time = parse_now("1 week from now")
     assert_equal Time.local(2006, 8, 23, 14, 0, 0), time
 
@@ -983,11 +986,17 @@ class TestParsing < TestCase
     time = parse_now("2 weekends from now")
     assert_equal Time.local(2006, 8, 26), time
 
+    time = parse_now("in a day")
+    assert_equal Time.local(2006, 8, 17, 14), time
+
     time = parse_now("1 day hence")
     assert_equal Time.local(2006, 8, 17, 14), time
 
     time = parse_now("5 mornings hence")
     assert_equal Time.local(2006, 8, 21, 9), time
+
+    time = parse_now("in an hour")
+    assert_equal Time.local(2006, 8, 16, 15), time
 
     time = parse_now("1 hour from now")
     assert_equal Time.local(2006, 8, 16, 15), time
