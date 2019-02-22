@@ -44,6 +44,8 @@ module Chronic
     end
 
     def offset(span, amount, pointer)
+      return nil unless span
+
       direction = pointer == :future ? 1 : -1
       span + direction * amount * MINUTE_SECONDS
     end
