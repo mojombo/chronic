@@ -1070,6 +1070,9 @@ class TestParsing < TestCase
 
     time = parse_now("t")
     assert_nil time
+
+    time = parse_now("01 Jan 1953 to 31 Dec 1954")
+    assert_nil time
   end
 
   def test_parse_span
