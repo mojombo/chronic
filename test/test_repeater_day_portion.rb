@@ -86,6 +86,19 @@ class TestRepeaterDayPortion < TestCase
 
     assert_equal Time.local(2012, 11, 4, 12), next_next_time.begin
     assert_equal Time.local(2012, 11, 4, 23, 59, 59), next_next_time.end
+
+    @now = Time.local(2012,11,3,12,40,12)
+    day_portion = Chronic::RepeaterDayPortion.new(:pm)
+    day_portion.start = @now
+
+    next_time = day_portion.next(:future)
+    assert_equal Time.local(2012, 11, 4, 12), next_time.begin
+    assert_equal Time.local(2012, 11, 4, 23, 59, 59), next_time.end
+
+    next_next_time = day_portion.next(:future)
+
+    assert_equal Time.local(2012, 11, 5, 12), next_next_time.begin
+    assert_equal Time.local(2012, 11, 5, 23, 59, 59), next_next_time.end
   end
 
   def test_morning_future

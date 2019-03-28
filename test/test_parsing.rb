@@ -47,6 +47,14 @@ class TestParsing < TestCase
     assert_equal Time.new(Time.now.year, Time.now.month, 28), time
   end
 
+  def test_handle_daylight_savings_transitions
+    time = parse_now("3/10/2019 12:35:04 PM")
+    assert_equal Time.local(2019, 3, 10, 12, 35, 04), time
+
+    time = parse_now("11/3/2019 11:35:04 PM")
+    assert_equal Time.local(2019, 11, 3, 23, 35, 04), time
+  end
+
   def test_handle_rmn_sd
     time = parse_now("aug 3")
     assert_equal Time.local(2007, 8, 3, 12), time
