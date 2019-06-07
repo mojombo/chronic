@@ -19,18 +19,12 @@ module Chronic
 
     # Proccess text to tokens
     def self.tokenize(text)
+      alter_text = text.dup
       tokens = []
-      index = 0
-      previos_index = 0
-      text.each_char do |char|
-        type = char_type(char)
-        if type == :space
-          tokens << Token.new(text[previos_index...index], text, previos_index)
-          previos_index = index+1
-        end
-        index += 1
+      text.split(" ").each do |sub_text|
+        tokens << Token.new(sub_text, text, alter_text.index(sub_text))
+        alter_text.sub!(/\#{sub_text}/, (" " * sub_text.length))
       end
-      tokens << Token.new(text[previos_index...index], text, previos_index)
       tokens
     end
 
