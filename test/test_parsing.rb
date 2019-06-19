@@ -348,6 +348,13 @@ class TestParsing < TestCase
     time = parse_now("9.8.2013")
     assert_equal Time.local(2013, 8, 9, 12), time
 
+    time = parse_now("09.08.13")
+    assert_equal Time.local(2013, 8, 9, 12), time
+
+    time = parse_now("9.8.13")
+    assert_equal Time.local(2013, 8, 9, 12), time
+
+
     time = parse_now("30-07-2013 21:53:49")
     assert_equal Time.local(2013, 7, 30, 21, 53, 49), time
   end
@@ -724,6 +731,21 @@ class TestParsing < TestCase
 
     time = parse_now("today")
     assert_equal Time.local(2006, 8, 16, 19), time
+
+    time = parse_now("dnes")
+    assert_equal Time.local(2006, 8, 16, 19), time
+
+    time = parse_now("dnešek")
+    assert_equal Time.local(2006, 8, 16, 19), time
+
+    time = parse_now("dneska")
+    assert_equal Time.local(2006, 8, 16, 19), time
+
+    time = parse_now("zítra")
+    assert_equal Time.local(2006, 8, 17, 12), time
+
+    time = parse_now("zitra")
+    assert_equal Time.local(2006, 8, 17, 12), time
 
     time = parse_now("yesterday")
     assert_equal Time.local(2006, 8, 15, 12), time

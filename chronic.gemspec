@@ -22,4 +22,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'simplecov', '~> 0'
   s.add_development_dependency 'minitest', '~> 5.0'
   s.add_development_dependency 'activesupport', '~> 4'
+  s.add_development_dependency "m", "~> 1.5.0"
 end

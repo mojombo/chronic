@@ -122,6 +122,10 @@ insensitive and will handle common abbreviations and misspellings.
 * 17 april 85
 * 5/27/1979
 * 27/5/1979
+* 27.5.1979 # https://github.com/mojombo/chronic/pull/356/files
+* 5/27/79 # 
+* 27/5/79 # 
+* 27.5.79 # added 
 * 05/06
 * 1979-05-27
 * Friday
