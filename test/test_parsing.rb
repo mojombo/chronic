@@ -47,6 +47,26 @@ class TestParsing < TestCase
     assert_equal Time.new(Time.now.year, Time.now.month, 28), time
   end
 
+  def test_handle_array_generic
+    times = Chronic.parse_array([
+      {
+        'options': {},
+        'text': '2012-08-02T13:00:00'
+      },
+      {
+        'options': {},
+        'text': '2012-08-02T13:00:00+01:00'
+      },
+      {
+        'options': {},
+        'text': 'tomorrow'
+      }
+    ])
+
+    assert_equal Time.local(2012, 8, 2, 13), times[0]
+    assert_equal Time.utc(2012, 8, 2, 12), times[1]
+  end
+
   def test_handle_rmn_sd
     time = parse_now("aug 3")
     assert_equal Time.local(2007, 8, 3, 12), time
