@@ -95,12 +95,8 @@ module Chronic
     Parser.new(options).parse(text)
   end
 
-  def self.parse_array(array)
-    @array_dates = []
-    
-    array.each { |item| @array_dates.push(Parser.new(item[:options]).parse(item[:text])) }
-
-    @array_dates
+  def self.parse_array(items)    
+    items.map { |item| parse(item[:text], item[:options]) }
   end
 
   # Construct a new time object determining possible month overflows
