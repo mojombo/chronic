@@ -86,6 +86,11 @@ class TestDaylightSavings < TestCase
     t = Chronic::RepeaterTime.new('1300')
     t.start = @end_daylight_savings
     assert_equal Time.local(2008, 11, 1, 13), t.next(:past).begin
+
+    # unambiguous - resolve to yesterday
+    t = Chronic::RepeaterTime.new('1300')
+    t.start = @end_daylight_savings + 60 * 60 * 24 # Advance one day
+    assert_equal Time.local(2008, 11, 2, 13), t.next(:past).begin
   end
 
   def test_end_future
@@ -114,5 +119,4 @@ class TestDaylightSavings < TestCase
     t.start = @end_daylight_savings
     assert_equal Time.local(2008, 11, 3, 4), t.next(:future).begin
   end
-
 end

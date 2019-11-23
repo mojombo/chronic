@@ -81,27 +81,28 @@ module Chronic
         yesterday_midnight = midnight - full_day
         tomorrow_midnight = midnight + full_day
 
-        offset_fix = midnight.gmt_offset - tomorrow_midnight.gmt_offset
-        tomorrow_midnight += offset_fix
-
         catch :done do
           if pointer == :future
             if @type.ambiguous?
-              [midnight + @type.time + offset_fix, midnight + half_day + @type.time + offset_fix, tomorrow_midnight + @type.time].each do |t|
+              [midnight, midnight + half_day, tomorrow_midnight].each do |base_time|
+                t = adjust_daylight_savings_offset(midnight, base_time + @type.time)
                 (@current_time = t; throw :done) if t >= @now
               end
             else
-              [midnight + @type.time + offset_fix, tomorrow_midnight + @type.time].each do |t|
+              [midnight, tomorrow_midnight].each do |base_time|
+                t = adjust_daylight_savings_offset(midnight, base_time + @type.time)
                 (@current_time = t; throw :done) if t >= @now
               end
             end
           else # pointer == :past
             if @type.ambiguous?
-              [midnight + half_day + @type.time + offset_fix, midnight + @type.time + offset_fix, yesterday_midnight + @type.time + half_day].each do |t|
+              [midnight + half_day, midnight, yesterday_midnight + half_day].each do |base_time|
+                t = adjust_daylight_savings_offset(midnight, base_time + @type.time)
                 (@current_time = t; throw :done) if t <= @now
               end
             else
-              [midnight + @type.time + offset_fix, yesterday_midnight + @type.time].each do |t|
+              [midnight, yesterday_midnight].each do |base_time|
+                t = adjust_daylight_savings_offset(midnight, base_time + @type.time)
                 (@current_time = t; throw :done) if t <= @now
               end
             end
@@ -117,6 +118,26 @@ module Chronic
       end
 
       Span.new(@current_time, @current_time + width)
+    end
+
+    # Every time a time crosses a Daylight Savings interval we must adjust the
+    # current time by that amount. For example, if we take midnight of Daylight
+    # Savings and only add an hour, the offset does not change:
+    #
+    # Time.parse('2008-03-09 00:00')
+    # => 2008-03-09 00:00:00 -0800
+    # Time.parse('2008-03-09 00:00') + (60 * 60)
+    # => 2008-03-09 01:00:00 -0800
+    #
+    # However, if we add 2 hours, we notice the time advances to 03:00 instead of 02:00:
+    #
+    # Time.parse('2008-03-09 00:00') + (60 * 60 * 2)
+    # => 2008-03-09 03:00:00 -0700
+    #
+    # Since we gained an hour and we actually want 02:00, we subtract an hour.
+    def adjust_daylight_savings_offset(base_time, current_time)
+      offset_fix = base_time.gmt_offset - current_time.gmt_offset
+      current_time + offset_fix
     end
 
     def this(context = :future)
