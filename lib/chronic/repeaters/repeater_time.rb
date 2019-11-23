@@ -85,28 +85,24 @@ module Chronic
           if pointer == :future
             if @type.ambiguous?
               [midnight, midnight + half_day, tomorrow_midnight].each do |base_time|
-                base_time = adjust_daylight_savings_offset(midnight, base_time)
-                t = adjust_daylight_savings_offset(base_time, base_time + @type.time)
+                t = adjust_daylight_savings_offset(midnight, base_time + @type.time)
                 (@current_time = t; throw :done) if t >= @now
               end
             else
               [midnight, tomorrow_midnight].each do |base_time|
-                base_time = adjust_daylight_savings_offset(midnight, base_time)
-                t = adjust_daylight_savings_offset(base_time, base_time + @type.time)
+                t = adjust_daylight_savings_offset(midnight, base_time + @type.time)
                 (@current_time = t; throw :done) if t >= @now
               end
             end
           else # pointer == :past
             if @type.ambiguous?
               [midnight + half_day, midnight, yesterday_midnight + half_day].each do |base_time|
-                base_time = adjust_daylight_savings_offset(midnight, base_time)
-                t = adjust_daylight_savings_offset(base_time, base_time + @type.time)
+                t = adjust_daylight_savings_offset(midnight, base_time + @type.time)
                 (@current_time = t; throw :done) if t <= @now
               end
             else
               [midnight, yesterday_midnight].each do |base_time|
-                base_time = adjust_daylight_savings_offset(midnight, base_time)
-                t = adjust_daylight_savings_offset(base_time, base_time + @type.time)
+                t = adjust_daylight_savings_offset(midnight, base_time + @type.time)
                 (@current_time = t; throw :done) if t <= @now
               end
             end
