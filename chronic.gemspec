@@ -4,7 +4,6 @@ require 'chronic/version'
 Gem::Specification.new do |s|
   s.name = 'chronic'
   s.version = Chronic::VERSION
-  s.rubyforge_project = 'chronic'
   s.summary     = 'Natural language date/time parsing.'
   s.description = 'Chronic is a natural language date/time parser written in pure Ruby.'
   s.authors  = ['Tom Preston-Werner', 'Lee Jarvis']
