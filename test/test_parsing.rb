@@ -43,6 +43,10 @@ class TestParsing < TestCase
 
     assert_nil Chronic.parse("1/1/32.1")
 
+    time = Chronic.parse("2020-11-01 00:00:00")
+    time2 = Time.parse("2020-11-01 00:00:00")
+    assert_in_delta time, time2, 0.000001
+
     time = Chronic.parse("28th", {:guess => :begin})
     assert_equal Time.new(Time.now.year, Time.now.month, 28), time
   end
