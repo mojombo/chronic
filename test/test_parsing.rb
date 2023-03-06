@@ -1515,6 +1515,34 @@ class TestParsing < TestCase
     assert_equal Time.local(2005, 12, 30, 12), time
   end
 
+  def test_get_anchor
+    time = parse_now("wednesday")
+    assert_equal Time.local(2006, 8, 23, 12), time
+
+    time = parse_now("this wednesday")
+    assert_equal Time.local(2006, 8, 23, 12), time
+
+    time = parse_now("wednesday at 16:30")
+    assert_equal Time.local(2006, 8, 23, 16, 30), time
+
+    time = parse_now("wednesday", today: true)
+    assert_equal Time.local(2006, 8, 16, 12), time
+
+    time = parse_now("this wednesday", today: true)
+    assert_equal Time.local(2006, 8, 16, 12), time
+
+    time = parse_now("wednesday at 16:00", today: true)
+    assert_equal Time.local(2006, 8, 16, 16), time
+
+    assert_raises(ArgumentError) do
+      parse_now("thursday at 16:00", today: true)
+    end
+
+    assert_raises(ArgumentError) do
+      parse_now("tuesday", today: true)
+    end
+  end
+
   def test_normalizing_day_portions
     assert_equal pre_normalize("8:00 pm February 11"), pre_normalize("8:00 p.m. February 11")
   end
