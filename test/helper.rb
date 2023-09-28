@@ -5,7 +5,7 @@ end
 
 require 'minitest/autorun'
 
-class TestCase < MiniTest::Test
+class TestCase < Minitest::Test
   def self.test(name, &block)
     define_method("test_#{name.gsub(/\W/, '_')}", &block) if block
   end
